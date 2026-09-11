@@ -1,0 +1,18 @@
+\doxysection{Menu\+Lookup.\+h}
+\hypertarget{_menu_lookup_8h_source}{}\label{_menu_lookup_8h_source}\index{datastructures/MenuLookup.h@{datastructures/MenuLookup.h}}
+\doxymbox{\hyperlink{_menu_lookup_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_menu_item_8h}{../models/MenuItem.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_menu_lookup}{MenuLookup}}\ \{}
+\DoxyCodeLine{00008\ \ \ \ \ std::unordered\_map<std::string,MenuItem>\ table;}
+\DoxyCodeLine{00009\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_menu_lookup_a2913d1efaffcba50ff7a8d121ceb2bc4}{addItem}}(\doxymbox{\hyperlink{struct_menu_item}{MenuItem}}\ item);}
+\DoxyCodeLine{00011\ \ \ \ \ \doxymbox{\hyperlink{struct_menu_item}{MenuItem}}*\ \doxymbox{\hyperlink{class_menu_lookup_ac5edbd9f1cb8074485073c659434d8c3}{find}}(std::string\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00012\ \};}
+
+\end{DoxyCode}

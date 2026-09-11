@@ -1,0 +1,11 @@
+<map id="ModelSkeleton" name="ModelSkeleton">
+<area shape="rect" id="Node000001" title=" " alt="" coords="28,395,125,464"/>
+<area shape="rect" id="Node000002" href="$struct_bone_info.html" title=" " alt="" coords="5,232,68,323"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="36,320,44,370,48,379,42,380,39,371,34,325"/>
+<area shape="rect" id="Node000003" href="$struct_transform.html" title=" " alt="" coords="92,243,162,312"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="118,310,96,380,91,378,114,314"/>
+<area shape="rect" id="Node000004" href="$struct_vector3.html" title=" " alt="" coords="47,16,101,128"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="67,125,70,167,78,207,88,229,83,229,73,209,65,168,67,130"/>
+<area shape="rect" id="Node000005" href="$struct_vector4.html" title=" " alt="" coords="153,5,208,139"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="169,136,154,209,148,228,143,226,149,207,167,141"/>
+</map>

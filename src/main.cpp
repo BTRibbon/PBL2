@@ -1,4 +1,9 @@
 #include "raylib.h"
+#include "datastructures/BranchList.h"
+#include "datastructures/MenuLookup.h"
+#include "datastructures/OrderQueue.h"
+#include "models/RestaurantChain.h"
+#include "models/User.h"
 
 #include <algorithm>
 #include <array>
@@ -8,9 +13,7 @@
 #include <fstream>
 #include <functional>
 #include <limits>
-#include <queue>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 struct Product {
@@ -23,64 +26,6 @@ struct Product {
 struct CartItem {
 	int productIndex;
 	int quantity;
-};
-
-enum class Role { Customer, Employee, Manager };
-
-struct User {
-	std::string username;
-	Role role;
-	virtual ~User() = default;
-	virtual bool canManageBranches() const { return false; }
-	virtual bool canViewReports() const { return false; }
-};
-
-struct Customer : User {
-	Customer() { username = "Kiosk Guest"; role = Role::Customer; }
-};
-
-struct Employee : Customer {
-	Employee() { username = "Employee"; role = Role::Employee; }
-	bool canViewReports() const override { return true; }
-};
-
-struct Manager : Employee {
-	Manager() { username = "Manager"; role = Role::Manager; }
-	bool canManageBranches() const override { return true; }
-};
-
-struct Order {
-	int id;
-	int total;
-	std::string branch;
-};
-
-struct Branch {
-	std::string name;
-	float x;
-	float y;
-};
-
-class BranchList {
-	struct Node {
-		Branch branch;
-		Node* next;
-		Node(const Branch& value, Node* following) : branch(value), next(following) {}
-	};
-	Node* head = nullptr;
-
-public:
-	~BranchList() { clear(); }
-	void add(const Branch& branch) { head = new Node(branch, head); }
-	std::vector<Branch> values() const {
-		std::vector<Branch> result;
-		for (Node* node = head; node; node = node->next) result.push_back(node->branch);
-		std::reverse(result.begin(), result.end());
-		return result;
-	}
-	void clear() {
-		while (head) { Node* old = head; head = head->next; delete old; }
-	}
 };
 
 static std::string encrypt(const std::string& value) {
@@ -248,16 +193,19 @@ int main() {
 	Customer kioskUser;
 	Employee employeeUser;
 	Manager managerUser;
+	kioskUser.showMenuOptions();
+	employeeUser.showMenuOptions();
+	managerUser.showMenuOptions();
 	saveEncryptedAccount(kioskUser, rolePassword(Role::Customer));
 	saveEncryptedAccount(employeeUser, rolePassword(Role::Employee));
 	saveEncryptedAccount(managerUser, rolePassword(Role::Manager));
 	User* currentUser = &kioskUser;
-	BranchList branches;
-	branches.add({"Central Branch", 290.0f, 285.0f});
-	branches.add({"West Branch", 470.0f, 185.0f});
-	branches.add({"East Branch", 710.0f, 330.0f});
-	branches.add({"South Branch", 560.0f, 510.0f});
-	std::vector<Branch> branchValues = branches.values();
+	RestaurantChain chain("Small Kitchen");
+	chain.addBranch("BR001","Central Branch",290.0f,285.0f);
+	chain.addBranch("BR002","West Branch",470.0f,185.0f);
+	chain.addBranch("BR003","East Branch",710.0f,330.0f);
+	chain.addBranch("BR004","South Branch",560.0f,510.0f);
+	std::vector<Branch> branchValues = chain.getBranches();
 	int targetBranch = 2;
 	MapGraph mapGraph(30, 20);
 	std::array<GridPoint, 4> branchCells{{{2, 2}, {10, 2}, {26, 7}, {15, 17}}};
@@ -268,9 +216,9 @@ int main() {
 	int mapTarget = mapGraph.nodeAt(branchCells[targetBranch].x, branchCells[targetBranch].y);
 	MapRoute dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
 	MapRoute aStarRoute = mapGraph.aStar(mapStart, mapTarget);
-	std::queue<Order> orderQueue;
-	std::unordered_map<std::string, int> productByCode;
-	for (int i = 0; i < static_cast<int>(products.size()); ++i) productByCode[lowerText(productCode(i))] = i;
+	OrderQueue orderQueue;
+	MenuLookup menuLookup;
+	for (int i=0;i<static_cast<int>(products.size());++i) menuLookup.addItem({lowerText(productCode(i)),products[i].name,static_cast<float>(products[i].price)});
 
 	std::string search;
 	bool searchFocused = false;
@@ -355,7 +303,9 @@ int main() {
 				if (CheckCollisionPointRec(mouse, {960, 606, 250, 42}) && cartTotal(cart) > 0) {
 					orderPlaced = true;
 					int paidTotal = cartTotal(cart) - promotionDiscount(cart, discount);
-					Order order{nextOrderId++, paidTotal, branchValues.front().name};
+					Order order{nextOrderId,paidTotal,branchValues.front().getName(),"ORD"+std::to_string(nextOrderId),"KIOSK",{},"pending"};
+					for (const CartItem& item : cart) if (item.quantity>0) order.items.push_back({productCode(item.productIndex),item.quantity});
+					nextOrderId++;
 					orderQueue.push(order);
 					saveEncryptedOrder(order);
 					statusMessage = "Order #" + std::to_string(order.id) + " added to queue";
@@ -380,7 +330,7 @@ int main() {
 						dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
 						aStarRoute = mapGraph.aStar(mapStart, mapTarget);
 						pathAnimation = 0.0f;
-						statusMessage = "Selected " + branchValues[i].name;
+						statusMessage = "Selected " + branchValues[i].getName();
 					}
 				}
 				int mapX = static_cast<int>((mouse.x - mapOriginX) / mapCellSize);
@@ -426,11 +376,11 @@ int main() {
 			}
 			if (IsKeyPressed(KEY_ENTER)) {
 				std::string query = lowerText(search);
-				if (productByCode.find(query) != productByCode.end()) statusMessage = "Found product code: " + search;
+				if (menuLookup.find(query) != nullptr) statusMessage = "Found product code: " + search;
 				else statusMessage = "Filtering products by: " + search;
 			}
 		}
-		if (IsKeyPressed(KEY_P) && currentUser->canViewReports() && !orderQueue.empty()) { orderQueue.pop(); statusMessage = "Processed the first queued order"; }
+		if (IsKeyPressed(KEY_P) && currentUser->canViewReports() && !orderQueue.empty()) { orderQueue.popNext(); statusMessage = "Processed the first queued order"; }
 
 		BeginDrawing();
 		BeginMode2D({{GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f}, {640, 380}, 0, scale});
@@ -562,16 +512,16 @@ int main() {
 				float branchX = mapOriginX + branchCells[i].x * mapCellSize + mapCellSize / 2.0f;
 				float branchY = mapOriginY + branchCells[i].y * mapCellSize + mapCellSize / 2.0f;
 				DrawCircle(static_cast<int>(branchX), static_cast<int>(branchY), 11, i == targetBranch ? Color{210, 92, 68, 255} : Color{35, 55, 53, 255});
-				DrawText(branchValues[i].name.c_str(), static_cast<int>(branchX) - 48, static_cast<int>(branchY) + 15, 10, {48, 64, 55, 255});
+				DrawText(branchValues[i].getName().c_str(), static_cast<int>(branchX) - 48, static_cast<int>(branchY) + 15, 10, {48, 64, 55, 255});
 			}
 			DrawText(useAStar ? "THUẬT TOÁN A*" : "THUẬT TOÁN DIJKSTRA", panelX, 190, 13, {93, 112, 103, 255});
-			std::string routeText = targetBranch >= 0 ? branchValues.front().name + " -> " + branchValues[targetBranch].name : "Central Branch -> custom point";
+			std::string routeText = targetBranch >= 0 ? branchValues.front().getName() + " -> " + branchValues[targetBranch].getName() : "Central Branch -> custom point";
 			DrawText(routeText.c_str(), panelX, 220, 17, {35, 105, 78, 255});
 			char distanceText[80]; std::snprintf(distanceText, sizeof(distanceText), "Distance: %.0f cells | %d nodes", selectedRoute.distance, static_cast<int>(selectedRoute.nodes.size()));
 			DrawText(distanceText, panelX, 252, 14, {54, 66, 58, 255});
 			DrawText(deliveryMode ? "Recommendation: delivery" : "Recommendation: dine-in", panelX, 285, 15, {130, 91, 48, 255});
-			DrawText(("Destination: " + (targetBranch >= 0 ? branchValues[targetBranch].name : "custom cell")).c_str(), panelX, 315, 14, {54, 66, 58, 255});
-			char queueText[48]; std::snprintf(queueText, sizeof(queueText), "Queued orders: %d", static_cast<int>(orderQueue.size()));
+			DrawText(("Destination: " + (targetBranch >= 0 ? branchValues[targetBranch].getName() : "custom cell")).c_str(), panelX, 315, 14, {54, 66, 58, 255});
+			char queueText[48]; std::snprintf(queueText, sizeof(queueText), "Queued orders: %d", orderQueue.size());
 			DrawText(queueText, panelX, 345, 14, {54, 66, 58, 255});
 			DrawText(currentUser->canViewReports() ? "Press P to process next order" : "Customer can only place orders", panelX, 375, 13, {104, 115, 108, 255});
 			DrawRectangle(panelX, 400, 170, 40, {247, 239, 214, 255});

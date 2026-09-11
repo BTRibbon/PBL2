@@ -1,0 +1,38 @@
+\doxysection{Branch.\+h}
+\hypertarget{_branch_8h_source}{}\label{_branch_8h_source}\index{models/Branch.h@{models/Branch.h}}
+\doxymbox{\hyperlink{_branch_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_opening_hours_8h}{OpeningHours.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_warehouse_8h}{Warehouse.h}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_menu_item_8h}{MenuItem.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_menu_lookup_8h}{../datastructures/MenuLookup.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_branch_aa03fe00afea18c9b76c25642f7e895af}{Branch}}\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ std::string\ branchId;}
+\DoxyCodeLine{00011\ \ \ \ \ std::string\ name;}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{float}\ x;}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{float}\ y;}
+\DoxyCodeLine{00014\ \ \ \ \ \doxymbox{\hyperlink{class_menu_lookup}{MenuLookup}}\ menu;}
+\DoxyCodeLine{00015\ \ \ \ \ \doxymbox{\hyperlink{class_warehouse}{Warehouse}}\ warehouse;}
+\DoxyCodeLine{00016\ \ \ \ \ \doxymbox{\hyperlink{class_opening_hours}{OpeningHours}}\ openingHours;}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{int}\ revenue=0;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \doxymbox{\hyperlink{class_branch_aa03fe00afea18c9b76c25642f7e895af}{Branch}}(std::string\ \textcolor{keywordtype}{id},std::string\ branchName,\textcolor{keywordtype}{float}\ branchX,\textcolor{keywordtype}{float}\ branchY);}
+\DoxyCodeLine{00020\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_branch_a29b97ccaef57c760ede80e77b0c6cf3e}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00021\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_branch_a712776290e1908224432dc88a7289abe}{getName}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_branch_afdf29381cb1dc03166b0cbf0f8c94bd4}{getX}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{class_branch_aace9fbb24ae1442f0025ccb5e381836e}{getY}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_ad4bb09dde3b96e393134309d983fc853}{addMenuItem}}(\doxymbox{\hyperlink{struct_menu_item}{MenuItem}}\ item);}
+\DoxyCodeLine{00025\ \ \ \ \ \doxymbox{\hyperlink{struct_menu_item}{MenuItem}}*\ \doxymbox{\hyperlink{class_branch_a6297ee9c62c62efb70a99ebc45fe3926}{findMenuItem}}(std::string\ itemId);}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_aa5271a74792288e3084c4bda09b015be}{addStock}}(std::string\ itemId,\textcolor{keywordtype}{int}\ quantity);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_branch_a7a986b69bad18699d2bf10a0b621c0e8}{getStock}}(std::string\ itemId)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_a5023e7760c758166c9c34744a67128c2}{setOpeningHours}}(std::string\ open,std::string\ close);}
+\DoxyCodeLine{00029\ \ \ \ \ \doxymbox{\hyperlink{class_opening_hours}{OpeningHours}}\ \doxymbox{\hyperlink{class_branch_ab6b5f0cb02bb9207a453c5e6c6cf1108}{getOpeningHours}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_a767d40b8534ffa103345e7a86d7bcdaa}{addRevenue}}(\textcolor{keywordtype}{int}\ amount);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_branch_ae96a81206b832d674b62a47066126e80}{getRevenue}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \};}
+
+\end{DoxyCode}

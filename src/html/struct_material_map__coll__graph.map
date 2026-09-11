@@ -1,0 +1,7 @@
+<map id="MaterialMap" name="MaterialMap">
+<area shape="rect" id="Node000001" title=" " alt="" coords="46,232,127,301"/>
+<area shape="rect" id="Node000002" href="$struct_texture.html" title=" " alt="" coords="5,5,82,160"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="38,157,48,207,52,217,46,217,43,209,36,162"/>
+<area shape="rect" id="Node000003" href="$struct_color.html" title=" " alt="" coords="110,16,151,149"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,147,104,209,102,217,97,214,99,207,114,151"/>
+</map>

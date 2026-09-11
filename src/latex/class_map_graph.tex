@@ -1,0 +1,86 @@
+\doxysection{Map\+Graph Class Reference}
+\hypertarget{class_map_graph}{}\label{class_map_graph}\index{MapGraph@{MapGraph}}
+
+
+Collaboration diagram for Map\+Graph:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=149pt]{class_map_graph__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_map_graph_ae9ce49edf43536337b17a83ac7de512f}{Map\+Graph}} (int width, int height)
+\item 
+int \doxymbox{\hyperlink{class_map_graph_ab9684551fd8ac0d96a4624f89000a5bb}{width}} () const
+\item 
+int \doxymbox{\hyperlink{class_map_graph_a0fdf159e5ac26d5617f47878394c6839}{height}} () const
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_map_graph_a25ead756bb4d0a9fd641d9f800f0d8d8}{is\+Blocked}} (int x, int y) const
+\item 
+int \doxymbox{\hyperlink{class_map_graph_a38a99a37aa2db29acf51b38609e35e42}{node\+At}} (int x, int y) const
+\item 
+\doxymbox{\hyperlink{struct_map_route}{Map\+Route}} \doxymbox{\hyperlink{class_map_graph_a37b4489bf7a864d8d25069fd539b3c75}{dijkstra}} (int start, int target) const
+\item 
+\doxymbox{\hyperlink{struct_map_route}{Map\+Route}} \doxymbox{\hyperlink{class_map_graph_a1330a94e84731d6a0f53c5c724b9be95}{a\+Star}} (int start, int target) const
+\end{DoxyCompactItemize}
+
+
+\label{class_map_graph_doc-constructors}
+\Hypertarget{class_map_graph_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_map_graph_ae9ce49edf43536337b17a83ac7de512f}\index{MapGraph@{MapGraph}!MapGraph@{MapGraph}}
+\index{MapGraph@{MapGraph}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{MapGraph()}{MapGraph()}}
+{\footnotesize\ttfamily \label{class_map_graph_ae9ce49edf43536337b17a83ac7de512f} 
+Map\+Graph::\+\+Map\+Graph (\begin{DoxyParamCaption}\item[{int}]{width}{, }\item[{int}]{height}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{class_map_graph_doc-func-members}
+\Hypertarget{class_map_graph_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_map_graph_a1330a94e84731d6a0f53c5c724b9be95}\index{MapGraph@{MapGraph}!aStar@{aStar}}
+\index{aStar@{aStar}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{aStar()}{aStar()}}
+{\footnotesize\ttfamily \label{class_map_graph_a1330a94e84731d6a0f53c5c724b9be95} 
+\doxymbox{\hyperlink{struct_map_route}{Map\+Route}} Map\+Graph::\+a\+Star (\begin{DoxyParamCaption}\item[{int}]{start}{, }\item[{int}]{target}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_map_graph_a37b4489bf7a864d8d25069fd539b3c75}\index{MapGraph@{MapGraph}!dijkstra@{dijkstra}}
+\index{dijkstra@{dijkstra}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{dijkstra()}{dijkstra()}}
+{\footnotesize\ttfamily \label{class_map_graph_a37b4489bf7a864d8d25069fd539b3c75} 
+\doxymbox{\hyperlink{struct_map_route}{Map\+Route}} Map\+Graph::\+dijkstra (\begin{DoxyParamCaption}\item[{int}]{start}{, }\item[{int}]{target}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_map_graph_a0fdf159e5ac26d5617f47878394c6839}\index{MapGraph@{MapGraph}!height@{height}}
+\index{height@{height}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{height()}{height()}}
+{\footnotesize\ttfamily \label{class_map_graph_a0fdf159e5ac26d5617f47878394c6839} 
+int Map\+Graph::\+height (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_map_graph_a25ead756bb4d0a9fd641d9f800f0d8d8}\index{MapGraph@{MapGraph}!isBlocked@{isBlocked}}
+\index{isBlocked@{isBlocked}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{isBlocked()}{isBlocked()}}
+{\footnotesize\ttfamily \label{class_map_graph_a25ead756bb4d0a9fd641d9f800f0d8d8} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Map\+Graph::\+is\+Blocked (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_map_graph_a38a99a37aa2db29acf51b38609e35e42}\index{MapGraph@{MapGraph}!nodeAt@{nodeAt}}
+\index{nodeAt@{nodeAt}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{nodeAt()}{nodeAt()}}
+{\footnotesize\ttfamily \label{class_map_graph_a38a99a37aa2db29acf51b38609e35e42} 
+int Map\+Graph::\+node\+At (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_map_graph_ab9684551fd8ac0d96a4624f89000a5bb}\index{MapGraph@{MapGraph}!width@{width}}
+\index{width@{width}!MapGraph@{MapGraph}}
+\doxysubsubsection{\texorpdfstring{width()}{width()}}
+{\footnotesize\ttfamily \label{class_map_graph_ab9684551fd8ac0d96a4624f89000a5bb} 
+int Map\+Graph::\+width (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{main_8cpp}{main.\+cpp}}\end{DoxyCompactItemize}

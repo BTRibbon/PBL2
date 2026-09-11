@@ -1,0 +1,101 @@
+\doxysection{Model Struct Reference}
+\hypertarget{struct_model}{}\label{struct_model}\index{Model@{Model}}
+
+
+{\ttfamily \+\#include $<$raylib.\+h$>$}
+
+
+
+Collaboration diagram for Model:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{struct_model__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{raylib_8h_a9570374e3dbc873595100dae1e584459}{Matrix}} \doxymbox{\hyperlink{struct_model_aab39d4fe4b3b9399a24377168d6c0f0a}{transform}}
+\item 
+int \doxymbox{\hyperlink{struct_model_a7567573c0a42a4a59561a402c1058374}{mesh\+Count}}
+\item 
+int \doxymbox{\hyperlink{struct_model_a86ca6af5c19a90db6c64503be096c71b}{material\+Count}}
+\item 
+\doxymbox{\hyperlink{struct_mesh}{Mesh}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{struct_model_a7f93cb54ea24bf7924d4f80108a08830}{meshes}}
+\item 
+\doxymbox{\hyperlink{struct_material}{Material}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{struct_model_a0530a6e8cb59576a4bf6eee6a5d66f10}{materials}}
+\item 
+int \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{struct_model_a6b087059b8483abc9ab890b75318ffef}{mesh\+Material}}
+\item 
+\doxymbox{\hyperlink{struct_model_skeleton}{Model\+Skeleton}} \doxymbox{\hyperlink{struct_model_a8ab73aded35b9f7aa2fa148228f6e9dc}{skeleton}}
+\item 
+\doxymbox{\hyperlink{raylib_8h_a77328ffc052b5c7a52a126ce8a48f9bb}{Model\+Anim\+Pose}} \doxymbox{\hyperlink{struct_model_a959dff25271fe20c5fa64ae8bb407537}{current\+Pose}}
+\item 
+\doxymbox{\hyperlink{raylib_8h_a9570374e3dbc873595100dae1e584459}{Matrix}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{struct_model_a9aaaee44a9d7d0092b62e54d22f357a9}{bone\+Matrices}}
+\end{DoxyCompactItemize}
+
+
+\label{struct_model_doc-variable-members}
+\Hypertarget{struct_model_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_model_a9aaaee44a9d7d0092b62e54d22f357a9}\index{Model@{Model}!boneMatrices@{boneMatrices}}
+\index{boneMatrices@{boneMatrices}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{boneMatrices}{boneMatrices}}
+{\footnotesize\ttfamily \label{struct_model_a9aaaee44a9d7d0092b62e54d22f357a9} 
+\doxymbox{\hyperlink{raylib_8h_a9570374e3dbc873595100dae1e584459}{Matrix}}\texorpdfstring{$\ast$}{*} Model::\+bone\+Matrices}
+
+\Hypertarget{struct_model_a959dff25271fe20c5fa64ae8bb407537}\index{Model@{Model}!currentPose@{currentPose}}
+\index{currentPose@{currentPose}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{currentPose}{currentPose}}
+{\footnotesize\ttfamily \label{struct_model_a959dff25271fe20c5fa64ae8bb407537} 
+\doxymbox{\hyperlink{raylib_8h_a77328ffc052b5c7a52a126ce8a48f9bb}{Model\+Anim\+Pose}} Model::\+current\+Pose}
+
+\Hypertarget{struct_model_a86ca6af5c19a90db6c64503be096c71b}\index{Model@{Model}!materialCount@{materialCount}}
+\index{materialCount@{materialCount}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{materialCount}{materialCount}}
+{\footnotesize\ttfamily \label{struct_model_a86ca6af5c19a90db6c64503be096c71b} 
+int Model::\+material\+Count}
+
+\Hypertarget{struct_model_a0530a6e8cb59576a4bf6eee6a5d66f10}\index{Model@{Model}!materials@{materials}}
+\index{materials@{materials}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{materials}{materials}}
+{\footnotesize\ttfamily \label{struct_model_a0530a6e8cb59576a4bf6eee6a5d66f10} 
+\doxymbox{\hyperlink{struct_material}{Material}}\texorpdfstring{$\ast$}{*} Model::\+materials}
+
+\Hypertarget{struct_model_a7567573c0a42a4a59561a402c1058374}\index{Model@{Model}!meshCount@{meshCount}}
+\index{meshCount@{meshCount}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{meshCount}{meshCount}}
+{\footnotesize\ttfamily \label{struct_model_a7567573c0a42a4a59561a402c1058374} 
+int Model::\+mesh\+Count}
+
+\Hypertarget{struct_model_a7f93cb54ea24bf7924d4f80108a08830}\index{Model@{Model}!meshes@{meshes}}
+\index{meshes@{meshes}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{meshes}{meshes}}
+{\footnotesize\ttfamily \label{struct_model_a7f93cb54ea24bf7924d4f80108a08830} 
+\doxymbox{\hyperlink{struct_mesh}{Mesh}}\texorpdfstring{$\ast$}{*} Model::\+meshes}
+
+\Hypertarget{struct_model_a6b087059b8483abc9ab890b75318ffef}\index{Model@{Model}!meshMaterial@{meshMaterial}}
+\index{meshMaterial@{meshMaterial}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{meshMaterial}{meshMaterial}}
+{\footnotesize\ttfamily \label{struct_model_a6b087059b8483abc9ab890b75318ffef} 
+int\texorpdfstring{$\ast$}{*} Model::\+mesh\+Material}
+
+\Hypertarget{struct_model_a8ab73aded35b9f7aa2fa148228f6e9dc}\index{Model@{Model}!skeleton@{skeleton}}
+\index{skeleton@{skeleton}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{skeleton}{skeleton}}
+{\footnotesize\ttfamily \label{struct_model_a8ab73aded35b9f7aa2fa148228f6e9dc} 
+\doxymbox{\hyperlink{struct_model_skeleton}{Model\+Skeleton}} Model::\+skeleton}
+
+\Hypertarget{struct_model_aab39d4fe4b3b9399a24377168d6c0f0a}\index{Model@{Model}!transform@{transform}}
+\index{transform@{transform}!Model@{Model}}
+\doxysubsubsection{\texorpdfstring{transform}{transform}}
+{\footnotesize\ttfamily \label{struct_model_aab39d4fe4b3b9399a24377168d6c0f0a} 
+\doxymbox{\hyperlink{raylib_8h_a9570374e3dbc873595100dae1e584459}{Matrix}} Model::\+transform}
+
+
+
+The documentation for this struct was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+Utils/\+raylib-\/6.\+0\+\_\+win64\+\_\+mingw-\/w64/\+include/\doxymbox{\hyperlink{raylib_8h}{raylib.\+h}}\end{DoxyCompactItemize}
