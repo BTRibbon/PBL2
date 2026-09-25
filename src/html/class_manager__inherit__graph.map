@@ -1,7 +1,7 @@
 <map id="Manager" name="Manager">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,496,159,629"/>
-<area shape="rect" id="Node000002" href="$class_employee.html" title=" " alt="" coords="12,315,152,448"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,460,85,497,80,496,81,465"/>
-<area shape="rect" id="Node000003" href="$class_user.html" title=" " alt="" coords="5,5,159,267"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="83,279,85,315,80,315,82,284"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="8,581,162,715"/>
+<area shape="rect" id="Node000002" href="$class_employee.html" title=" " alt="" coords="5,315,164,533"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,546,87,582,82,581,84,551"/>
+<area shape="rect" id="Node000003" href="$class_user.html" title=" " alt="" coords="8,5,162,267"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,279,87,315,82,314,85,284"/>
 </map>

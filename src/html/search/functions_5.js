@@ -12,5 +12,6 @@ var searchData=
   ['findmenuitem_9',['findMenuItem',['../class_branch.html#a6297ee9c62c62efb70a99ebc45fe3926',1,'Branch']]],
   ['findnearest_10',['findNearest',['../class_branch_list.html#abb6da079a304d3f035d60cc5792b3807',1,'BranchList']]],
   ['findnearestbranch_11',['findNearestBranch',['../class_restaurant_chain.html#a1f3f64b912d5ddc334edf585548df6f0',1,'RestaurantChain']]],
-  ['floatequals_12',['FloatEquals',['../raymath_8h.html#a41ac641607e78233960eaf5cc545777a',1,'raymath.h']]]
+  ['floatequals_12',['FloatEquals',['../raymath_8h.html#a41ac641607e78233960eaf5cc545777a',1,'raymath.h']]],
+  ['fulltimeschedule_13',['FullTimeSchedule',['../class_full_time_schedule.html#aef4c835bf858c17e37fbf3632ae57c22',1,'FullTimeSchedule']]]
 ];

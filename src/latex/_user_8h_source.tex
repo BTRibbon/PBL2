@@ -7,46 +7,55 @@
 \DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <iostream>}}
 \DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
 \DoxyCodeLine{00005\ }
-\DoxyCodeLine{00006\ \textcolor{keyword}{enum\ class}\ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \{\ \doxymbox{\hyperlink{class_customer}{Customer}},\ \doxymbox{\hyperlink{class_employee}{Employee}},\ \doxymbox{\hyperlink{class_manager}{Manager}}\ \};}
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_schedule_service}{ScheduleService}};}
 \DoxyCodeLine{00007\ }
-\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}\ \{}
-\DoxyCodeLine{00009\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00010\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_a290593888be78ccd4214e99c8ee43b4e}{id}};}
-\DoxyCodeLine{00011\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}};}
-\DoxyCodeLine{00012\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00013\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_aacbb807e514280f69e00bec7d71f3aee}{username}};}
-\DoxyCodeLine{00014\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_user_af969eefd9642fee961f35493965e274c}{role}};}
-\DoxyCodeLine{00015\ \ \ \ \ \doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}(std::string\ userId,std::string\ userName,\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ userRole);}
-\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{class_user_a634d7ad22c3d2b5fed35f71e10d98628}{\string~User}}()\ =\ \textcolor{keywordflow}{default};}
-\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_user_ad6add2a12c6e3460fe518f471bcadfc2}{getRole}}()\ \textcolor{keyword}{const}\ =\ 0;}
-\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_user_abebe27f9aad8983c9a4d97407554290f}{showMenuOptions}}()\ \textcolor{keyword}{const}\ =\ 0;}
-\DoxyCodeLine{00019\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_a446a64e63adafbc2e1428532275ad6a1}{getName}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_user_aff5b70b14ed052ef0f0a3a1be911b6f8}{canManageBranches}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_user_a353f753c64007a7e60f6da390db689b1}{canViewReports}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00022\ \};}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_customer_a91a35a9def388f0259153954dffcd6b5}{Customer}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}\ \{}
-\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00026\ \ \ \ \ \doxymbox{\hyperlink{class_customer_a91a35a9def388f0259153954dffcd6b5}{Customer}}(std::string\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}CUS001"{}},std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}=\textcolor{stringliteral}{"{}Kiosk\ Guest"{}});}
-\DoxyCodeLine{00027\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_customer_a1f1c33d1262e3fed1e138663eb98ca92}{getRole}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_customer_ad7488fb6b416c977aae414205062bcd0}{showMenuOptions}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00029\ \};}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}\ \{}
-\DoxyCodeLine{00032\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00033\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_employee_abb1790cdfd63d78e659ad1842216b418}{branchId}};}
-\DoxyCodeLine{00034\ \ \ \ \ \doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}}(std::string\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}EMP001"{}},std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}=\textcolor{stringliteral}{"{}Employee"{}},std::string\ branch=\textcolor{stringliteral}{"{}BR001"{}});}
-\DoxyCodeLine{00035\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_employee_aab722088070e02f20448d3fb8aaf02e4}{getRole}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_employee_a0fcafe35b2d9196276e018614f298dd0}{showMenuOptions}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_employee_a36cb99bc03a0628e51f919aea1f74e74}{canViewReports}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00038\ \};}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_manager_a759fee9d5f43dd604e5fd1cf5b071296}{Manager}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}}\ \{}
-\DoxyCodeLine{00041\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00042\ \ \ \ \ \doxymbox{\hyperlink{class_manager_a759fee9d5f43dd604e5fd1cf5b071296}{Manager}}(std::string\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}MGR001"{}},std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}=\textcolor{stringliteral}{"{}Manager"{}},std::string\ branch=\textcolor{stringliteral}{"{}BR001"{}});}
-\DoxyCodeLine{00043\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_manager_a367f5bae2686991562c4fad5d30445af}{getRole}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_manager_a4802266adc51e63b1b4ae49781237a82}{showMenuOptions}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_manager_a1bf9c83ceaaef28134851440cef01c76}{canManageBranches}}()\ \textcolor{keyword}{const\ override};}
-\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00008\ \textcolor{keyword}{enum\ class}\ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \{\ \doxymbox{\hyperlink{class_customer}{Customer}},\ \doxymbox{\hyperlink{class_employee}{Employee}},\ \doxymbox{\hyperlink{class_manager}{Manager}}\ \};}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}\ \{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00012\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_a290593888be78ccd4214e99c8ee43b4e}{id}};}
+\DoxyCodeLine{00013\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}};}
+\DoxyCodeLine{00014\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00015\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_aacbb807e514280f69e00bec7d71f3aee}{username}};}
+\DoxyCodeLine{00016\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_user_af969eefd9642fee961f35493965e274c}{role}};}
+\DoxyCodeLine{00017\ \ \ \ \ \doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}(std::string\ userId,std::string\ userName,\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ userRole);}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{class_user_a634d7ad22c3d2b5fed35f71e10d98628}{\string~User}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_user_ad6add2a12c6e3460fe518f471bcadfc2}{getRole}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_user_abebe27f9aad8983c9a4d97407554290f}{showMenuOptions}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_user_a446a64e63adafbc2e1428532275ad6a1}{getName}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_user_aff5b70b14ed052ef0f0a3a1be911b6f8}{canManageBranches}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_user_a353f753c64007a7e60f6da390db689b1}{canViewReports}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_customer_a91a35a9def388f0259153954dffcd6b5}{Customer}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \doxymbox{\hyperlink{class_customer_a91a35a9def388f0259153954dffcd6b5}{Customer}}(std::string\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}CUS001"{}},std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}=\textcolor{stringliteral}{"{}Kiosk\ Guest"{}});}
+\DoxyCodeLine{00029\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_customer_a1f1c33d1262e3fed1e138663eb98ca92}{getRole}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_customer_ad7488fb6b416c977aae414205062bcd0}{showMenuOptions}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}}\ \{}
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_employee_abb1790cdfd63d78e659ad1842216b418}{branchId}};}
+\DoxyCodeLine{00036\ \ \ \ \ \doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}}(std::string\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}EMP001"{}},std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}=\textcolor{stringliteral}{"{}Employee"{}},std::string\ branch=\textcolor{stringliteral}{"{}BR001"{}});}
+\DoxyCodeLine{00037\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_employee_ad98f88d13517ebfe16d6aac9dedb28e6}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_employee_aeec5a43938626cc470d770eaeeef0dd6}{getMinimumShifts}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_employee_a08668ba44ecc6f38babd84de7b6fe96e}{setMinimumShifts}}(\textcolor{keywordtype}{int}\ minimum);}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_employee_ac48f71e31528d03dc7fc23b385f826bf}{registerForEmptyShift}}(\doxymbox{\hyperlink{class_schedule_service}{ScheduleService}}\&\ scheduleService,\ \textcolor{keyword}{const}\ std::string\&\ scheduleId);}
+\DoxyCodeLine{00041\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_employee_aab722088070e02f20448d3fb8aaf02e4}{getRole}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_employee_a0fcafe35b2d9196276e018614f298dd0}{showMenuOptions}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_employee_a36cb99bc03a0628e51f919aea1f74e74}{canViewReports}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{int}\ minimumShifts\ =\ 0;}
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_manager_a759fee9d5f43dd604e5fd1cf5b071296}{Manager}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}}\ \{}
+\DoxyCodeLine{00050\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ \ \ \ \ \doxymbox{\hyperlink{class_manager_a759fee9d5f43dd604e5fd1cf5b071296}{Manager}}(std::string\ \textcolor{keywordtype}{id}=\textcolor{stringliteral}{"{}MGR001"{}},std::string\ \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}=\textcolor{stringliteral}{"{}Manager"{}},std::string\ branch=\textcolor{stringliteral}{"{}BR001"{}});}
+\DoxyCodeLine{00052\ \ \ \ \ \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}\ \doxymbox{\hyperlink{class_manager_a367f5bae2686991562c4fad5d30445af}{getRole}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_manager_a4802266adc51e63b1b4ae49781237a82}{showMenuOptions}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_manager_a1bf9c83ceaaef28134851440cef01c76}{canManageBranches}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00055\ \};}
 
 \end{DoxyCode}

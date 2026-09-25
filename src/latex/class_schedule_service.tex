@@ -1,0 +1,99 @@
+\doxysection{Schedule\+Service Class Reference}
+\hypertarget{class_schedule_service}{}\label{class_schedule_service}\index{ScheduleService@{ScheduleService}}
+
+
+{\ttfamily \+\#include $<$Schedule\+Service.\+h$>$}
+
+
+
+Collaboration diagram for Schedule\+Service:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{class_schedule_service__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_schedule_service_a926152db4be01b5a2fc43e3aef3085a9}{Schedule\+Service}} (\doxymbox{\hyperlink{class_shift_manager}{Shift\+Manager}} \texorpdfstring{$\ast$}{*}manager=nullptr)
+\item 
+void \doxymbox{\hyperlink{class_schedule_service_afad3b5d3ad737f061ad16b97cf7bd9a7}{add\+Schedule}} (const std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ \&schedule)
+\item 
+std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_self_registered_schedule}{Self\+Registered\+Schedule}} $>$ \doxymbox{\hyperlink{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e}{open\+Open\+Shift}} (std::\+string schedule\+Id, std::\+string date, std::\+string start, std::\+string end, int break\+Time, std::\+string branch, int required=1)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_service_a4dc923e1678ca94d469cda4f3d38347f}{register\+For\+Empty\+Shift}} (\doxymbox{\hyperlink{class_employee}{Employee}} \&employee, const std::\+string \&schedule\+Id)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_service_a283e2d32ebba5403d13319696399aa15}{validate\+Minimum\+Shifts}} (const \doxymbox{\hyperlink{class_employee}{Employee}} \&employee, const std::\+string \&from\+Date, const std::\+string \&to\+Date) const
+\item 
+std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \doxymbox{\hyperlink{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147}{check\+Shift\+Coverage}} () const
+\item 
+void \doxymbox{\hyperlink{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b}{notify\+Shift\+Manager}} ()
+\item 
+const std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \& \doxymbox{\hyperlink{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446}{get\+Schedules}} () const
+\end{DoxyCompactItemize}
+
+
+\label{class_schedule_service_doc-constructors}
+\Hypertarget{class_schedule_service_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_schedule_service_a926152db4be01b5a2fc43e3aef3085a9}\index{ScheduleService@{ScheduleService}!ScheduleService@{ScheduleService}}
+\index{ScheduleService@{ScheduleService}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{ScheduleService()}{ScheduleService()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a926152db4be01b5a2fc43e3aef3085a9} 
+Schedule\+Service::\+\+Schedule\+Service (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_shift_manager}{Shift\+Manager}} \texorpdfstring{$\ast$}{*}}]{manager}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+\label{class_schedule_service_doc-func-members}
+\Hypertarget{class_schedule_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_schedule_service_afad3b5d3ad737f061ad16b97cf7bd9a7}\index{ScheduleService@{ScheduleService}!addSchedule@{addSchedule}}
+\index{addSchedule@{addSchedule}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{addSchedule()}{addSchedule()}}
+{\footnotesize\ttfamily \label{class_schedule_service_afad3b5d3ad737f061ad16b97cf7bd9a7} 
+void Schedule\+Service::\+add\+Schedule (\begin{DoxyParamCaption}\item[{const std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ \&}]{schedule}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147}\index{ScheduleService@{ScheduleService}!checkShiftCoverage@{checkShiftCoverage}}
+\index{checkShiftCoverage@{checkShiftCoverage}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{checkShiftCoverage()}{checkShiftCoverage()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147} 
+std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ Schedule\+Service::\+check\+Shift\+Coverage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446}\index{ScheduleService@{ScheduleService}!getSchedules@{getSchedules}}
+\index{getSchedules@{getSchedules}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{getSchedules()}{getSchedules()}}
+{\footnotesize\ttfamily \label{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446} 
+const std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \& Schedule\+Service::\+get\+Schedules (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b}\index{ScheduleService@{ScheduleService}!notifyShiftManager@{notifyShiftManager}}
+\index{notifyShiftManager@{notifyShiftManager}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{notifyShiftManager()}{notifyShiftManager()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b} 
+void Schedule\+Service::\+notify\+Shift\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e}\index{ScheduleService@{ScheduleService}!openOpenShift@{openOpenShift}}
+\index{openOpenShift@{openOpenShift}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{openOpenShift()}{openOpenShift()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e} 
+std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_self_registered_schedule}{Self\+Registered\+Schedule}} $>$ Schedule\+Service::\+open\+Open\+Shift (\begin{DoxyParamCaption}\item[{std::\+string}]{schedule\+Id}{, }\item[{std::\+string}]{date}{, }\item[{std::\+string}]{start}{, }\item[{std::\+string}]{end}{, }\item[{int}]{break\+Time}{, }\item[{std::\+string}]{branch}{, }\item[{int}]{required}{ = {\ttfamily 1}}\end{DoxyParamCaption})}
+
+\Hypertarget{class_schedule_service_a4dc923e1678ca94d469cda4f3d38347f}\index{ScheduleService@{ScheduleService}!registerForEmptyShift@{registerForEmptyShift}}
+\index{registerForEmptyShift@{registerForEmptyShift}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{registerForEmptyShift()}{registerForEmptyShift()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a4dc923e1678ca94d469cda4f3d38347f} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Schedule\+Service::\+register\+For\+Empty\+Shift (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_employee}{Employee}} \&}]{employee}{, }\item[{const std::\+string \&}]{schedule\+Id}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_schedule_service_a283e2d32ebba5403d13319696399aa15}\index{ScheduleService@{ScheduleService}!validateMinimumShifts@{validateMinimumShifts}}
+\index{validateMinimumShifts@{validateMinimumShifts}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{validateMinimumShifts()}{validateMinimumShifts()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a283e2d32ebba5403d13319696399aa15} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Schedule\+Service::\+validate\+Minimum\+Shifts (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{class_employee}{Employee}} \&}]{employee}{, }\item[{const std::\+string \&}]{from\+Date}{, }\item[{const std::\+string \&}]{to\+Date}{}\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+services/\doxymbox{\hyperlink{_schedule_service_8h}{Schedule\+Service.\+h}}\item 
+services/\doxymbox{\hyperlink{_schedule_service_8cpp}{Schedule\+Service.\+cpp}}\end{DoxyCompactItemize}

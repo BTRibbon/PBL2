@@ -1,0 +1,76 @@
+\doxysection{Schedule.\+h}
+\hypertarget{_schedule_8h_source}{}\label{_schedule_8h_source}\index{models/Schedule.h@{models/Schedule.h}}
+\doxymbox{\hyperlink{_schedule_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_schedule_aaf58a0811b069d40a3b567176cb16628}{Schedule}}\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00008\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_ac8bb05f2e03b84b473fbd8957e80dbd1}{id}};}
+\DoxyCodeLine{00009\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_a601847578439a9e29e1a79ee31e74b2a}{date}};}
+\DoxyCodeLine{00010\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_a489fcd7effeccd747700c309cf5ff7e7}{startTime}};}
+\DoxyCodeLine{00011\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_a5bd7c32ebb3527ad7abbd6aaf8f36928}{endTime}};}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_schedule_a19757164e4ee11751a1d25a5884e9091}{breakMinutes}};}
+\DoxyCodeLine{00013\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_adf62924a96f5f3379c9816262d484ff3}{branchId}};}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_schedule_a18fb569bf4842d31e3ee4a0c00bda973}{requiredEmployees}};}
+\DoxyCodeLine{00015\ \ \ \ \ std::vector<std::string>\ \doxymbox{\hyperlink{class_schedule_ad4217e476651356e7c737ab49f667ff3}{employeeIds}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{class_schedule_aaf58a0811b069d40a3b567176cb16628}{Schedule}}(std::string\ scheduleId,\ std::string\ scheduleDate,\ std::string\ start,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ std::string\ end,\ \textcolor{keywordtype}{int}\ breakTime,\ std::string\ branch,\ \textcolor{keywordtype}{int}\ required\ =\ 1);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{class_schedule_a68e52c571576866ef55cb4e891232c58}{\string~Schedule}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_a979641a29d3c3bd098e7b148d2f96b69}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00023\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_acb8c2f74c63ee6e1e1b1126f58c094ea}{getDate}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00024\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_aaa1618857d530f7039502ee3fc96f3cb}{getStartTime}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00025\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_a1f1f4c312a07697001086b2c64a3fd98}{getEndTime}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_schedule_a502d3edf2a17cc10e31c4fe4959703b0}{getBreakMinutes}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00027\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_schedule_abb27b2fbc2eee5b328a12a598e746c90}{getBranchId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_schedule_a1ef63dcebefed2142904a04b0eaa1850}{getRequiredEmployees}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::string>\&\ \doxymbox{\hyperlink{class_schedule_a2d9e7168f6d2f20044d9e981a540a7f6}{getEmployeeIds}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{class_schedule_ac031d04315069017d830f6ea58a773e0}{getAssignedEmployeeCount}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_a15183728a091bc65f2014f6cae905d61}{hasCoverage}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_a59e78d780f0712659bb07737dd3ff731}{assignEmployee}}(\textcolor{keyword}{const}\ std::string\&\ employeeId);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_a16d288c4768a14998356ef462cb66609}{isOpenShift}}()\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00034\ \};}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_work_schedule}{WorkSchedule}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_work_schedule_aaf58a0811b069d40a3b567176cb16628}{Schedule}}\ \{}
+\DoxyCodeLine{00037\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{using\ }\doxymbox{\hyperlink{class_schedule_aaf58a0811b069d40a3b567176cb16628}{Schedule::Schedule}};}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_full_time_schedule_aef4c835bf858c17e37fbf3632ae57c22}{FullTimeSchedule}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_work_schedule}{WorkSchedule}}\ \{}
+\DoxyCodeLine{00042\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00043\ \ \ \ \ \doxymbox{\hyperlink{class_full_time_schedule_aef4c835bf858c17e37fbf3632ae57c22}{FullTimeSchedule}}(std::string\ scheduleId,\ std::string\ scheduleDate,\ std::string\ start,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ std::string\ end,\ \textcolor{keywordtype}{int}\ breakTime,\ std::string\ branch,\ \textcolor{keywordtype}{int}\ required\ =\ 1);}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_full_time_schedule_a3a4aefbccda0e521ecd11799c1a7e237}{isOpenShift}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_self_registered_schedule_abb9f26e5820deb00816ae3e73a8274aa}{SelfRegisteredSchedule}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_work_schedule}{WorkSchedule}}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{bool}\ openShift;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00052\ \ \ \ \ \doxymbox{\hyperlink{class_self_registered_schedule_abb9f26e5820deb00816ae3e73a8274aa}{SelfRegisteredSchedule}}(std::string\ scheduleId,\ std::string\ scheduleDate,\ std::string\ start,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ std::string\ end,\ \textcolor{keywordtype}{int}\ breakTime,\ std::string\ branch,\ \textcolor{keywordtype}{int}\ required\ =\ 1,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isOpen\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_self_registered_schedule_a835ba69f1955c819a1cdc4709ba4dbb9}{isOpenShift}}()\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_self_registered_schedule_a5a3e76abcc3b4e792e42eedb15c8b427}{canRegister}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00057\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_operating_schedule_ad44b49fec8baa8e173d68ea8374e4019}{OperatingSchedule}}\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ std::string\ date;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{bool}\ holiday;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{double}\ holidayMultiplier;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00065\ \ \ \ \ \doxymbox{\hyperlink{class_operating_schedule_ad44b49fec8baa8e173d68ea8374e4019}{OperatingSchedule}}(std::string\ operatingDate,\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_operating_schedule_a3a03e35d12bb1305b2b5b5443ba0792d}{isHoliday}}\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ multiplier\ =\ 1.0);}
+\DoxyCodeLine{00067\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_operating_schedule_a5c43e76a69b12c6f7a6db49e4d2d58c2}{getDate}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_operating_schedule_a3a03e35d12bb1305b2b5b5443ba0792d}{isHoliday}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{class_operating_schedule_a533b434df9c7ccf77c7fba90a67a577b}{salaryModifier}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00070\ \};}
+
+\end{DoxyCode}

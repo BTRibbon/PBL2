@@ -7,12 +7,14 @@ var searchData=
   ['openinghours_4',['OpeningHours',['../class_opening_hours.html',1,'OpeningHours'],['../class_opening_hours.html#a7264c2439606384040b1ddabd2a0e406',1,'OpeningHours::OpeningHours()']]],
   ['openinghours_2ecpp_5',['OpeningHours.cpp',['../_opening_hours_8cpp.html',1,'']]],
   ['openinghours_2eh_6',['OpeningHours.h',['../_opening_hours_8h.html',1,'']]],
-  ['openurl_7',['OpenURL',['../raylib_8h.html#a764ef327643480177517f3d1019543e6',1,'raylib.h']]],
-  ['orange_8',['ORANGE',['../raylib_8h.html#ac5b6e19bf06822021f35602c59658de3',1,'raylib.h']]],
-  ['order_9',['Order',['../struct_order.html',1,'']]],
-  ['order_2eh_10',['Order.h',['../_order_8h.html',1,'']]],
-  ['orderid_11',['orderId',['../struct_order.html#acfbd42aa37e3c8e903d4b9828c87ff90',1,'Order']]],
-  ['orderqueue_12',['OrderQueue',['../class_order_queue.html',1,'']]],
-  ['orderqueue_2ecpp_13',['OrderQueue.cpp',['../_order_queue_8cpp.html',1,'']]],
-  ['orderqueue_2eh_14',['OrderQueue.h',['../_order_queue_8h.html',1,'']]]
+  ['openopenshift_7',['openOpenShift',['../class_schedule_service.html#a9b339222084e58e9cdf3bd117f59a30e',1,'ScheduleService']]],
+  ['openurl_8',['OpenURL',['../raylib_8h.html#a764ef327643480177517f3d1019543e6',1,'raylib.h']]],
+  ['operatingschedule_9',['OperatingSchedule',['../class_operating_schedule.html',1,'OperatingSchedule'],['../class_operating_schedule.html#ad44b49fec8baa8e173d68ea8374e4019',1,'OperatingSchedule::OperatingSchedule()']]],
+  ['orange_10',['ORANGE',['../raylib_8h.html#ac5b6e19bf06822021f35602c59658de3',1,'raylib.h']]],
+  ['order_11',['Order',['../struct_order.html',1,'']]],
+  ['order_2eh_12',['Order.h',['../_order_8h.html',1,'']]],
+  ['orderid_13',['orderId',['../struct_order.html#acfbd42aa37e3c8e903d4b9828c87ff90',1,'Order']]],
+  ['orderqueue_14',['OrderQueue',['../class_order_queue.html',1,'']]],
+  ['orderqueue_2ecpp_15',['OrderQueue.cpp',['../_order_queue_8cpp.html',1,'']]],
+  ['orderqueue_2eh_16',['OrderQueue.h',['../_order_queue_8h.html',1,'']]]
 ];

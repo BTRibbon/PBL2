@@ -118,11 +118,11 @@ Inheritance diagram for Employee:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_employee__inherit__graph.png" border="0" usemap="#a_employee_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="a_employee_inherit__map" id="a_employee_inherit__map">
-<area shape="rect" title=" " alt="" coords="12,315,152,448"/>
-<area shape="rect" href="class_manager.html" title=" " alt="" coords="5,496,159,629"/>
-<area shape="poly" title=" " alt="" coords="83,460,85,497,80,496,81,465"/>
-<area shape="rect" href="class_user.html" title=" " alt="" coords="5,5,159,267"/>
-<area shape="poly" title=" " alt="" coords="83,279,85,315,80,315,82,284"/>
+<area shape="rect" title=" " alt="" coords="5,315,164,533"/>
+<area shape="rect" href="class_manager.html" title=" " alt="" coords="8,581,162,715"/>
+<area shape="poly" title=" " alt="" coords="86,546,87,582,82,581,84,551"/>
+<area shape="rect" href="class_user.html" title=" " alt="" coords="8,5,162,267"/>
+<area shape="poly" title=" " alt="" coords="85,279,87,315,82,314,85,284"/>
 </map>
 </div>
 <div class="dynheader">
@@ -130,15 +130,19 @@ Collaboration diagram for Employee:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_employee__coll__graph.png" border="0" usemap="#a_employee_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="a_employee_coll__map" id="a_employee_coll__map">
-<area shape="rect" title=" " alt="" coords="12,315,152,448"/>
-<area shape="rect" href="class_user.html" title=" " alt="" coords="5,5,159,267"/>
-<area shape="poly" title=" " alt="" coords="83,279,85,315,80,314,81,284"/>
+<area shape="rect" title=" " alt="" coords="5,315,164,533"/>
+<area shape="rect" href="class_user.html" title=" " alt="" coords="8,5,162,267"/>
+<area shape="poly" title=" " alt="" coords="85,279,87,315,82,314,84,284"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a16eb6db75e9d1cea40285b7c2485455f" id="r_a16eb6db75e9d1cea40285b7c2485455f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a16eb6db75e9d1cea40285b7c2485455f">Employee</a> (std::string id=&quot;EMP001&quot;, std::string name=&quot;Employee&quot;, std::string branch=&quot;BR001&quot;)</td></tr>
+<tr class="memitem:ad98f88d13517ebfe16d6aac9dedb28e6" id="r_ad98f88d13517ebfe16d6aac9dedb28e6"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ad98f88d13517ebfe16d6aac9dedb28e6">getId</a> () const</td></tr>
+<tr class="memitem:aeec5a43938626cc470d770eaeeef0dd6" id="r_aeec5a43938626cc470d770eaeeef0dd6"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aeec5a43938626cc470d770eaeeef0dd6">getMinimumShifts</a> () const</td></tr>
+<tr class="memitem:a08668ba44ecc6f38babd84de7b6fe96e" id="r_a08668ba44ecc6f38babd84de7b6fe96e"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a08668ba44ecc6f38babd84de7b6fe96e">setMinimumShifts</a> (int minimum)</td></tr>
+<tr class="memitem:ac48f71e31528d03dc7fc23b385f826bf" id="r_ac48f71e31528d03dc7fc23b385f826bf"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac48f71e31528d03dc7fc23b385f826bf">registerForEmptyShift</a> (<a class="el" href="class_schedule_service.html">ScheduleService</a> &amp;scheduleService, const std::string &amp;scheduleId)</td></tr>
 <tr class="memitem:aab722088070e02f20448d3fb8aaf02e4" id="r_aab722088070e02f20448d3fb8aaf02e4"><td class="memItemLeft"><a class="el" href="_user_8h.html#acdd79a1a4f81dd6ee5cddcb21149b951">Role</a>&#160;</td><td class="memItemRight"><a class="el" href="#aab722088070e02f20448d3fb8aaf02e4">getRole</a> () const override</td></tr>
 <tr class="memitem:a0fcafe35b2d9196276e018614f298dd0" id="r_a0fcafe35b2d9196276e018614f298dd0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0fcafe35b2d9196276e018614f298dd0">showMenuOptions</a> () const override</td></tr>
 <tr class="memitem:a36cb99bc03a0628e51f919aea1f74e74" id="r_a36cb99bc03a0628e51f919aea1f74e74"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a36cb99bc03a0628e51f919aea1f74e74">canViewReports</a> () const override</td></tr>
@@ -216,6 +220,40 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ad98f88d13517ebfe16d6aac9dedb28e6" name="ad98f88d13517ebfe16d6aac9dedb28e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad98f88d13517ebfe16d6aac9dedb28e6">&#9670;&#160;</a></span>getId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Employee::getId </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeec5a43938626cc470d770eaeeef0dd6" name="aeec5a43938626cc470d770eaeeef0dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec5a43938626cc470d770eaeeef0dd6">&#9670;&#160;</a></span>getMinimumShifts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Employee::getMinimumShifts </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aab722088070e02f20448d3fb8aaf02e4" name="aab722088070e02f20448d3fb8aaf02e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab722088070e02f20448d3fb8aaf02e4">&#9670;&#160;</a></span>getRole()</h2>
 
@@ -242,6 +280,44 @@ Additional Inherited Members</h2></td></tr>
 <p>Implements <a class="el" href="class_user.html#ad6add2a12c6e3460fe518f471bcadfc2">User</a>.</p>
 
 <p>Reimplemented in <a class="el" href="class_manager.html#a367f5bae2686991562c4fad5d30445af">Manager</a>.</p>
+
+</div>
+</div>
+<a id="ac48f71e31528d03dc7fc23b385f826bf" name="ac48f71e31528d03dc7fc23b385f826bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac48f71e31528d03dc7fc23b385f826bf">&#9670;&#160;</a></span>registerForEmptyShift()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> Employee::registerForEmptyShift </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_schedule_service.html">ScheduleService</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>scheduleService</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>scheduleId</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08668ba44ecc6f38babd84de7b6fe96e" name="a08668ba44ecc6f38babd84de7b6fe96e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08668ba44ecc6f38babd84de7b6fe96e">&#9670;&#160;</a></span>setMinimumShifts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Employee::setMinimumShifts </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>minimum</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

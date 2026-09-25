@@ -1,0 +1,127 @@
+\doxysection{Self\+Registered\+Schedule Class Reference}
+\hypertarget{class_self_registered_schedule}{}\label{class_self_registered_schedule}\index{SelfRegisteredSchedule@{SelfRegisteredSchedule}}
+
+
+{\ttfamily \+\#include $<$Schedule.\+h$>$}
+
+
+
+Inheritance diagram for Self\+Registered\+Schedule:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_self_registered_schedule__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Self\+Registered\+Schedule:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_self_registered_schedule__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_self_registered_schedule_abb9f26e5820deb00816ae3e73a8274aa}{Self\+Registered\+Schedule}} (std::\+string schedule\+Id, std::\+string schedule\+Date, std::\+string start, std::\+string end, int break\+Time, std::\+string branch, int required=1, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} is\+Open=\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}})
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_self_registered_schedule_a835ba69f1955c819a1cdc4709ba4dbb9}{is\+Open\+Shift}} () const override
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_self_registered_schedule_a5a3e76abcc3b4e792e42eedb15c8b427}{can\+Register}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_work_schedule}{Work\+Schedule}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_work_schedule_aaf58a0811b069d40a3b567176cb16628}{Schedule}} (std::\+string schedule\+Id, std::\+string schedule\+Date, std::\+string start, std::\+string end, int break\+Time, std::\+string branch, int required=1)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_schedule}{Schedule}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_schedule_aaf58a0811b069d40a3b567176cb16628}{Schedule}} (std::\+string schedule\+Id, std::\+string schedule\+Date, std::\+string start, std::\+string end, int break\+Time, std::\+string branch, int required=1)
+\item 
+virtual \doxymbox{\hyperlink{class_schedule_a68e52c571576866ef55cb4e891232c58}{\texorpdfstring{$\sim$}{\string~}\+Schedule}} ()=default
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_a979641a29d3c3bd098e7b148d2f96b69}{get\+Id}} () const
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_acb8c2f74c63ee6e1e1b1126f58c094ea}{get\+Date}} () const
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_aaa1618857d530f7039502ee3fc96f3cb}{get\+Start\+Time}} () const
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_a1f1f4c312a07697001086b2c64a3fd98}{get\+End\+Time}} () const
+\item 
+int \doxymbox{\hyperlink{class_schedule_a502d3edf2a17cc10e31c4fe4959703b0}{get\+Break\+Minutes}} () const
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_abb27b2fbc2eee5b328a12a598e746c90}{get\+Branch\+Id}} () const
+\item 
+int \doxymbox{\hyperlink{class_schedule_a1ef63dcebefed2142904a04b0eaa1850}{get\+Required\+Employees}} () const
+\item 
+const std::\+vector$<$ std::\+string $>$ \& \doxymbox{\hyperlink{class_schedule_a2d9e7168f6d2f20044d9e981a540a7f6}{get\+Employee\+Ids}} () const
+\item 
+int \doxymbox{\hyperlink{class_schedule_ac031d04315069017d830f6ea58a773e0}{get\+Assigned\+Employee\+Count}} () const
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_a15183728a091bc65f2014f6cae905d61}{has\+Coverage}} () const
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_a59e78d780f0712659bb07737dd3ff731}{assign\+Employee}} (const std::\+string \&employee\+Id)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_schedule}{Schedule}}}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_ac8bb05f2e03b84b473fbd8957e80dbd1}{id}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_a601847578439a9e29e1a79ee31e74b2a}{date}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_a489fcd7effeccd747700c309cf5ff7e7}{start\+Time}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_a5bd7c32ebb3527ad7abbd6aaf8f36928}{end\+Time}}
+\item 
+int \doxymbox{\hyperlink{class_schedule_a19757164e4ee11751a1d25a5884e9091}{break\+Minutes}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_schedule_adf62924a96f5f3379c9816262d484ff3}{branch\+Id}}
+\item 
+int \doxymbox{\hyperlink{class_schedule_a18fb569bf4842d31e3ee4a0c00bda973}{required\+Employees}}
+\item 
+std::\+vector$<$ std::\+string $>$ \doxymbox{\hyperlink{class_schedule_ad4217e476651356e7c737ab49f667ff3}{employee\+Ids}}
+\end{DoxyCompactItemize}
+
+
+\label{class_self_registered_schedule_doc-constructors}
+\Hypertarget{class_self_registered_schedule_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_self_registered_schedule_abb9f26e5820deb00816ae3e73a8274aa}\index{SelfRegisteredSchedule@{SelfRegisteredSchedule}!SelfRegisteredSchedule@{SelfRegisteredSchedule}}
+\index{SelfRegisteredSchedule@{SelfRegisteredSchedule}!SelfRegisteredSchedule@{SelfRegisteredSchedule}}
+\doxysubsubsection{\texorpdfstring{SelfRegisteredSchedule()}{SelfRegisteredSchedule()}}
+{\footnotesize\ttfamily \label{class_self_registered_schedule_abb9f26e5820deb00816ae3e73a8274aa} 
+Self\+Registered\+Schedule::\+\+Self\+Registered\+Schedule (\begin{DoxyParamCaption}\item[{std::\+string}]{schedule\+Id}{, }\item[{std::\+string}]{schedule\+Date}{, }\item[{std::\+string}]{start}{, }\item[{std::\+string}]{end}{, }\item[{int}]{break\+Time}{, }\item[{std::\+string}]{branch}{, }\item[{int}]{required}{ = {\ttfamily 1}, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{is\+Open}{ = {\ttfamily \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}}}\end{DoxyParamCaption})}
+
+
+
+\label{class_self_registered_schedule_doc-func-members}
+\Hypertarget{class_self_registered_schedule_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_self_registered_schedule_a5a3e76abcc3b4e792e42eedb15c8b427}\index{SelfRegisteredSchedule@{SelfRegisteredSchedule}!canRegister@{canRegister}}
+\index{canRegister@{canRegister}!SelfRegisteredSchedule@{SelfRegisteredSchedule}}
+\doxysubsubsection{\texorpdfstring{canRegister()}{canRegister()}}
+{\footnotesize\ttfamily \label{class_self_registered_schedule_a5a3e76abcc3b4e792e42eedb15c8b427} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Self\+Registered\+Schedule::\+can\+Register (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_self_registered_schedule_a835ba69f1955c819a1cdc4709ba4dbb9}\index{SelfRegisteredSchedule@{SelfRegisteredSchedule}!isOpenShift@{isOpenShift}}
+\index{isOpenShift@{isOpenShift}!SelfRegisteredSchedule@{SelfRegisteredSchedule}}
+\doxysubsubsection{\texorpdfstring{isOpenShift()}{isOpenShift()}}
+{\footnotesize\ttfamily \label{class_self_registered_schedule_a835ba69f1955c819a1cdc4709ba4dbb9} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Self\+Registered\+Schedule::\+is\+Open\+Shift (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \doxymbox{\hyperlink{class_schedule_a16d288c4768a14998356ef462cb66609}{Schedule}}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+models/\doxymbox{\hyperlink{_schedule_8h}{Schedule.\+h}}\item 
+models/\doxymbox{\hyperlink{_schedule_8cpp}{Schedule.\+cpp}}\end{DoxyCompactItemize}

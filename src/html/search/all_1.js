@@ -38,13 +38,14 @@ var searchData=
   ['branch_35',['branch',['../struct_order.html#aa4dda585993c88bf83b8e45029d6a290',1,'Order']]],
   ['branch_2ecpp_36',['Branch.cpp',['../_branch_8cpp.html',1,'']]],
   ['branch_2eh_37',['Branch.h',['../_branch_8h.html',1,'']]],
-  ['branchid_38',['branchId',['../class_employee.html#abb1790cdfd63d78e659ad1842216b418',1,'Employee']]],
+  ['branchid_38',['branchId',['../class_schedule.html#adf62924a96f5f3379c9816262d484ff3',1,'Schedule::branchId'],['../class_employee.html#abb1790cdfd63d78e659ad1842216b418',1,'Employee::branchId']]],
   ['branchlist_39',['BranchList',['../class_branch_list.html',1,'']]],
   ['branchlist_2ecpp_40',['BranchList.cpp',['../_branch_list_8cpp.html',1,'']]],
   ['branchlist_2eh_41',['BranchList.h',['../_branch_list_8h.html',1,'']]],
-  ['brown_42',['BROWN',['../raylib_8h.html#ab2baea56ece91306020afd6d77fd19f9',1,'raylib.h']]],
-  ['buffer_43',['buffer',['../struct_audio_stream.html#a12080c0e45ce3fb10513e4083b31b43f',1,'AudioStream']]],
-  ['buffercount_44',['bufferCount',['../structrl_render_batch.html#aa5f143b3b260955e07d9390ba53785cf',1,'rlRenderBatch']]],
-  ['build_20and_20installation_45',['build and installation',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md3',1,'']]],
-  ['building_20raylib_20on_20multiple_20platforms_46',['Installing and building raylib on multiple platforms',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md4',1,'']]]
+  ['breakminutes_42',['breakMinutes',['../class_schedule.html#a19757164e4ee11751a1d25a5884e9091',1,'Schedule']]],
+  ['brown_43',['BROWN',['../raylib_8h.html#ab2baea56ece91306020afd6d77fd19f9',1,'raylib.h']]],
+  ['buffer_44',['buffer',['../struct_audio_stream.html#a12080c0e45ce3fb10513e4083b31b43f',1,'AudioStream']]],
+  ['buffercount_45',['bufferCount',['../structrl_render_batch.html#aa5f143b3b260955e07d9390ba53785cf',1,'rlRenderBatch']]],
+  ['build_20and_20installation_46',['build and installation',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md3',1,'']]],
+  ['building_20raylib_20on_20multiple_20platforms_47',['Installing and building raylib on multiple platforms',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md4',1,'']]]
 ];

@@ -11,7 +11,7 @@ Inheritance diagram for Employee:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=196pt]{class_employee__inherit__graph}
+\includegraphics[height=550pt]{class_employee__inherit__graph}
 \end{center}
 \end{figure}
 
@@ -21,13 +21,21 @@ Collaboration diagram for Employee:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=196pt]{class_employee__coll__graph}
+\includegraphics[width=199pt]{class_employee__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}} (std::\+string id="{}EMP001"{}, std::\+string name="{}Employee"{}, std::\+string branch="{}BR001"{})
+\item 
+std::\+string \doxymbox{\hyperlink{class_employee_ad98f88d13517ebfe16d6aac9dedb28e6}{get\+Id}} () const
+\item 
+int \doxymbox{\hyperlink{class_employee_aeec5a43938626cc470d770eaeeef0dd6}{get\+Minimum\+Shifts}} () const
+\item 
+void \doxymbox{\hyperlink{class_employee_a08668ba44ecc6f38babd84de7b6fe96e}{set\+Minimum\+Shifts}} (int minimum)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_employee_ac48f71e31528d03dc7fc23b385f826bf}{register\+For\+Empty\+Shift}} (\doxymbox{\hyperlink{class_schedule_service}{Schedule\+Service}} \&schedule\+Service, const std::\+string \&schedule\+Id)
 \item 
 \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} \doxymbox{\hyperlink{class_employee_aab722088070e02f20448d3fb8aaf02e4}{get\+Role}} () const override
 \item 
@@ -92,6 +100,18 @@ Employee::\+\+Employee (\begin{DoxyParamCaption}\item[{std::\+string}]{id}{ = {\
 
 Reimplemented from \doxymbox{\hyperlink{class_user_a353f753c64007a7e60f6da390db689b1}{User}}.
 
+\Hypertarget{class_employee_ad98f88d13517ebfe16d6aac9dedb28e6}\index{Employee@{Employee}!getId@{getId}}
+\index{getId@{getId}!Employee@{Employee}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily \label{class_employee_ad98f88d13517ebfe16d6aac9dedb28e6} 
+std::\+string Employee::\+get\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_employee_aeec5a43938626cc470d770eaeeef0dd6}\index{Employee@{Employee}!getMinimumShifts@{getMinimumShifts}}
+\index{getMinimumShifts@{getMinimumShifts}!Employee@{Employee}}
+\doxysubsubsection{\texorpdfstring{getMinimumShifts()}{getMinimumShifts()}}
+{\footnotesize\ttfamily \label{class_employee_aeec5a43938626cc470d770eaeeef0dd6} 
+int Employee::\+get\+Minimum\+Shifts (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
 \Hypertarget{class_employee_aab722088070e02f20448d3fb8aaf02e4}\index{Employee@{Employee}!getRole@{getRole}}
 \index{getRole@{getRole}!Employee@{Employee}}
 \doxysubsubsection{\texorpdfstring{getRole()}{getRole()}}
@@ -105,6 +125,18 @@ Implements \doxymbox{\hyperlink{class_user_ad6add2a12c6e3460fe518f471bcadfc2}{Us
 
 
 Reimplemented in \doxymbox{\hyperlink{class_manager_a367f5bae2686991562c4fad5d30445af}{Manager}}.
+
+\Hypertarget{class_employee_ac48f71e31528d03dc7fc23b385f826bf}\index{Employee@{Employee}!registerForEmptyShift@{registerForEmptyShift}}
+\index{registerForEmptyShift@{registerForEmptyShift}!Employee@{Employee}}
+\doxysubsubsection{\texorpdfstring{registerForEmptyShift()}{registerForEmptyShift()}}
+{\footnotesize\ttfamily \label{class_employee_ac48f71e31528d03dc7fc23b385f826bf} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Employee::\+register\+For\+Empty\+Shift (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_schedule_service}{Schedule\+Service}} \&}]{schedule\+Service}{, }\item[{const std::\+string \&}]{schedule\+Id}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_employee_a08668ba44ecc6f38babd84de7b6fe96e}\index{Employee@{Employee}!setMinimumShifts@{setMinimumShifts}}
+\index{setMinimumShifts@{setMinimumShifts}!Employee@{Employee}}
+\doxysubsubsection{\texorpdfstring{setMinimumShifts()}{setMinimumShifts()}}
+{\footnotesize\ttfamily \label{class_employee_a08668ba44ecc6f38babd84de7b6fe96e} 
+void Employee::\+set\+Minimum\+Shifts (\begin{DoxyParamCaption}\item[{int}]{minimum}{}\end{DoxyParamCaption})}
 
 \Hypertarget{class_employee_a0fcafe35b2d9196276e018614f298dd0}\index{Employee@{Employee}!showMenuOptions@{showMenuOptions}}
 \index{showMenuOptions@{showMenuOptions}!Employee@{Employee}}

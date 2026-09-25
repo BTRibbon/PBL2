@@ -1,0 +1,29 @@
+\doxysection{Timekeeping.\+h}
+\hypertarget{_timekeeping_8h_source}{}\label{_timekeeping_8h_source}\index{models/Timekeeping.h@{models/Timekeeping.h}}
+\doxymbox{\hyperlink{_timekeeping_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_attendance_record}{AttendanceRecord}}\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_attendance_record_a2c4e6f98d13e5c22c783adf8d9bf130d}{scheduleId}};}
+\DoxyCodeLine{00008\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_attendance_record_afc95efcff068a6f2b98c5fd411307c44}{employeeId}};}
+\DoxyCodeLine{00009\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_attendance_record_a0e49df7d655880a1f37ada2fcc8c65d8}{checkIn}};}
+\DoxyCodeLine{00010\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_attendance_record_a49c926570dc916cb2d11155efa34117b}{checkOut}};}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{struct_attendance_record_a937dd1f8959aeb774d4d9c5b55d7ef55}{isPresent}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00012\ \};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_timekeeping_a624bc15d421856bb52335b2994607008}{Timekeeping}}\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ std::string\ employeeId;}
+\DoxyCodeLine{00016\ \ \ \ \ std::vector<AttendanceRecord>\ records;}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \doxymbox{\hyperlink{class_timekeeping_a624bc15d421856bb52335b2994607008}{Timekeeping}}(std::string\ employee);}
+\DoxyCodeLine{00020\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_timekeeping_ab7017155ad4e0db8106e3c6c63f953ae}{getEmployeeId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_timekeeping_a66a938d069b84ab772cb552c26d305b3}{addRecord}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_attendance_record}{AttendanceRecord}}\&\ record);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<AttendanceRecord>\&\ \doxymbox{\hyperlink{class_timekeeping_a436455ffb44b8f45fc7909d9b7c05369}{getRecords}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00023\ \};}
+
+\end{DoxyCode}

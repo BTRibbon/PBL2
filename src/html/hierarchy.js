@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "AttendanceRecord", "struct_attendance_record.html", null ],
     [ "AudioStream", "struct_audio_stream.html", null ],
     [ "AutomationEvent", "struct_automation_event.html", null ],
     [ "AutomationEventList", "struct_automation_event_list.html", null ],
@@ -32,6 +33,7 @@ var hierarchy =
     [ "Music", "struct_music.html", null ],
     [ "NPatchInfo", "struct_n_patch_info.html", null ],
     [ "OpeningHours", "class_opening_hours.html", null ],
+    [ "OperatingSchedule", "class_operating_schedule.html", null ],
     [ "Order", "struct_order.html", null ],
     [ "OrderQueue", "class_order_queue.html", null ],
     [ "Product", "struct_product.html", null ],
@@ -43,9 +45,18 @@ var hierarchy =
     [ "rlDrawCall", "structrl_draw_call.html", null ],
     [ "rlRenderBatch", "structrl_render_batch.html", null ],
     [ "rlVertexBuffer", "structrl_vertex_buffer.html", null ],
+    [ "Schedule", "class_schedule.html", [
+      [ "WorkSchedule", "class_work_schedule.html", [
+        [ "FullTimeSchedule", "class_full_time_schedule.html", null ],
+        [ "SelfRegisteredSchedule", "class_self_registered_schedule.html", null ]
+      ] ]
+    ] ],
+    [ "ScheduleService", "class_schedule_service.html", null ],
     [ "Shader", "struct_shader.html", null ],
+    [ "ShiftManager", "class_shift_manager.html", null ],
     [ "Sound", "struct_sound.html", null ],
     [ "Texture", "struct_texture.html", null ],
+    [ "Timekeeping", "class_timekeeping.html", null ],
     [ "Transform", "struct_transform.html", null ],
     [ "User", "class_user.html", [
       [ "Customer", "class_customer.html", null ],

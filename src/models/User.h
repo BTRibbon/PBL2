@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+class ScheduleService;
+
 enum class Role { Customer, Employee, Manager };
 
 class User {
@@ -32,9 +34,16 @@ class Employee : public User {
 public:
 	std::string branchId;
 	Employee(std::string id="EMP001",std::string name="Employee",std::string branch="BR001");
+	std::string getId() const;
+	int getMinimumShifts() const;
+	void setMinimumShifts(int minimum);
+	bool registerForEmptyShift(ScheduleService& scheduleService, const std::string& scheduleId);
 	Role getRole() const override;
 	void showMenuOptions() const override;
 	bool canViewReports() const override;
+
+private:
+	int minimumShifts = 0;
 };
 
 class Manager : public Employee {

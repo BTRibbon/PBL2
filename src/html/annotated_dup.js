@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "AttendanceRecord", "struct_attendance_record.html", "struct_attendance_record" ],
     [ "AudioStream", "struct_audio_stream.html", "struct_audio_stream" ],
     [ "AutomationEvent", "struct_automation_event.html", "struct_automation_event" ],
     [ "AutomationEventList", "struct_automation_event_list.html", "struct_automation_event_list" ],
@@ -17,6 +18,7 @@ var annotated_dup =
     [ "float16", "structfloat16.html", "structfloat16" ],
     [ "float3", "structfloat3.html", "structfloat3" ],
     [ "Font", "struct_font.html", "struct_font" ],
+    [ "FullTimeSchedule", "class_full_time_schedule.html", "class_full_time_schedule" ],
     [ "GlyphInfo", "struct_glyph_info.html", "struct_glyph_info" ],
     [ "GridPoint", "struct_grid_point.html", "struct_grid_point" ],
     [ "Image", "struct_image.html", "struct_image" ],
@@ -35,6 +37,7 @@ var annotated_dup =
     [ "Music", "struct_music.html", "struct_music" ],
     [ "NPatchInfo", "struct_n_patch_info.html", "struct_n_patch_info" ],
     [ "OpeningHours", "class_opening_hours.html", "class_opening_hours" ],
+    [ "OperatingSchedule", "class_operating_schedule.html", "class_operating_schedule" ],
     [ "Order", "struct_order.html", "struct_order" ],
     [ "OrderQueue", "class_order_queue.html", "class_order_queue" ],
     [ "Product", "struct_product.html", "struct_product" ],
@@ -46,9 +49,14 @@ var annotated_dup =
     [ "rlDrawCall", "structrl_draw_call.html", "structrl_draw_call" ],
     [ "rlRenderBatch", "structrl_render_batch.html", "structrl_render_batch" ],
     [ "rlVertexBuffer", "structrl_vertex_buffer.html", "structrl_vertex_buffer" ],
+    [ "Schedule", "class_schedule.html", "class_schedule" ],
+    [ "ScheduleService", "class_schedule_service.html", "class_schedule_service" ],
+    [ "SelfRegisteredSchedule", "class_self_registered_schedule.html", "class_self_registered_schedule" ],
     [ "Shader", "struct_shader.html", "struct_shader" ],
+    [ "ShiftManager", "class_shift_manager.html", "class_shift_manager" ],
     [ "Sound", "struct_sound.html", "struct_sound" ],
     [ "Texture", "struct_texture.html", "struct_texture" ],
+    [ "Timekeeping", "class_timekeeping.html", "class_timekeeping" ],
     [ "Transform", "struct_transform.html", "struct_transform" ],
     [ "User", "class_user.html", "class_user" ],
     [ "Vector2", "struct_vector2.html", "struct_vector2" ],
@@ -57,5 +65,6 @@ var annotated_dup =
     [ "VrDeviceInfo", "struct_vr_device_info.html", "struct_vr_device_info" ],
     [ "VrStereoConfig", "struct_vr_stereo_config.html", "struct_vr_stereo_config" ],
     [ "Warehouse", "class_warehouse.html", "class_warehouse" ],
-    [ "Wave", "struct_wave.html", "struct_wave" ]
+    [ "Wave", "struct_wave.html", "struct_wave" ],
+    [ "WorkSchedule", "class_work_schedule.html", "class_work_schedule" ]
 ];

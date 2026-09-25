@@ -13,5 +13,6 @@ var searchData=
   ['width_10',['width',['../struct_rectangle.html#adbe8ae69919acc459e7ab155a69bc8ff',1,'Rectangle::width'],['../struct_image.html#ab8d12f635013c04159cd4d3d972bac88',1,'Image::width'],['../struct_texture.html#a06a0246cb31343557c3441c5733349cd',1,'Texture::width'],['../class_map_graph.html#ab9684551fd8ac0d96a4624f89000a5bb',1,'MapGraph::width()']]],
   ['windowshouldclose_11',['WindowShouldClose',['../raylib_8h.html#a14dab2feeb947c7810c3b8830ffee233',1,'raylib.h']]],
   ['with_20multiple_20ides_12',['Setup raylib with multiple IDEs',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md5',1,'']]],
-  ['wrap_13',['Wrap',['../raymath_8h.html#a860599a4d89fb83090024811f068f114',1,'raymath.h']]]
+  ['workschedule_13',['WorkSchedule',['../class_work_schedule.html',1,'']]],
+  ['wrap_14',['Wrap',['../raymath_8h.html#a860599a4d89fb83090024811f068f114',1,'raymath.h']]]
 ];

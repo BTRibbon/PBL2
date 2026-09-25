@@ -1,4 +1,5 @@
 #include "User.h"
+#include "../services/ScheduleService.h"
 
 User::User(std::string userId,std::string userName,Role userRole) : id(userId),name(userName),username(userName),role(userRole) {}
 
@@ -15,6 +16,16 @@ Role Customer::getRole() const { return Role::Customer; }
 void Customer::showMenuOptions() const { std::cout<<"[Customer] Xem menu / Dat mon / Xem gio hang\n"; }
 
 Employee::Employee(std::string id,std::string name,std::string branch) : User(id,name,Role::Employee),branchId(branch) {}
+
+std::string Employee::getId() const { return id; }
+
+int Employee::getMinimumShifts() const { return minimumShifts; }
+
+void Employee::setMinimumShifts(int minimum) { minimumShifts = minimum < 0 ? 0 : minimum; }
+
+bool Employee::registerForEmptyShift(ScheduleService& scheduleService, const std::string& scheduleId) {
+	return scheduleService.registerForEmptyShift(*this, scheduleId);
+}
 
 Role Employee::getRole() const { return Role::Employee; }
 
