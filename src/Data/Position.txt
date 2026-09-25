@@ -1,1 +1,6 @@
 #ID|Position
+CV001|Quản lý chi nhánh
+CV002|Trưởng ca
+CV003|Nhân viên thu ngân
+CV004|Nhân viên bếp
+CV005|Nhân viên phục vụ

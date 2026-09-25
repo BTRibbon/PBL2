@@ -1,1 +1,7 @@
 #ID|Name|Birth|Gender|Address|Phone|Email|Main Position|Salary
+NV001|Nguyễn Minh Anh|1995-03-12|Nữ|12 Nguyễn Huệ, Hải Châu, Đà Nẵng|0905123456|minhanh.nguyen@example.com|CV002|95000
+NV002|Trần Quốc Bảo|1992-07-28|Nam|45 Lê Duẩn, Hải Châu, Đà Nẵng|0916234567|quocbao.tran@example.com|CV004|105000
+NV003|Lê Thị Cẩm Tú|1998-11-05|Nữ|88 Điện Biên Phủ, Thanh Khê, Đà Nẵng|0937345678|camtu.le@example.com|CV003|85000
+NV004|Phạm Hoàng Nam|1997-01-19|Nam|21 Trần Phú, Hải Châu, Đà Nẵng|0988456789|hoangnam.pham@example.com|CV005|80000
+NV005|Võ Ngọc Mai|1990-09-23|Nữ|10 Nguyễn Văn Linh, Hải Châu, Đà Nẵng|0979567890|ngocmai.vo@example.com|CV001|150000
+NV006|Đỗ Gia Huy|2000-06-14|Nam|63 Ngô Quyền, Sơn Trà, Đà Nẵng|0961678901|giahuy.do@example.com|CV004|90000
