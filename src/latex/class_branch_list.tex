@@ -1,0 +1,83 @@
+\doxysection{Branch\+List Class Reference}
+\hypertarget{class_branch_list}{}\label{class_branch_list}\index{BranchList@{BranchList}}
+
+
+{\ttfamily \+\#include $<$Branch\+List.\+h$>$}
+
+
+
+Collaboration diagram for Branch\+List:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=157pt]{class_branch_list__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_branch_list_a82219054c6a152c9a38529f0f8b40a98}{\texorpdfstring{$\sim$}{\string~}\+Branch\+List}} ()
+\item 
+void \doxymbox{\hyperlink{class_branch_list_a8d313a0f49f53bd4101056a12168f3d3}{add}} (const \doxymbox{\hyperlink{class_branch}{Branch}} \&branch)
+\item 
+void \doxymbox{\hyperlink{class_branch_list_a4742f5501ac37f13d952709dd49631ad}{add\+Branch}} (std::\+string id, std::\+string name, float x, float y)
+\item 
+\doxymbox{\hyperlink{class_branch}{Branch}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_branch_list_abb6da079a304d3f035d60cc5792b3807}{find\+Nearest}} (float x, float y)
+\item 
+std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \doxymbox{\hyperlink{class_branch_list_a63d6dc8df5509f7d33c389d9c4411b3c}{values}} () const
+\item 
+void \doxymbox{\hyperlink{class_branch_list_a4cd524a777db94f0b6e3630c15b34f40}{clear}} ()
+\end{DoxyCompactItemize}
+
+
+\label{class_branch_list_doc-constructors}
+\Hypertarget{class_branch_list_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_branch_list_a82219054c6a152c9a38529f0f8b40a98}\index{BranchList@{BranchList}!````~BranchList@{\texorpdfstring{$\sim$}{\string~}BranchList}}
+\index{````~BranchList@{\texorpdfstring{$\sim$}{\string~}BranchList}!BranchList@{BranchList}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}BranchList()}{\string~BranchList()}}
+{\footnotesize\ttfamily \label{class_branch_list_a82219054c6a152c9a38529f0f8b40a98} 
+Branch\+List::\+\texorpdfstring{$\sim$}{\string~}\+Branch\+List (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_branch_list_doc-func-members}
+\Hypertarget{class_branch_list_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_branch_list_a8d313a0f49f53bd4101056a12168f3d3}\index{BranchList@{BranchList}!add@{add}}
+\index{add@{add}!BranchList@{BranchList}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily \label{class_branch_list_a8d313a0f49f53bd4101056a12168f3d3} 
+void Branch\+List::\+add (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{class_branch}{Branch}} \&}]{branch}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_list_a4742f5501ac37f13d952709dd49631ad}\index{BranchList@{BranchList}!addBranch@{addBranch}}
+\index{addBranch@{addBranch}!BranchList@{BranchList}}
+\doxysubsubsection{\texorpdfstring{addBranch()}{addBranch()}}
+{\footnotesize\ttfamily \label{class_branch_list_a4742f5501ac37f13d952709dd49631ad} 
+void Branch\+List::\+add\+Branch (\begin{DoxyParamCaption}\item[{std::\+string}]{id}{, }\item[{std::\+string}]{name}{, }\item[{float}]{x}{, }\item[{float}]{y}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_list_a4cd524a777db94f0b6e3630c15b34f40}\index{BranchList@{BranchList}!clear@{clear}}
+\index{clear@{clear}!BranchList@{BranchList}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{class_branch_list_a4cd524a777db94f0b6e3630c15b34f40} 
+void Branch\+List::\+clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_list_abb6da079a304d3f035d60cc5792b3807}\index{BranchList@{BranchList}!findNearest@{findNearest}}
+\index{findNearest@{findNearest}!BranchList@{BranchList}}
+\doxysubsubsection{\texorpdfstring{findNearest()}{findNearest()}}
+{\footnotesize\ttfamily \label{class_branch_list_abb6da079a304d3f035d60cc5792b3807} 
+\doxymbox{\hyperlink{class_branch}{Branch}} \texorpdfstring{$\ast$}{*} Branch\+List::\+find\+Nearest (\begin{DoxyParamCaption}\item[{float}]{x}{, }\item[{float}]{y}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_list_a63d6dc8df5509f7d33c389d9c4411b3c}\index{BranchList@{BranchList}!values@{values}}
+\index{values@{values}!BranchList@{BranchList}}
+\doxysubsubsection{\texorpdfstring{values()}{values()}}
+{\footnotesize\ttfamily \label{class_branch_list_a63d6dc8df5509f7d33c389d9c4411b3c} 
+std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ Branch\+List::\+values (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+datastructures/\doxymbox{\hyperlink{_branch_list_8h}{Branch\+List.\+h}}\item 
+datastructures/\doxymbox{\hyperlink{_branch_list_8cpp}{Branch\+List.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,26 @@
+\doxysection{Branch\+List.\+h}
+\hypertarget{_branch_list_8h_source}{}\label{_branch_list_8h_source}\index{datastructures/BranchList.h@{datastructures/BranchList.h}}
+\doxymbox{\hyperlink{_branch_list_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_branch_8h}{../models/Branch.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_branch_list}{BranchList}}\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{keyword}{struct\ }Node\ \{}
+\DoxyCodeLine{00008\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_branch}{Branch}}\ branch;}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ \ \ Node*\ next;}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ Node(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_branch}{Branch}}\&\ value,Node*\ following);}
+\DoxyCodeLine{00011\ \ \ \ \ \};}
+\DoxyCodeLine{00012\ \ \ \ \ Node*\ head=\textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \doxymbox{\hyperlink{class_branch_list}{\string~BranchList}}();}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_list_a8d313a0f49f53bd4101056a12168f3d3}{add}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_branch}{Branch}}\&\ branch);}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_list_a4742f5501ac37f13d952709dd49631ad}{addBranch}}(std::string\ \textcolor{keywordtype}{id},std::string\ name,\textcolor{keywordtype}{float}\ x,\textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00017\ \ \ \ \ \doxymbox{\hyperlink{class_branch}{Branch}}*\ \doxymbox{\hyperlink{class_branch_list_abb6da079a304d3f035d60cc5792b3807}{findNearest}}(\textcolor{keywordtype}{float}\ x,\textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00018\ \ \ \ \ std::vector<Branch>\ \doxymbox{\hyperlink{class_branch_list_a63d6dc8df5509f7d33c389d9c4411b3c}{values}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_branch_list_a4cd524a777db94f0b6e3630c15b34f40}{clear}}();}
+\DoxyCodeLine{00020\ \};}
+
+\end{DoxyCode}

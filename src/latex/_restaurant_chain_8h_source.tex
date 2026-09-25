@@ -1,0 +1,22 @@
+\doxysection{Restaurant\+Chain.\+h}
+\hypertarget{_restaurant_chain_8h_source}{}\label{_restaurant_chain_8h_source}\index{models/RestaurantChain.h@{models/RestaurantChain.h}}
+\doxymbox{\hyperlink{_restaurant_chain_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_branch_list_8h}{../datastructures/BranchList.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_restaurant_chain_a0d45620bdff1a7ec56c72a500dfc15be}{RestaurantChain}}\ \{}
+\DoxyCodeLine{00008\ \ \ \ \ std::string\ name;}
+\DoxyCodeLine{00009\ \ \ \ \ \doxymbox{\hyperlink{class_branch_list}{BranchList}}\ branches;}
+\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \ \ \doxymbox{\hyperlink{class_restaurant_chain_a0d45620bdff1a7ec56c72a500dfc15be}{RestaurantChain}}(std::string\ chainName);}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_restaurant_chain_a5800c1e3c4c85afedd91c77248df2b2e}{addBranch}}(std::string\ \textcolor{keywordtype}{id},std::string\ branchName,\textcolor{keywordtype}{float}\ x,\textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00013\ \ \ \ \ \doxymbox{\hyperlink{class_branch}{Branch}}*\ \doxymbox{\hyperlink{class_restaurant_chain_a1f3f64b912d5ddc334edf585548df6f0}{findNearestBranch}}(\textcolor{keywordtype}{float}\ x,\textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00014\ \ \ \ \ std::vector<Branch>\ \doxymbox{\hyperlink{class_restaurant_chain_a75c4eb4042978de5dfee6ff45380f9bd}{getBranches}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00015\ \ \ \ \ std::string\ \doxymbox{\hyperlink{class_restaurant_chain_ac7142be68ca39d2f1cd1967c69233dce}{getName}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00016\ \};}
+
+\end{DoxyCode}

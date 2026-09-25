@@ -1,0 +1,160 @@
+\doxysection{User Class Reference}
+\hypertarget{class_user}{}\label{class_user}\index{User@{User}}
+
+
+{\ttfamily \+\#include $<$User.\+h$>$}
+
+
+
+Inheritance diagram for User:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=313pt]{class_user__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for User:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{class_user__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}} (std::\+string user\+Id, std::\+string user\+Name, \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} user\+Role)
+\item 
+virtual \doxymbox{\hyperlink{class_user_a634d7ad22c3d2b5fed35f71e10d98628}{\texorpdfstring{$\sim$}{\string~}\+User}} ()=default
+\item 
+virtual \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} \doxymbox{\hyperlink{class_user_ad6add2a12c6e3460fe518f471bcadfc2}{get\+Role}} () const =0
+\item 
+virtual void \doxymbox{\hyperlink{class_user_abebe27f9aad8983c9a4d97407554290f}{show\+Menu\+Options}} () const =0
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_a446a64e63adafbc2e1428532275ad6a1}{get\+Name}} () const
+\item 
+virtual \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_user_aff5b70b14ed052ef0f0a3a1be911b6f8}{can\+Manage\+Branches}} () const
+\item 
+virtual \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_user_a353f753c64007a7e60f6da390db689b1}{can\+View\+Reports}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_aacbb807e514280f69e00bec7d71f3aee}{username}}
+\item 
+\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} \doxymbox{\hyperlink{class_user_af969eefd9642fee961f35493965e274c}{role}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_a290593888be78ccd4214e99c8ee43b4e}{id}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}
+\end{DoxyCompactItemize}
+
+
+\label{class_user_doc-constructors}
+\Hypertarget{class_user_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_user_a1615197a2599367bab87d4ccfbc90a09}\index{User@{User}!User@{User}}
+\index{User@{User}!User@{User}}
+\doxysubsubsection{\texorpdfstring{User()}{User()}}
+{\footnotesize\ttfamily \label{class_user_a1615197a2599367bab87d4ccfbc90a09} 
+User::\+\+User (\begin{DoxyParamCaption}\item[{std::\+string}]{user\+Id}{, }\item[{std::\+string}]{user\+Name}{, }\item[{\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}}}]{user\+Role}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_user_a634d7ad22c3d2b5fed35f71e10d98628}\index{User@{User}!````~User@{\texorpdfstring{$\sim$}{\string~}User}}
+\index{````~User@{\texorpdfstring{$\sim$}{\string~}User}!User@{User}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}User()}{\string~User()}}
+{\footnotesize\ttfamily \label{class_user_a634d7ad22c3d2b5fed35f71e10d98628} 
+virtual User::\+\texorpdfstring{$\sim$}{\string~}\+User (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\label{class_user_doc-func-members}
+\Hypertarget{class_user_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_user_aff5b70b14ed052ef0f0a3a1be911b6f8}\index{User@{User}!canManageBranches@{canManageBranches}}
+\index{canManageBranches@{canManageBranches}!User@{User}}
+\doxysubsubsection{\texorpdfstring{canManageBranches()}{canManageBranches()}}
+{\footnotesize\ttfamily \label{class_user_aff5b70b14ed052ef0f0a3a1be911b6f8} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} User::\+can\+Manage\+Branches (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_manager_a1bf9c83ceaaef28134851440cef01c76}{Manager}}.
+
+\Hypertarget{class_user_a353f753c64007a7e60f6da390db689b1}\index{User@{User}!canViewReports@{canViewReports}}
+\index{canViewReports@{canViewReports}!User@{User}}
+\doxysubsubsection{\texorpdfstring{canViewReports()}{canViewReports()}}
+{\footnotesize\ttfamily \label{class_user_a353f753c64007a7e60f6da390db689b1} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} User::\+can\+View\+Reports (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \doxymbox{\hyperlink{class_employee_a36cb99bc03a0628e51f919aea1f74e74}{Employee}}.
+
+\Hypertarget{class_user_a446a64e63adafbc2e1428532275ad6a1}\index{User@{User}!getName@{getName}}
+\index{getName@{getName}!User@{User}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{class_user_a446a64e63adafbc2e1428532275ad6a1} 
+std::\+string User::\+get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_user_ad6add2a12c6e3460fe518f471bcadfc2}\index{User@{User}!getRole@{getRole}}
+\index{getRole@{getRole}!User@{User}}
+\doxysubsubsection{\texorpdfstring{getRole()}{getRole()}}
+{\footnotesize\ttfamily \label{class_user_ad6add2a12c6e3460fe518f471bcadfc2} 
+virtual \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} User::\+get\+Role (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \doxymbox{\hyperlink{class_customer_a1f1c33d1262e3fed1e138663eb98ca92}{Customer}}, \doxymbox{\hyperlink{class_employee_aab722088070e02f20448d3fb8aaf02e4}{Employee}}, and \doxymbox{\hyperlink{class_manager_a367f5bae2686991562c4fad5d30445af}{Manager}}.
+
+\Hypertarget{class_user_abebe27f9aad8983c9a4d97407554290f}\index{User@{User}!showMenuOptions@{showMenuOptions}}
+\index{showMenuOptions@{showMenuOptions}!User@{User}}
+\doxysubsubsection{\texorpdfstring{showMenuOptions()}{showMenuOptions()}}
+{\footnotesize\ttfamily \label{class_user_abebe27f9aad8983c9a4d97407554290f} 
+virtual void User::\+show\+Menu\+Options (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \doxymbox{\hyperlink{class_customer_ad7488fb6b416c977aae414205062bcd0}{Customer}}, \doxymbox{\hyperlink{class_employee_a0fcafe35b2d9196276e018614f298dd0}{Employee}}, and \doxymbox{\hyperlink{class_manager_a4802266adc51e63b1b4ae49781237a82}{Manager}}.
+
+
+
+\label{class_user_doc-variable-members}
+\Hypertarget{class_user_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_user_a290593888be78ccd4214e99c8ee43b4e}\index{User@{User}!id@{id}}
+\index{id@{id}!User@{User}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily \label{class_user_a290593888be78ccd4214e99c8ee43b4e} 
+std::\+string User::\+id\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_user_a085d8d69282b6298964eab8351584536}\index{User@{User}!name@{name}}
+\index{name@{name}!User@{User}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily \label{class_user_a085d8d69282b6298964eab8351584536} 
+std::\+string User::\+name\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{class_user_af969eefd9642fee961f35493965e274c}\index{User@{User}!role@{role}}
+\index{role@{role}!User@{User}}
+\doxysubsubsection{\texorpdfstring{role}{role}}
+{\footnotesize\ttfamily \label{class_user_af969eefd9642fee961f35493965e274c} 
+\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} User::\+role}
+
+\Hypertarget{class_user_aacbb807e514280f69e00bec7d71f3aee}\index{User@{User}!username@{username}}
+\index{username@{username}!User@{User}}
+\doxysubsubsection{\texorpdfstring{username}{username}}
+{\footnotesize\ttfamily \label{class_user_aacbb807e514280f69e00bec7d71f3aee} 
+std::\+string User::\+username}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+models/\doxymbox{\hyperlink{_user_8h}{User.\+h}}\item 
+models/\doxymbox{\hyperlink{_user_8cpp}{User.\+cpp}}\end{DoxyCompactItemize}

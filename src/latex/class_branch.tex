@@ -1,0 +1,139 @@
+\doxysection{Branch Class Reference}
+\hypertarget{class_branch}{}\label{class_branch}\index{Branch@{Branch}}
+
+
+{\ttfamily \+\#include $<$Branch.\+h$>$}
+
+
+
+Collaboration diagram for Branch:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{class_branch__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_branch_aa03fe00afea18c9b76c25642f7e895af}{Branch}} (std::\+string id, std::\+string branch\+Name, float branchX, float branchY)
+\item 
+std::\+string \doxymbox{\hyperlink{class_branch_a29b97ccaef57c760ede80e77b0c6cf3e}{get\+Id}} () const
+\item 
+std::\+string \doxymbox{\hyperlink{class_branch_a712776290e1908224432dc88a7289abe}{get\+Name}} () const
+\item 
+float \doxymbox{\hyperlink{class_branch_afdf29381cb1dc03166b0cbf0f8c94bd4}{getX}} () const
+\item 
+float \doxymbox{\hyperlink{class_branch_aace9fbb24ae1442f0025ccb5e381836e}{getY}} () const
+\item 
+void \doxymbox{\hyperlink{class_branch_ad4bb09dde3b96e393134309d983fc853}{add\+Menu\+Item}} (\doxymbox{\hyperlink{struct_menu_item}{Menu\+Item}} item)
+\item 
+\doxymbox{\hyperlink{struct_menu_item}{Menu\+Item}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_branch_a6297ee9c62c62efb70a99ebc45fe3926}{find\+Menu\+Item}} (std::\+string item\+Id)
+\item 
+void \doxymbox{\hyperlink{class_branch_aa5271a74792288e3084c4bda09b015be}{add\+Stock}} (std::\+string item\+Id, int quantity)
+\item 
+int \doxymbox{\hyperlink{class_branch_a7a986b69bad18699d2bf10a0b621c0e8}{get\+Stock}} (std::\+string item\+Id) const
+\item 
+void \doxymbox{\hyperlink{class_branch_a5023e7760c758166c9c34744a67128c2}{set\+Opening\+Hours}} (std::\+string open, std::\+string close)
+\item 
+\doxymbox{\hyperlink{class_opening_hours}{Opening\+Hours}} \doxymbox{\hyperlink{class_branch_ab6b5f0cb02bb9207a453c5e6c6cf1108}{get\+Opening\+Hours}} () const
+\item 
+void \doxymbox{\hyperlink{class_branch_a767d40b8534ffa103345e7a86d7bcdaa}{add\+Revenue}} (int amount)
+\item 
+int \doxymbox{\hyperlink{class_branch_ae96a81206b832d674b62a47066126e80}{get\+Revenue}} () const
+\end{DoxyCompactItemize}
+
+
+\label{class_branch_doc-constructors}
+\Hypertarget{class_branch_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_branch_aa03fe00afea18c9b76c25642f7e895af}\index{Branch@{Branch}!Branch@{Branch}}
+\index{Branch@{Branch}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{Branch()}{Branch()}}
+{\footnotesize\ttfamily \label{class_branch_aa03fe00afea18c9b76c25642f7e895af} 
+Branch::\+\+Branch (\begin{DoxyParamCaption}\item[{std::\+string}]{id}{, }\item[{std::\+string}]{branch\+Name}{, }\item[{float}]{branchX}{, }\item[{float}]{branchY}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_branch_doc-func-members}
+\Hypertarget{class_branch_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_branch_ad4bb09dde3b96e393134309d983fc853}\index{Branch@{Branch}!addMenuItem@{addMenuItem}}
+\index{addMenuItem@{addMenuItem}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{addMenuItem()}{addMenuItem()}}
+{\footnotesize\ttfamily \label{class_branch_ad4bb09dde3b96e393134309d983fc853} 
+void Branch::\+add\+Menu\+Item (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_menu_item}{Menu\+Item}}}]{item}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_a767d40b8534ffa103345e7a86d7bcdaa}\index{Branch@{Branch}!addRevenue@{addRevenue}}
+\index{addRevenue@{addRevenue}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{addRevenue()}{addRevenue()}}
+{\footnotesize\ttfamily \label{class_branch_a767d40b8534ffa103345e7a86d7bcdaa} 
+void Branch::\+add\+Revenue (\begin{DoxyParamCaption}\item[{int}]{amount}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_aa5271a74792288e3084c4bda09b015be}\index{Branch@{Branch}!addStock@{addStock}}
+\index{addStock@{addStock}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{addStock()}{addStock()}}
+{\footnotesize\ttfamily \label{class_branch_aa5271a74792288e3084c4bda09b015be} 
+void Branch::\+add\+Stock (\begin{DoxyParamCaption}\item[{std::\+string}]{item\+Id}{, }\item[{int}]{quantity}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_a6297ee9c62c62efb70a99ebc45fe3926}\index{Branch@{Branch}!findMenuItem@{findMenuItem}}
+\index{findMenuItem@{findMenuItem}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{findMenuItem()}{findMenuItem()}}
+{\footnotesize\ttfamily \label{class_branch_a6297ee9c62c62efb70a99ebc45fe3926} 
+\doxymbox{\hyperlink{struct_menu_item}{Menu\+Item}} \texorpdfstring{$\ast$}{*} Branch::\+find\+Menu\+Item (\begin{DoxyParamCaption}\item[{std::\+string}]{item\+Id}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_branch_a29b97ccaef57c760ede80e77b0c6cf3e}\index{Branch@{Branch}!getId@{getId}}
+\index{getId@{getId}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily \label{class_branch_a29b97ccaef57c760ede80e77b0c6cf3e} 
+std::\+string Branch::\+get\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_a712776290e1908224432dc88a7289abe}\index{Branch@{Branch}!getName@{getName}}
+\index{getName@{getName}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{class_branch_a712776290e1908224432dc88a7289abe} 
+std::\+string Branch::\+get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_ab6b5f0cb02bb9207a453c5e6c6cf1108}\index{Branch@{Branch}!getOpeningHours@{getOpeningHours}}
+\index{getOpeningHours@{getOpeningHours}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getOpeningHours()}{getOpeningHours()}}
+{\footnotesize\ttfamily \label{class_branch_ab6b5f0cb02bb9207a453c5e6c6cf1108} 
+\doxymbox{\hyperlink{class_opening_hours}{Opening\+Hours}} Branch::\+get\+Opening\+Hours (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_ae96a81206b832d674b62a47066126e80}\index{Branch@{Branch}!getRevenue@{getRevenue}}
+\index{getRevenue@{getRevenue}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getRevenue()}{getRevenue()}}
+{\footnotesize\ttfamily \label{class_branch_ae96a81206b832d674b62a47066126e80} 
+int Branch::\+get\+Revenue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_a7a986b69bad18699d2bf10a0b621c0e8}\index{Branch@{Branch}!getStock@{getStock}}
+\index{getStock@{getStock}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getStock()}{getStock()}}
+{\footnotesize\ttfamily \label{class_branch_a7a986b69bad18699d2bf10a0b621c0e8} 
+int Branch::\+get\+Stock (\begin{DoxyParamCaption}\item[{std::\+string}]{item\+Id}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_afdf29381cb1dc03166b0cbf0f8c94bd4}\index{Branch@{Branch}!getX@{getX}}
+\index{getX@{getX}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getX()}{getX()}}
+{\footnotesize\ttfamily \label{class_branch_afdf29381cb1dc03166b0cbf0f8c94bd4} 
+float Branch::\+getX (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_aace9fbb24ae1442f0025ccb5e381836e}\index{Branch@{Branch}!getY@{getY}}
+\index{getY@{getY}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{getY()}{getY()}}
+{\footnotesize\ttfamily \label{class_branch_aace9fbb24ae1442f0025ccb5e381836e} 
+float Branch::\+getY (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_branch_a5023e7760c758166c9c34744a67128c2}\index{Branch@{Branch}!setOpeningHours@{setOpeningHours}}
+\index{setOpeningHours@{setOpeningHours}!Branch@{Branch}}
+\doxysubsubsection{\texorpdfstring{setOpeningHours()}{setOpeningHours()}}
+{\footnotesize\ttfamily \label{class_branch_a5023e7760c758166c9c34744a67128c2} 
+void Branch::\+set\+Opening\+Hours (\begin{DoxyParamCaption}\item[{std::\+string}]{open}{, }\item[{std::\+string}]{close}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+models/\doxymbox{\hyperlink{_branch_8h}{Branch.\+h}}\item 
+models/\doxymbox{\hyperlink{_branch_8cpp}{Branch.\+cpp}}\end{DoxyCompactItemize}
