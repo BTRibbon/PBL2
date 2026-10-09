@@ -8,5 +8,6 @@ class Warehouse {
 public:
 	void addStock(std::string itemId,int quantity);
 	bool takeStock(std::string itemId,int quantity);
+	bool removeStock(std::string itemId,int quantity);
 	int getStock(std::string itemId) const;
 };

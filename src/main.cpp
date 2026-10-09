@@ -4,6 +4,10 @@
 #include "datastructures/OrderQueue.h"
 #include "models/RestaurantChain.h"
 #include "models/User.h"
+#include "models/Timekeeping.h"
+#include "services/ScheduleService.h"
+#include "services/ShiftManager.h"
+#include "UI/ManagementUI.h"
 
 #include <algorithm>
 #include <array>
@@ -41,11 +45,26 @@ static void saveEncryptedOrder(const Order& order) {
 	if (file) file << encrypt(std::to_string(order.id) + "|" + order.branch + "|" + std::to_string(order.total) + "\n");
 }
 
-static const char* rolePassword(Role role) {
-	if (role == Role::Employee) return "employee123";
-	if (role == Role::Manager) return "manager123";
-	return "kiosk123";
+static const char* roleName(Role role) {
+	if (role == Role::Employee) return "Employee";
+	if (role == Role::Manager) return "Manager";
+	return "Branch Manager";
 }
+
+static bool canAccessTab(const User* user, int tab) {
+	if (!user) return false;
+	if (tab == 0) return user->getRole() == Role::Employee;
+	if (tab == 4 || tab == 5 || tab == 3) return true;
+	if (tab == 1) return user->getRole() != Role::Employee;
+	if (tab == 2) return user->getRole() == Role::BranchManager;
+	return false;
+}
+
+struct LoginAccount {
+	User* user;
+	std::string username;
+	std::string password;
+};
 
 static void saveEncryptedAccount(const User& user, const std::string& password) {
 	std::ofstream file("accounts.dat", std::ios::app | std::ios::binary);
@@ -190,16 +209,32 @@ int main() {
 	for (int i = 0; i < static_cast<int>(cart.size()); ++i) {
 		cart[i] = {i, 0};
 	}
-	Customer kioskUser;
-	Employee employeeUser;
-	Manager managerUser;
-	kioskUser.showMenuOptions();
-	employeeUser.showMenuOptions();
-	managerUser.showMenuOptions();
-	saveEncryptedAccount(kioskUser, rolePassword(Role::Customer));
-	saveEncryptedAccount(employeeUser, rolePassword(Role::Employee));
-	saveEncryptedAccount(managerUser, rolePassword(Role::Manager));
-	User* currentUser = &kioskUser;
+	Employee employeeOne("EMP001", "employee1", "BR001");
+	Employee employeeTwo("EMP002", "employee2", "BR002");
+	Employee employeeThree("EMP003", "employee3", "BR003");
+	Manager managerOne("MGR001", "manager1", "BR001");
+	Manager managerTwo("MGR002", "manager2", "BR002");
+	BranchManager branchManagerUser;
+	employeeOne.showMenuOptions();
+	employeeTwo.showMenuOptions();
+	employeeThree.showMenuOptions();
+	managerOne.showMenuOptions();
+	managerTwo.showMenuOptions();
+	branchManagerUser.showMenuOptions();
+	std::vector<Employee*> employees{&employeeOne, &employeeTwo, &employeeThree, &managerOne, &managerTwo, &branchManagerUser};
+	std::vector<Timekeeping> timekeepingRecords;
+	for (Employee* user : employees) timekeepingRecords.emplace_back(user->getId());
+	std::vector<LoginAccount> accounts{
+		{&employeeOne, "employee1", "emp1pass"},
+		{&employeeTwo, "employee2", "emp2pass"},
+		{&employeeThree, "employee3", "emp3pass"},
+		{&managerOne, "manager1", "mgr1pass"},
+		{&managerTwo, "manager2", "mgr2pass"},
+		{&branchManagerUser, "branchmanager", "branchpass"}
+	};
+	for (const LoginAccount& account : accounts)
+		saveEncryptedAccount(*account.user, account.password);
+	User* currentUser = nullptr;
 	RestaurantChain chain("Small Kitchen");
 	chain.addBranch("BR001","Central Branch",290.0f,285.0f);
 	chain.addBranch("BR002","West Branch",470.0f,185.0f);
@@ -219,12 +254,21 @@ int main() {
 	OrderQueue orderQueue;
 	MenuLookup menuLookup;
 	for (int i=0;i<static_cast<int>(products.size());++i) menuLookup.addItem({lowerText(productCode(i)),products[i].name,static_cast<float>(products[i].price)});
+	ShiftManager shiftManager;
+	ScheduleService scheduleService(&shiftManager);
+	scheduleService.openOpenShift("OPEN1", "2026-10-09", "08:00", "16:00", 30, "BR001", 2);
+	scheduleService.openOpenShift("OPEN2", "2026-10-10", "16:00", "23:00", 30, "BR002", 2);
+	for (Branch& branch : branchValues) {
+		branch.addStock("FLOUR", 50);
+		branch.addStock("NOODLES", 50);
+	}
+	ManagementUI managementUi(chain, branchValues, scheduleService, shiftManager, timekeepingRecords, employees);
 
 	std::string search;
 	bool searchFocused = false;
-	bool loginDialog = false;
-	bool roleSelected = false;
-	Role requestedRole = Role::Customer;
+	bool loginDialog = true;
+	int loginField = 0;
+	std::string usernameInput;
 	std::string passwordInput;
 	bool deliveryMode = true;
 	bool useAStar = true;
@@ -236,7 +280,7 @@ int main() {
 	int revenueToday = 4285000;
 	int nextOrderId = 1001;
 	float animationTime = 0.0f;
-	std::string statusMessage = "Kiosk ready - choose an item to begin";
+	std::string statusMessage = "Please log in";
 
 	while (!WindowShouldClose()) {
 		animationTime += GetFrameTime();
@@ -259,27 +303,52 @@ int main() {
 			return false;
 		};
 		bool hoverOrderTab = isHovered({28, 134, 180, 48}, "Open order creation");
-		bool hoverStatsTab = isHovered({28, 190, 180, 48}, "View sales reports");
-		bool hoverMapTab = isHovered({28, 246, 180, 48}, "Find the shortest delivery route");
-		bool hoverRole = isHovered({28, 300, 180, 48}, "Switch Customer / Employee / Manager");
+		bool hoverStatsTab = canAccessTab(currentUser, 1) && isHovered({28, 190, 180, 48}, "View sales reports");
+		bool hoverMapTab = canAccessTab(currentUser, 2) && isHovered({28, 246, 180, 48}, "Find the shortest delivery route");
+		bool hoverRole = isHovered({28, 300, 180, 48}, "Switch role");
+		bool hoverInventoryTab = canAccessTab(currentUser, 3) && isHovered({28, 356, 180, 48}, "Manage branch menu and inventory");
+		bool hoverScheduleTab = canAccessTab(currentUser, 4) && isHovered({28, 412, 180, 48}, "Manage work schedules");
+		bool hoverAttendanceTab = canAccessTab(currentUser, 5) && isHovered({28, 468, 180, 48}, "Record attendance and find branches");
 		bool hoverDiscount = isHovered({960, 556, 250, 32}, "Toggle the promotion or combo");
 		bool hoverPayment = isHovered({960, 606, 250, 42}, "Add the order to the queue and pay");
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 			if (loginDialog) {
 				roleDialogConsumedInput = true;
-				if (CheckCollisionPointRec(mouse, {470, 330, 105, 38})) { requestedRole = Role::Customer; roleSelected = true; passwordInput.clear(); }
-				if (CheckCollisionPointRec(mouse, {585, 330, 105, 38})) { requestedRole = Role::Employee; roleSelected = true; passwordInput.clear(); }
-				if (CheckCollisionPointRec(mouse, {700, 330, 105, 38})) { requestedRole = Role::Manager; roleSelected = true; passwordInput.clear(); }
-				if (CheckCollisionPointRec(mouse, {640, 520, 180, 40})) { loginDialog = false; passwordInput.clear(); }
+				if (CheckCollisionPointRec(mouse, {470, 330, 340, 46})) loginField = 0;
+				if (CheckCollisionPointRec(mouse, {470, 435, 340, 46})) loginField = 1;
+				if (CheckCollisionPointRec(mouse, {640, 500, 180, 40})) {
+					for (const LoginAccount& account : accounts) {
+						if (account.username == usernameInput && account.password == passwordInput) {
+							currentUser = account.user;
+							activeTab = canAccessTab(currentUser, 0) ? 0 : 1;
+							loginDialog = false;
+							usernameInput.clear();
+							passwordInput.clear();
+							statusMessage = "Login successful: " + std::string(roleName(currentUser->role));
+							break;
+						}
+					}
+					if (!currentUser) {
+						statusMessage = "Invalid username or password";
+						passwordInput.clear();
+					}
+				}
 			} else {
-			if (CheckCollisionPointRec(mouse, {28, 134, 180, 48})) { activeTab = 0; statusMessage = "Kiosk order screen opened"; }
-			if (CheckCollisionPointRec(mouse, {28, 190, 180, 48}) && currentUser->canViewReports()) { activeTab = 1; statusMessage = "Sales report opened"; }
-			if (CheckCollisionPointRec(mouse, {28, 246, 180, 48}) && currentUser->canManageBranches()) { activeTab = 2; statusMessage = "Delivery map opened"; }
+			if (CheckCollisionPointRec(mouse, {28, 134, 180, 48}) && canAccessTab(currentUser, 0)) { activeTab = 0; statusMessage = "Orders opened"; }
+			if (CheckCollisionPointRec(mouse, {28, 190, 180, 48}) && canAccessTab(currentUser, 1)) { activeTab = 1; statusMessage = "Sales report opened"; }
+			if (CheckCollisionPointRec(mouse, {28, 246, 180, 48}) && canAccessTab(currentUser, 2)) { activeTab = 2; statusMessage = "Delivery map opened"; }
+			if (CheckCollisionPointRec(mouse, {28, 356, 180, 48}) && canAccessTab(currentUser, 3)) { activeTab = 3; statusMessage = "Branch management opened"; }
+			if (CheckCollisionPointRec(mouse, {28, 412, 180, 48}) && canAccessTab(currentUser, 4)) { activeTab = 4; statusMessage = "Schedules opened"; }
+			if (CheckCollisionPointRec(mouse, {28, 468, 180, 48}) && canAccessTab(currentUser, 5)) { activeTab = 5; statusMessage = "Attendance opened"; }
 			if (CheckCollisionPointRec(mouse, {28, 300, 180, 48})) {
-				if (currentUser == &managerUser) { currentUser = &kioskUser; statusMessage = "Logged out to Kiosk"; }
+				if (currentUser) {
+					currentUser = nullptr;
+					activeTab = 0;
+					loginDialog = true;
+					statusMessage = "Logged out";
+				}
 				else {
 					loginDialog = true;
-					roleSelected = false;
 					roleDialogConsumedInput = true;
 					passwordInput.clear();
 				}
@@ -348,24 +417,49 @@ int main() {
 				Rectangle serviceButton = compactLayout ? Rectangle{830, 400, 170, 40} : Rectangle{1090, 400, 170, 40};
 				if (CheckCollisionPointRec(mouse, serviceButton)) { deliveryMode = !deliveryMode; statusMessage = deliveryMode ? "Mode: delivery" : "Mode: dine-in"; }
 			}
+			if (activeTab >= 3 && managementUi.handleClick(mouse, activeTab, *currentUser)) {
+				statusMessage = managementUi.getMessage();
+			}
 			}
 		}
-		if (IsKeyPressed(KEY_ONE)) activeTab = 0;
-		if (IsKeyPressed(KEY_TWO) && currentUser->canViewReports()) activeTab = 1;
-		if (IsKeyPressed(KEY_THREE) && currentUser->canManageBranches()) activeTab = 2;
 		if (activeTab == 0 && IsKeyPressed(KEY_A)) { cart[0].quantity++; statusMessage = "Key A: added Special Banh Mi"; }
 		if (activeTab == 0 && IsKeyPressed(KEY_ENTER) && !cartTotal(cart)) { statusMessage = "The cart is empty"; }
 
-		if (loginDialog && roleSelected) {
-			if (IsKeyPressed(KEY_BACKSPACE) && !passwordInput.empty()) passwordInput.pop_back();
+		if (loginDialog) {
+			if (IsKeyPressed(KEY_BACKSPACE)) {
+				if (loginField == 0 && !usernameInput.empty()) usernameInput.pop_back();
+				if (loginField == 1 && !passwordInput.empty()) passwordInput.pop_back();
+			}
 			int key = GetCharPressed();
-			while (key > 0) { if (key >= 32 && key <= 126 && passwordInput.size() < 24) passwordInput += static_cast<char>(key); key = GetCharPressed(); }
+			while (key > 0) {
+				std::string& input = loginField == 0 ? usernameInput : passwordInput;
+				if (key >= 32 && key <= 126 && input.size() < 24) input += static_cast<char>(key);
+				key = GetCharPressed();
+			}
+			if (IsKeyPressed(KEY_TAB)) loginField = loginField == 0 ? 1 : 0;
 			if (IsKeyPressed(KEY_ENTER)) {
-				if (passwordInput == rolePassword(requestedRole)) {
-					currentUser = requestedRole == Role::Customer ? static_cast<User*>(&kioskUser) : requestedRole == Role::Employee ? static_cast<User*>(&employeeUser) : static_cast<User*>(&managerUser);
-					statusMessage = "Login successful: " + currentUser->username;
-					loginDialog = false; passwordInput.clear();
-				} else { statusMessage = "Incorrect password - try again"; passwordInput.clear(); }
+				for (const LoginAccount& account : accounts) {
+					if (account.username == usernameInput && account.password == passwordInput) {
+						currentUser = account.user;
+						activeTab = canAccessTab(currentUser, 0) ? 0 : 1;
+						loginDialog = false;
+						usernameInput.clear();
+						passwordInput.clear();
+						statusMessage = "Login successful: " + std::string(roleName(currentUser->role));
+						break;
+					}
+				}
+				if (!currentUser) {
+					statusMessage = "Invalid username or password";
+					passwordInput.clear();
+				}
+			}
+		} else if (currentUser && activeTab == 4) {
+			if (IsKeyPressed(KEY_BACKSPACE)) managementUi.updateInput(KEY_BACKSPACE);
+			int key = GetCharPressed();
+			while (key > 0) {
+				managementUi.updateInput(key);
+				key = GetCharPressed();
 			}
 		} else if (!roleDialogConsumedInput && activeTab == 0 && searchFocused && IsKeyPressed(KEY_BACKSPACE) && !search.empty()) search.pop_back();
 		if (!loginDialog && !roleDialogConsumedInput && activeTab == 0 && searchFocused) {
@@ -380,7 +474,7 @@ int main() {
 				else statusMessage = "Filtering products by: " + search;
 			}
 		}
-		if (IsKeyPressed(KEY_P) && currentUser->canViewReports() && !orderQueue.empty()) { orderQueue.popNext(); statusMessage = "Processed the first queued order"; }
+		if (IsKeyPressed(KEY_P) && currentUser && currentUser->canViewReports() && !orderQueue.empty()) { orderQueue.popNext(); statusMessage = "Processed the first queued order"; }
 
 		BeginDrawing();
 		BeginMode2D({{GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f}, {640, 380}, 0, scale});
@@ -390,19 +484,37 @@ int main() {
 		DrawText("SMALL KITCHEN", 30, 20, 30, {248, 218, 154, 255});
 		DrawText("SALES MANAGEMENT", 31, 56, 13, {190, 208, 196, 255});
 		DrawText("Tuesday, 25/08/2026", 1050, 24, 16, {224, 232, 222, 255});
-		DrawText(currentUser->username.c_str(), 1050, 52, 13, {170, 190, 180, 255});
+		DrawText(currentUser ? currentUser->username.c_str() : "LOGIN REQUIRED", 1050, 52, 13, {170, 190, 180, 255});
 		DrawText(statusMessage.c_str(), 250, 715, 14, {35, 105, 78, 255});
 
 		DrawRectangle(0, 92, 218, 668, {224, 231, 220, 255});
 		DrawText("MENU", 30, 110, 14, {65, 84, 75, 255});
-		DrawRectangle(28, 134, 180, 48, activeTab == 0 || hoverOrderTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
-		DrawRectangle(28, 190, 180, 48, activeTab == 1 || hoverStatsTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
-		DrawText("ORDERS", 52, 150, 17, activeTab == 0 ? RAYWHITE : Color{32, 55, 47, 255});
-		DrawText("REPORTS", 52, 206, 17, activeTab == 1 ? RAYWHITE : Color{32, 55, 47, 255});
-		DrawRectangle(28, 246, 180, 48, activeTab == 2 || hoverMapTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
-		DrawText("DELIVERY MAP", 38, 261, 15, activeTab == 2 ? RAYWHITE : Color{32, 55, 47, 255});
-		DrawRectangle(28, 300, 180, 48, hoverRole ? Color{255, 229, 177, 255} : Color{247, 239, 214, 255});
-		DrawText("SWITCH ROLE", 52, 316, 15, {112, 76, 35, 255});
+		if (currentUser) {
+			DrawRectangle(28, 134, 180, 48, activeTab == 0 || hoverOrderTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
+			DrawText("ORDERS", 52, 150, 17, activeTab == 0 ? RAYWHITE : Color{32, 55, 47, 255});
+			if (canAccessTab(currentUser, 1)) {
+				DrawRectangle(28, 190, 180, 48, activeTab == 1 || hoverStatsTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
+				DrawText("REPORTS", 52, 206, 17, activeTab == 1 ? RAYWHITE : Color{32, 55, 47, 255});
+			}
+			if (canAccessTab(currentUser, 2)) {
+				DrawRectangle(28, 246, 180, 48, activeTab == 2 || hoverMapTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
+				DrawText("DELIVERY MAP", 38, 261, 15, activeTab == 2 ? RAYWHITE : Color{32, 55, 47, 255});
+			}
+			if (canAccessTab(currentUser, 3)) {
+				DrawRectangle(28, 356, 180, 48, activeTab == 3 || hoverInventoryTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
+				DrawText("INVENTORY", 48, 375, 14, activeTab == 3 ? RAYWHITE : Color{32, 55, 47, 255});
+			}
+			if (canAccessTab(currentUser, 4)) {
+				DrawRectangle(28, 412, 180, 48, activeTab == 4 || hoverScheduleTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
+				DrawText("SCHEDULES", 48, 428, 14, activeTab == 4 ? RAYWHITE : Color{32, 55, 47, 255});
+			}
+			if (canAccessTab(currentUser, 5)) {
+				DrawRectangle(28, 468, 180, 48, activeTab == 5 || hoverAttendanceTab ? Color{35, 55, 53, 255} : Color{224, 231, 220, 255});
+				DrawText("ATTENDANCE", 43, 484, 13, activeTab == 5 ? RAYWHITE : Color{32, 55, 47, 255});
+			}
+			DrawRectangle(28, 300, 180, 48, hoverRole ? Color{255, 229, 177, 255} : Color{247, 239, 214, 255});
+			DrawText("SWITCH ROLE", 52, 316, 15, {112, 76, 35, 255});
+		}
 		DrawText("HỆ THỐNG", 30, 690, 14, {65, 84, 75, 255});
 		DrawText("Server: Connected", 30, 713, 14, {45, 108, 76, 255});
 
@@ -480,7 +592,7 @@ int main() {
 			DrawText("Peach Lemongrass Tea", 270, 525, 18, {48, 64, 55, 255});
 			DrawRectangle(520, 526, 350, 16, {208, 220, 207, 255});
 			DrawRectangle(520, 526, 190, 16, {242, 126, 110, 255});
-		} else {
+		} else if (activeTab == 2) {
 			int panelX = compactLayout ? 830 : 1090;
 			DrawText("Delivery Map", compactLayout ? 190 : 250, 118, 28, {35, 55, 53, 255});
 			DrawText("XY grid graph 30 x 20 - select a branch or empty cell", compactLayout ? 190 : 230, 140, 14, {104, 115, 108, 255});
@@ -523,35 +635,32 @@ int main() {
 			DrawText(("Destination: " + (targetBranch >= 0 ? branchValues[targetBranch].getName() : "custom cell")).c_str(), panelX, 315, 14, {54, 66, 58, 255});
 			char queueText[48]; std::snprintf(queueText, sizeof(queueText), "Queued orders: %d", orderQueue.size());
 			DrawText(queueText, panelX, 345, 14, {54, 66, 58, 255});
-			DrawText(currentUser->canViewReports() ? "Press P to process next order" : "Customer can only place orders", panelX, 375, 13, {104, 115, 108, 255});
+			DrawText(currentUser && currentUser->canViewReports() ? "Press P to process next order" : "Employee order processing", panelX, 375, 13, {104, 115, 108, 255});
 			DrawRectangle(panelX, 400, 170, 40, {247, 239, 214, 255});
 			DrawText(deliveryMode ? "Delivery" : "Dine-in", panelX + 50, 412, 15, {130, 91, 48, 255});
 			DrawRectangle(panelX, 455, 170, 40, {224, 231, 220, 255});
 			DrawText(useAStar ? "A* / Dijkstra" : "Dijkstra / A*", panelX + 25, 467, 12, {54, 66, 58, 255});
+		} else {
+			managementUi.draw(mouse, activeTab, *currentUser);
 		}
 		if (loginDialog) {
 			DrawRectangle(0, 0, 1280, 760, {20, 30, 28, 150});
 			DrawRectangle(420, 230, 440, 320, {250, 247, 238, 255});
-			DrawText("LOGIN AS", 470, 270, 22, {35, 55, 53, 255});
-			DrawText("Choose a role to sign in", 470, 305, 14, {104, 115, 108, 255});
-			DrawRectangle(470, 330, 105, 38, requestedRole == Role::Customer ? Color{35, 105, 78, 255} : Color{224, 231, 220, 255});
-			DrawRectangle(585, 330, 105, 38, requestedRole == Role::Employee ? Color{35, 105, 78, 255} : Color{224, 231, 220, 255});
-			DrawRectangle(700, 330, 105, 38, requestedRole == Role::Manager ? Color{35, 105, 78, 255} : Color{224, 231, 220, 255});
-			DrawText("Customer", 486, 341, 13, requestedRole == Role::Customer ? RAYWHITE : Color{54, 66, 58, 255});
-			DrawText("Employee", 601, 341, 13, requestedRole == Role::Employee ? RAYWHITE : Color{54, 66, 58, 255});
-			DrawText("Manager", 722, 341, 13, requestedRole == Role::Manager ? RAYWHITE : Color{54, 66, 58, 255});
-			if (roleSelected) {
-				DrawText("Password:", 470, 395, 14, {54, 66, 58, 255});
-				DrawRectangle(470, 415, 340, 46, RAYWHITE);
-				DrawRectangleLines(470, 415, 340, 46, {35, 105, 78, 255});
-				std::string masked(passwordInput.size(), '*');
-				DrawText(masked.c_str(), 486, 427, 18, {42, 55, 48, 255});
-				DrawText("Enter your password and press Enter", 470, 475, 14, {104, 115, 108, 255});
-			} else {
-				DrawText("Select Customer, Employee, or Manager", 470, 420, 14, {130, 91, 48, 255});
-			}
+			DrawText("SIGN IN", 470, 270, 22, {35, 55, 53, 255});
+			DrawText("Each account determines its own role", 470, 305, 14, {104, 115, 108, 255});
+			DrawText("Username", 470, 340, 14, {54, 66, 58, 255});
+			DrawRectangle(470, 355, 340, 46, RAYWHITE);
+			DrawRectangleLines(470, 355, 340, 46, loginField == 0 ? Color{35, 105, 78, 255} : Color{202, 211, 201, 255});
+			DrawText(usernameInput.empty() ? "Enter username" : usernameInput.c_str(), 486, 367, 17,
+				usernameInput.empty() ? Color{150, 158, 151, 255} : Color{42, 55, 48, 255});
+			DrawText("Password", 470, 420, 14, {54, 66, 58, 255});
+			DrawRectangle(470, 435, 340, 46, RAYWHITE);
+			DrawRectangleLines(470, 435, 340, 46, loginField == 1 ? Color{35, 105, 78, 255} : Color{202, 211, 201, 255});
+			std::string masked(passwordInput.size(), '*');
+			DrawText(masked.c_str(), 486, 447, 18, {42, 55, 48, 255});
+			DrawText("Tab switches fields, Enter signs in", 470, 490, 13, {104, 115, 108, 255});
 			DrawRectangle(640, 495, 180, 40, {224, 231, 220, 255});
-			DrawText("HUY", 704, 507, 14, {54, 66, 58, 255});
+			DrawText("SIGN IN", 690, 507, 14, {54, 66, 58, 255});
 		}
 		if (!hoverHint.empty()) {
 			int tooltipWidth = MeasureText(hoverHint.c_str(), 14) + 24;

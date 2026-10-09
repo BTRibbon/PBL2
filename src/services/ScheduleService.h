@@ -17,6 +17,7 @@ class ScheduleService {
 public:
 	explicit ScheduleService(ShiftManager* manager = nullptr);
 	void addSchedule(const std::shared_ptr<Schedule>& schedule);
+	bool deleteSchedule(const std::string& scheduleId);
 	std::shared_ptr<SelfRegisteredSchedule> openOpenShift(
 		std::string scheduleId, std::string date, std::string start, std::string end,
 		int breakTime, std::string branch, int required = 1);

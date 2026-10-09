@@ -7,13 +7,9 @@ std::string User::getName() const { return name; }
 
 bool User::canManageBranches() const { return false; }
 
+bool User::canManageAllBranches() const { return false; }
+
 bool User::canViewReports() const { return false; }
-
-Customer::Customer(std::string id,std::string name) : User(id,name,Role::Customer) {}
-
-Role Customer::getRole() const { return Role::Customer; }
-
-void Customer::showMenuOptions() const { std::cout<<"[Customer] Xem menu / Dat mon / Xem gio hang\n"; }
 
 Employee::Employee(std::string id,std::string name,std::string branch) : User(id,name,Role::Employee),branchId(branch) {}
 
@@ -40,3 +36,16 @@ Role Manager::getRole() const { return Role::Manager; }
 void Manager::showMenuOptions() const { std::cout<<"[Manager] Quan ly chi nhanh / Xem bao cao / Quan ly nhan vien\n"; }
 
 bool Manager::canManageBranches() const { return true; }
+
+BranchManager::BranchManager(std::string id,std::string name)
+	: Manager(id, name, "ALL") {
+	role = Role::BranchManager;
+}
+
+Role BranchManager::getRole() const { return Role::BranchManager; }
+
+void BranchManager::showMenuOptions() const {
+	std::cout<<"[Branch Manager] Quan ly toan bo chi nhanh / Quan ly manager\n";
+}
+
+bool BranchManager::canManageAllBranches() const { return true; }

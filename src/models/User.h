@@ -5,7 +5,7 @@
 
 class ScheduleService;
 
-enum class Role { Customer, Employee, Manager };
+enum class Role { Employee, Manager, BranchManager };
 
 class User {
 protected:
@@ -20,14 +20,8 @@ public:
 	virtual void showMenuOptions() const = 0;
 	std::string getName() const;
 	virtual bool canManageBranches() const;
+	virtual bool canManageAllBranches() const;
 	virtual bool canViewReports() const;
-};
-
-class Customer : public User {
-public:
-	Customer(std::string id="CUS001",std::string name="Kiosk Guest");
-	Role getRole() const override;
-	void showMenuOptions() const override;
 };
 
 class Employee : public User {
@@ -52,4 +46,12 @@ public:
 	Role getRole() const override;
 	void showMenuOptions() const override;
 	bool canManageBranches() const override;
+};
+
+class BranchManager : public Manager {
+public:
+	BranchManager(std::string id="BM001",std::string name="Branch Manager");
+	Role getRole() const override;
+	void showMenuOptions() const override;
+	bool canManageAllBranches() const override;
 };

@@ -11,3 +11,4 @@ D:/GitHub/pbl2/src/models/User.cpp
 D:/GitHub/pbl2/src/models/Warehouse.cpp
 D:/GitHub/pbl2/src/services/ScheduleService.cpp
 D:/GitHub/pbl2/src/services/ShiftManager.cpp
+D:/GitHub/pbl2/src/UI/ManagementUI.cpp

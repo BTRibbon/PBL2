@@ -8,6 +8,16 @@ void ScheduleService::addSchedule(const std::shared_ptr<Schedule>& schedule) {
 	if (schedule) schedules.push_back(schedule);
 }
 
+bool ScheduleService::deleteSchedule(const std::string& scheduleId) {
+	for (auto it = schedules.begin(); it != schedules.end(); ++it) {
+		if ((*it)->getId() == scheduleId) {
+			schedules.erase(it);
+			return true;
+		}
+	}
+	return false;
+}
+
 std::shared_ptr<SelfRegisteredSchedule> ScheduleService::openOpenShift(
 	std::string scheduleId, std::string date, std::string start, std::string end,
 	int breakTime, std::string branch, int required) {

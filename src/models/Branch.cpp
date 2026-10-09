@@ -16,6 +16,8 @@ MenuItem* Branch::findMenuItem(std::string itemId) { return menu.find(itemId); }
 
 void Branch::addStock(std::string itemId,int quantity) { warehouse.addStock(itemId,quantity); }
 
+bool Branch::removeStock(std::string itemId,int quantity) { return warehouse.removeStock(itemId,quantity); }
+
 int Branch::getStock(std::string itemId) const { return warehouse.getStock(itemId); }
 
 void Branch::setOpeningHours(std::string open,std::string close) { openingHours.setHours(open,close); }

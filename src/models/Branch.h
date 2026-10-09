@@ -24,6 +24,7 @@ public:
 	void addMenuItem(MenuItem item);
 	MenuItem* findMenuItem(std::string itemId);
 	void addStock(std::string itemId,int quantity);
+	bool removeStock(std::string itemId,int quantity);
 	int getStock(std::string itemId) const;
 	void setOpeningHours(std::string open,std::string close);
 	OpeningHours getOpeningHours() const;

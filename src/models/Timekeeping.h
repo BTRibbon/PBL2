@@ -19,5 +19,7 @@ public:
 	Timekeeping(std::string employee);
 	std::string getEmployeeId() const;
 	void addRecord(const AttendanceRecord& record);
+	bool checkIn(const std::string& scheduleId, const std::string& timestamp);
+	bool checkOut(const std::string& scheduleId, const std::string& timestamp);
 	const std::vector<AttendanceRecord>& getRecords() const;
 };
