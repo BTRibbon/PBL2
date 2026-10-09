@@ -25,7 +25,11 @@ static std::string currentTimestamp() {
 	auto now = std::chrono::system_clock::now();
 	std::time_t current = std::chrono::system_clock::to_time_t(now);
 	std::tm localTime{};
+#ifdef _WIN32
 	localtime_s(&localTime, &current);
+#else
+	localtime_r(&current, &localTime);
+#endif
 	char buffer[32];
 	std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &localTime);
 	return buffer;
