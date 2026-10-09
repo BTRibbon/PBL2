@@ -21,15 +21,16 @@
 \DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
 \DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{explicit}\ \doxymbox{\hyperlink{class_schedule_service_a926152db4be01b5a2fc43e3aef3085a9}{ScheduleService}}(\doxymbox{\hyperlink{class_shift_manager}{ShiftManager}}*\ manager\ =\ \textcolor{keyword}{nullptr});}
 \DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_schedule_service_afad3b5d3ad737f061ad16b97cf7bd9a7}{addSchedule}}(\textcolor{keyword}{const}\ std::shared\_ptr<Schedule>\&\ schedule);}
-\DoxyCodeLine{00020\ \ \ \ \ std::shared\_ptr<SelfRegisteredSchedule>\ \doxymbox{\hyperlink{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e}{openOpenShift}}(}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ std::string\ scheduleId,\ std::string\ date,\ std::string\ start,\ std::string\ end,}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ breakTime,\ std::string\ branch,\ \textcolor{keywordtype}{int}\ required\ =\ 1);}
-\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_service_a4dc923e1678ca94d469cda4f3d38347f}{registerForEmptyShift}}(\doxymbox{\hyperlink{class_employee}{Employee}}\&\ employee,\ \textcolor{keyword}{const}\ std::string\&\ scheduleId);}
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_service_a283e2d32ebba5403d13319696399aa15}{validateMinimumShifts}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_employee}{Employee}}\&\ employee,\ \textcolor{keyword}{const}\ std::string\&\ fromDate,}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ toDate)\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00026\ \ \ \ \ std::vector<std::shared\_ptr<Schedule>>\ \doxymbox{\hyperlink{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147}{checkShiftCoverage}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b}{notifyShiftManager}}();}
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::shared\_ptr<Schedule>>\&\ \doxymbox{\hyperlink{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446}{getSchedules}}()\ \textcolor{keyword}{const};}
-\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_service_a58c39638b9e588241090b2d9986c890b}{deleteSchedule}}(\textcolor{keyword}{const}\ std::string\&\ scheduleId);}
+\DoxyCodeLine{00021\ \ \ \ \ std::shared\_ptr<SelfRegisteredSchedule>\ \doxymbox{\hyperlink{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e}{openOpenShift}}(}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ std::string\ scheduleId,\ std::string\ date,\ std::string\ start,\ std::string\ end,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ breakTime,\ std::string\ branch,\ \textcolor{keywordtype}{int}\ required\ =\ 1);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_service_a4dc923e1678ca94d469cda4f3d38347f}{registerForEmptyShift}}(\doxymbox{\hyperlink{class_employee}{Employee}}\&\ employee,\ \textcolor{keyword}{const}\ std::string\&\ scheduleId);}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_schedule_service_a283e2d32ebba5403d13319696399aa15}{validateMinimumShifts}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{class_employee}{Employee}}\&\ employee,\ \textcolor{keyword}{const}\ std::string\&\ fromDate,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ toDate)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00027\ \ \ \ \ std::vector<std::shared\_ptr<Schedule>>\ \doxymbox{\hyperlink{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147}{checkShiftCoverage}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b}{notifyShiftManager}}();}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::shared\_ptr<Schedule>>\&\ \doxymbox{\hyperlink{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446}{getSchedules}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \};}
 
 \end{DoxyCode}

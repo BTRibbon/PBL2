@@ -1,0 +1,144 @@
+\doxysection{Branch\+Manager Class Reference}
+\hypertarget{class_branch_manager}{}\label{class_branch_manager}\index{BranchManager@{BranchManager}}
+
+
+{\ttfamily \+\#include $<$User.\+h$>$}
+
+
+
+Inheritance diagram for Branch\+Manager:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_branch_manager__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Branch\+Manager:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_branch_manager__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_branch_manager_aa50dc8c3dd7e938a2f9c80b21b3800cf}{Branch\+Manager}} (std::\+string id="{}BM001"{}, std::\+string name="{}Branch Manager"{})
+\item 
+\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} \doxymbox{\hyperlink{class_branch_manager_a438238d315f4fc8aef3a32d2ca4d01d9}{get\+Role}} () const override
+\item 
+void \doxymbox{\hyperlink{class_branch_manager_a7be6b467e2aebe71f5a1d452295ee741}{show\+Menu\+Options}} () const override
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_branch_manager_a5ae894059dc2212acd371b20f80d74fb}{can\+Manage\+All\+Branches}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_manager}{Manager}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_manager_a759fee9d5f43dd604e5fd1cf5b071296}{Manager}} (std::\+string id="{}MGR001"{}, std::\+string name="{}Manager"{}, std::\+string branch="{}BR001"{})
+\item 
+\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} \doxymbox{\hyperlink{class_manager_a367f5bae2686991562c4fad5d30445af}{get\+Role}} () const override
+\item 
+void \doxymbox{\hyperlink{class_manager_a4802266adc51e63b1b4ae49781237a82}{show\+Menu\+Options}} () const override
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_manager_a1bf9c83ceaaef28134851440cef01c76}{can\+Manage\+Branches}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_employee}{Employee}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_employee_a16eb6db75e9d1cea40285b7c2485455f}{Employee}} (std::\+string id="{}EMP001"{}, std::\+string name="{}Employee"{}, std::\+string branch="{}BR001"{})
+\item 
+std::\+string \doxymbox{\hyperlink{class_employee_ad98f88d13517ebfe16d6aac9dedb28e6}{get\+Id}} () const
+\item 
+int \doxymbox{\hyperlink{class_employee_aeec5a43938626cc470d770eaeeef0dd6}{get\+Minimum\+Shifts}} () const
+\item 
+void \doxymbox{\hyperlink{class_employee_a08668ba44ecc6f38babd84de7b6fe96e}{set\+Minimum\+Shifts}} (int minimum)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_employee_ac48f71e31528d03dc7fc23b385f826bf}{register\+For\+Empty\+Shift}} (\doxymbox{\hyperlink{class_schedule_service}{Schedule\+Service}} \&schedule\+Service, const std::\+string \&schedule\+Id)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_employee_a36cb99bc03a0628e51f919aea1f74e74}{can\+View\+Reports}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_user}{User}}}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_user_a1615197a2599367bab87d4ccfbc90a09}{User}} (std::\+string user\+Id, std::\+string user\+Name, \doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} user\+Role)
+\item 
+virtual \doxymbox{\hyperlink{class_user_a634d7ad22c3d2b5fed35f71e10d98628}{\texorpdfstring{$\sim$}{\string~}\+User}} ()=default
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_a446a64e63adafbc2e1428532275ad6a1}{get\+Name}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_employee}{Employee}}}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_employee_abb1790cdfd63d78e659ad1842216b418}{branch\+Id}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \doxymbox{\hyperlink{class_user}{User}}}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_aacbb807e514280f69e00bec7d71f3aee}{username}}
+\item 
+\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} \doxymbox{\hyperlink{class_user_af969eefd9642fee961f35493965e274c}{role}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_user}{User}}}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_a290593888be78ccd4214e99c8ee43b4e}{id}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_user_a085d8d69282b6298964eab8351584536}{name}}
+\end{DoxyCompactItemize}
+
+
+\label{class_branch_manager_doc-constructors}
+\Hypertarget{class_branch_manager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_branch_manager_aa50dc8c3dd7e938a2f9c80b21b3800cf}\index{BranchManager@{BranchManager}!BranchManager@{BranchManager}}
+\index{BranchManager@{BranchManager}!BranchManager@{BranchManager}}
+\doxysubsubsection{\texorpdfstring{BranchManager()}{BranchManager()}}
+{\footnotesize\ttfamily \label{class_branch_manager_aa50dc8c3dd7e938a2f9c80b21b3800cf} 
+Branch\+Manager::\+\+Branch\+Manager (\begin{DoxyParamCaption}\item[{std::\+string}]{id}{ = {\ttfamily "{}BM001"{}}, }\item[{std::\+string}]{name}{ = {\ttfamily "{}Branch~Manager"{}}}\end{DoxyParamCaption})}
+
+
+
+\label{class_branch_manager_doc-func-members}
+\Hypertarget{class_branch_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_branch_manager_a5ae894059dc2212acd371b20f80d74fb}\index{BranchManager@{BranchManager}!canManageAllBranches@{canManageAllBranches}}
+\index{canManageAllBranches@{canManageAllBranches}!BranchManager@{BranchManager}}
+\doxysubsubsection{\texorpdfstring{canManageAllBranches()}{canManageAllBranches()}}
+{\footnotesize\ttfamily \label{class_branch_manager_a5ae894059dc2212acd371b20f80d74fb} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Branch\+Manager::\+can\+Manage\+All\+Branches (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \doxymbox{\hyperlink{class_user_af4cf4fb3138cca0687ab3b1aef629916}{User}}.
+
+\Hypertarget{class_branch_manager_a438238d315f4fc8aef3a32d2ca4d01d9}\index{BranchManager@{BranchManager}!getRole@{getRole}}
+\index{getRole@{getRole}!BranchManager@{BranchManager}}
+\doxysubsubsection{\texorpdfstring{getRole()}{getRole()}}
+{\footnotesize\ttfamily \label{class_branch_manager_a438238d315f4fc8aef3a32d2ca4d01d9} 
+\doxymbox{\hyperlink{_user_8h_acdd79a1a4f81dd6ee5cddcb21149b951}{Role}} Branch\+Manager::\+get\+Role (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \doxymbox{\hyperlink{class_user_ad6add2a12c6e3460fe518f471bcadfc2}{User}}.
+
+\Hypertarget{class_branch_manager_a7be6b467e2aebe71f5a1d452295ee741}\index{BranchManager@{BranchManager}!showMenuOptions@{showMenuOptions}}
+\index{showMenuOptions@{showMenuOptions}!BranchManager@{BranchManager}}
+\doxysubsubsection{\texorpdfstring{showMenuOptions()}{showMenuOptions()}}
+{\footnotesize\ttfamily \label{class_branch_manager_a7be6b467e2aebe71f5a1d452295ee741} 
+void Branch\+Manager::\+show\+Menu\+Options (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \doxymbox{\hyperlink{class_user_abebe27f9aad8983c9a4d97407554290f}{User}}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+models/\doxymbox{\hyperlink{_user_8h}{User.\+h}}\item 
+models/\doxymbox{\hyperlink{_user_8cpp}{User.\+cpp}}\end{DoxyCompactItemize}

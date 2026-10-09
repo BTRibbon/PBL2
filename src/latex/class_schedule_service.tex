@@ -21,6 +21,8 @@ Collaboration diagram for Schedule\+Service:
 \item 
 void \doxymbox{\hyperlink{class_schedule_service_afad3b5d3ad737f061ad16b97cf7bd9a7}{add\+Schedule}} (const std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ \&schedule)
 \item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_service_a58c39638b9e588241090b2d9986c890b}{delete\+Schedule}} (const std::\+string \&schedule\+Id)
+\item 
 std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_self_registered_schedule}{Self\+Registered\+Schedule}} $>$ \doxymbox{\hyperlink{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e}{open\+Open\+Shift}} (std::\+string schedule\+Id, std::\+string date, std::\+string start, std::\+string end, int break\+Time, std::\+string branch, int required=1)
 \item 
 \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_service_a4dc923e1678ca94d469cda4f3d38347f}{register\+For\+Empty\+Shift}} (\doxymbox{\hyperlink{class_employee}{Employee}} \&employee, const std::\+string \&schedule\+Id)
@@ -60,6 +62,12 @@ void Schedule\+Service::\+add\+Schedule (\begin{DoxyParamCaption}\item[{const st
 \doxysubsubsection{\texorpdfstring{checkShiftCoverage()}{checkShiftCoverage()}}
 {\footnotesize\ttfamily \label{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147} 
 std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ Schedule\+Service::\+check\+Shift\+Coverage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_schedule_service_a58c39638b9e588241090b2d9986c890b}\index{ScheduleService@{ScheduleService}!deleteSchedule@{deleteSchedule}}
+\index{deleteSchedule@{deleteSchedule}!ScheduleService@{ScheduleService}}
+\doxysubsubsection{\texorpdfstring{deleteSchedule()}{deleteSchedule()}}
+{\footnotesize\ttfamily \label{class_schedule_service_a58c39638b9e588241090b2d9986c890b} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Schedule\+Service::\+delete\+Schedule (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{schedule\+Id}{}\end{DoxyParamCaption})}
 
 \Hypertarget{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446}\index{ScheduleService@{ScheduleService}!getSchedules@{getSchedules}}
 \index{getSchedules@{getSchedules}!ScheduleService@{ScheduleService}}

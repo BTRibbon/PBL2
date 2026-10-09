@@ -42,10 +42,11 @@ var searchData=
   ['branchlist_39',['BranchList',['../class_branch_list.html',1,'']]],
   ['branchlist_2ecpp_40',['BranchList.cpp',['../_branch_list_8cpp.html',1,'']]],
   ['branchlist_2eh_41',['BranchList.h',['../_branch_list_8h.html',1,'']]],
-  ['breakminutes_42',['breakMinutes',['../class_schedule.html#a19757164e4ee11751a1d25a5884e9091',1,'Schedule']]],
-  ['brown_43',['BROWN',['../raylib_8h.html#ab2baea56ece91306020afd6d77fd19f9',1,'raylib.h']]],
-  ['buffer_44',['buffer',['../struct_audio_stream.html#a12080c0e45ce3fb10513e4083b31b43f',1,'AudioStream']]],
-  ['buffercount_45',['bufferCount',['../structrl_render_batch.html#aa5f143b3b260955e07d9390ba53785cf',1,'rlRenderBatch']]],
-  ['build_20and_20installation_46',['build and installation',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md3',1,'']]],
-  ['building_20raylib_20on_20multiple_20platforms_47',['Installing and building raylib on multiple platforms',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md4',1,'']]]
+  ['branchmanager_42',['BranchManager',['../class_branch_manager.html',1,'BranchManager'],['../class_branch_manager.html#aa50dc8c3dd7e938a2f9c80b21b3800cf',1,'BranchManager::BranchManager()'],['../_user_8h.html#acdd79a1a4f81dd6ee5cddcb21149b951a700a7ee3dcca1310355fd89585df38f0',1,'BranchManager:&#160;User.h']]],
+  ['breakminutes_43',['breakMinutes',['../class_schedule.html#a19757164e4ee11751a1d25a5884e9091',1,'Schedule']]],
+  ['brown_44',['BROWN',['../raylib_8h.html#ab2baea56ece91306020afd6d77fd19f9',1,'raylib.h']]],
+  ['buffer_45',['buffer',['../struct_audio_stream.html#a12080c0e45ce3fb10513e4083b31b43f',1,'AudioStream']]],
+  ['buffercount_46',['bufferCount',['../structrl_render_batch.html#aa5f143b3b260955e07d9390ba53785cf',1,'rlRenderBatch']]],
+  ['build_20and_20installation_47',['build and installation',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md3',1,'']]],
+  ['building_20raylib_20on_20multiple_20platforms_48',['Installing and building raylib on multiple platforms',['../dir_cd08c1bfa19a4cb571e80b12fcbc25aa.html#autotoc_md4',1,'']]]
 ];

@@ -1,11 +1,20 @@
 <map id="services/ShiftManager.h" name="services/ShiftManager.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="176,5,339,32"/>
-<area shape="rect" id="Node000002" href="$_schedule_service_8h.html" title=" " alt="" coords="64,80,248,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,40,175,82,172,77,225,43"/>
-<area shape="rect" id="Node000005" href="$_shift_manager_8cpp.html" title=" " alt="" coords="272,80,448,107"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="289,39,345,79,339,79,287,44"/>
-<area shape="rect" id="Node000003" href="$_user_8cpp.html" title=" " alt="" coords="5,155,126,181"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,116,83,156,80,152,126,117"/>
-<area shape="rect" id="Node000004" href="$_schedule_service_8cpp.html" title=" " alt="" coords="150,155,347,181"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="185,114,235,154,230,154,183,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="398,5,560,32"/>
+<area shape="rect" id="Node000002" href="$_management_u_i_8h.html" title=" " alt="" coords="27,155,166,181"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="384,37,312,56,236,82,167,120,114,156,111,152,164,115,234,78,311,51,389,34"/>
+<area shape="rect" id="Node000004" href="$main_8cpp.html" title=" " alt="" coords="182,229,256,256"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="513,38,552,67,588,103,601,123,608,143,607,164,596,183,572,201,536,214,491,225,442,232,340,241,257,244,256,239,339,236,441,227,490,220,534,209,569,196,592,180,602,162,602,144,596,125,584,107,549,71,512,43"/>
+<area shape="rect" id="Node000005" href="$_schedule_service_8h.html" title=" " alt="" coords="248,80,431,107"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="444,38,365,82,363,77,439,41"/>
+<area shape="rect" id="Node000008" href="$_shift_manager_8cpp.html" title=" " alt="" coords="656,80,833,107"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="540,34,701,79,695,80,540,39"/>
+<area shape="rect" id="Node000003" href="$_management_u_i_8cpp.html" title=" " alt="" coords="5,229,159,256"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,195,87,230,82,228,89,198"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="132,187,200,228,195,229,130,192"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="281,114,140,157,138,152,284,109"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="284,112,254,132,231,156,223,174,219,194,220,230,215,228,214,193,218,172,226,153,251,128,280,114"/>
+<area shape="rect" id="Node000006" href="$_user_8cpp.html" title=" " alt="" coords="462,155,582,181"/>
+<area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="386,110,493,154,487,154,385,115"/>
+<area shape="rect" id="Node000007" href="$_schedule_service_8cpp.html" title=" " alt="" coords="241,155,438,181"/>
+<area shape="poly" id="edge9_Node000005_Node000007" title=" " alt="" coords="341,120,342,156,337,153,338,125"/>
 </map>

@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['schedule_0',['Schedule',['../class_schedule.html',1,'']]],
-  ['scheduleservice_1',['ScheduleService',['../class_schedule_service.html',1,'']]],
-  ['selfregisteredschedule_2',['SelfRegisteredSchedule',['../class_self_registered_schedule.html',1,'']]],
-  ['shader_3',['Shader',['../struct_shader.html',1,'']]],
-  ['shiftmanager_4',['ShiftManager',['../class_shift_manager.html',1,'']]],
-  ['sound_5',['Sound',['../struct_sound.html',1,'']]]
+  ['ray_0',['Ray',['../struct_ray.html',1,'']]],
+  ['raycollision_1',['RayCollision',['../struct_ray_collision.html',1,'']]],
+  ['rectangle_2',['Rectangle',['../struct_rectangle.html',1,'']]],
+  ['rendertexture_3',['RenderTexture',['../struct_render_texture.html',1,'']]],
+  ['restaurantchain_4',['RestaurantChain',['../class_restaurant_chain.html',1,'']]],
+  ['rldrawcall_5',['rlDrawCall',['../structrl_draw_call.html',1,'']]],
+  ['rlrenderbatch_6',['rlRenderBatch',['../structrl_render_batch.html',1,'']]],
+  ['rlvertexbuffer_7',['rlVertexBuffer',['../structrl_vertex_buffer.html',1,'']]]
 ];

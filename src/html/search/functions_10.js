@@ -65,7 +65,7 @@ var searchData=
   ['setwindowstate_62',['SetWindowState',['../raylib_8h.html#a99363110364264d77f232a905b79320f',1,'raylib.h']]],
   ['setwindowtitle_63',['SetWindowTitle',['../raylib_8h.html#aa61bb3ab47a07aadb488a67705f73cd6',1,'raylib.h']]],
   ['showcursor_64',['ShowCursor',['../raylib_8h.html#ad16a2e6aa8ca942dd1482c202d3f0174',1,'raylib.h']]],
-  ['showmenuoptions_65',['showMenuOptions',['../class_user.html#abebe27f9aad8983c9a4d97407554290f',1,'User::showMenuOptions()'],['../class_customer.html#ad7488fb6b416c977aae414205062bcd0',1,'Customer::showMenuOptions()'],['../class_employee.html#a0fcafe35b2d9196276e018614f298dd0',1,'Employee::showMenuOptions()'],['../class_manager.html#a4802266adc51e63b1b4ae49781237a82',1,'Manager::showMenuOptions()']]],
+  ['showmenuoptions_65',['showMenuOptions',['../class_user.html#abebe27f9aad8983c9a4d97407554290f',1,'User::showMenuOptions()'],['../class_employee.html#a0fcafe35b2d9196276e018614f298dd0',1,'Employee::showMenuOptions()'],['../class_manager.html#a4802266adc51e63b1b4ae49781237a82',1,'Manager::showMenuOptions()'],['../class_branch_manager.html#a7be6b467e2aebe71f5a1d452295ee741',1,'BranchManager::showMenuOptions()']]],
   ['size_66',['size',['../class_order_queue.html#aa3c2b9e7cd9565fd685801476d633d0e',1,'OrderQueue']]],
   ['startautomationeventrecording_67',['StartAutomationEventRecording',['../raylib_8h.html#ad46fedc53aebcea4748fd61f7e8ea150',1,'raylib.h']]],
   ['stopaudiostream_68',['StopAudioStream',['../raylib_8h.html#a286a3ca250f4feb71396bae32f2306ce',1,'raylib.h']]],

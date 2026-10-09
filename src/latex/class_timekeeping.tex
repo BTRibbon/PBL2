@@ -23,6 +23,10 @@ std::\+string \doxymbox{\hyperlink{class_timekeeping_ab7017155ad4e0db8106e3c6c63
 \item 
 void \doxymbox{\hyperlink{class_timekeeping_a66a938d069b84ab772cb552c26d305b3}{add\+Record}} (const \doxymbox{\hyperlink{struct_attendance_record}{Attendance\+Record}} \&record)
 \item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_timekeeping_a930ea39cf709dda55061cc948616e945}{check\+In}} (const std::\+string \&schedule\+Id, const std::\+string \&timestamp)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_timekeeping_adb2bd8a32d4277675ae4fed24d6025ff}{check\+Out}} (const std::\+string \&schedule\+Id, const std::\+string \&timestamp)
+\item 
 const std::\+vector$<$ \doxymbox{\hyperlink{struct_attendance_record}{Attendance\+Record}} $>$ \& \doxymbox{\hyperlink{class_timekeeping_a436455ffb44b8f45fc7909d9b7c05369}{get\+Records}} () const
 \end{DoxyCompactItemize}
 
@@ -46,6 +50,18 @@ Timekeeping::\+\+Timekeeping (\begin{DoxyParamCaption}\item[{std::\+string}]{emp
 \doxysubsubsection{\texorpdfstring{addRecord()}{addRecord()}}
 {\footnotesize\ttfamily \label{class_timekeeping_a66a938d069b84ab772cb552c26d305b3} 
 void Timekeeping::\+add\+Record (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{struct_attendance_record}{Attendance\+Record}} \&}]{record}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_timekeeping_a930ea39cf709dda55061cc948616e945}\index{Timekeeping@{Timekeeping}!checkIn@{checkIn}}
+\index{checkIn@{checkIn}!Timekeeping@{Timekeeping}}
+\doxysubsubsection{\texorpdfstring{checkIn()}{checkIn()}}
+{\footnotesize\ttfamily \label{class_timekeeping_a930ea39cf709dda55061cc948616e945} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Timekeeping::\+check\+In (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{schedule\+Id}{, }\item[{const std::\+string \&}]{timestamp}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_timekeeping_adb2bd8a32d4277675ae4fed24d6025ff}\index{Timekeeping@{Timekeeping}!checkOut@{checkOut}}
+\index{checkOut@{checkOut}!Timekeeping@{Timekeeping}}
+\doxysubsubsection{\texorpdfstring{checkOut()}{checkOut()}}
+{\footnotesize\ttfamily \label{class_timekeeping_adb2bd8a32d4277675ae4fed24d6025ff} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Timekeeping::\+check\+Out (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{schedule\+Id}{, }\item[{const std::\+string \&}]{timestamp}{}\end{DoxyParamCaption})}
 
 \Hypertarget{class_timekeeping_ab7017155ad4e0db8106e3c6c63f953ae}\index{Timekeeping@{Timekeeping}!getEmployeeId@{getEmployeeId}}
 \index{getEmployeeId@{getEmployeeId}!Timekeeping@{Timekeeping}}

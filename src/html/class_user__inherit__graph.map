@@ -1,9 +1,9 @@
 <map id="User" name="User">
-<area shape="rect" id="Node000001" title=" " alt="" coords="85,5,239,267"/>
-<area shape="rect" id="Node000002" href="$class_customer.html" title=" " alt="" coords="5,368,145,480"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,284,94,369,89,367,119,279"/>
-<area shape="rect" id="Node000003" href="$class_employee.html" title=" " alt="" coords="169,315,328,533"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,278,219,315,213,315,205,284"/>
-<area shape="rect" id="Node000004" href="$class_manager.html" title=" " alt="" coords="172,581,326,715"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="250,546,251,583,246,581,247,550"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,174,288"/>
+<area shape="rect" id="Node000002" href="$class_employee.html" title=" " alt="" coords="10,336,169,555"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,300,92,336,87,336,90,306"/>
+<area shape="rect" id="Node000003" href="$class_manager.html" title=" " alt="" coords="13,603,167,736"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,567,92,603,87,603,89,572"/>
+<area shape="rect" id="Node000004" href="$class_branch_manager.html" title=" " alt="" coords="5,784,174,917"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="91,748,92,785,87,784,89,753"/>
 </map>

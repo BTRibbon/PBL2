@@ -12,5 +12,6 @@ var class_branch =
     [ "getStock", "class_branch.html#a7a986b69bad18699d2bf10a0b621c0e8", null ],
     [ "getX", "class_branch.html#afdf29381cb1dc03166b0cbf0f8c94bd4", null ],
     [ "getY", "class_branch.html#aace9fbb24ae1442f0025ccb5e381836e", null ],
+    [ "removeStock", "class_branch.html#ae75096fa9afd00479ca2b7ec78eb44b1", null ],
     [ "setOpeningHours", "class_branch.html#a5023e7760c758166c9c34744a67128c2", null ]
 ];

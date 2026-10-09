@@ -118,7 +118,7 @@ Collaboration diagram for ScheduleService:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_schedule_service__coll__graph.png" border="0" usemap="#a_schedule_service_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="a_schedule_service_coll__map" id="a_schedule_service_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,169,224"/>
+<area shape="rect" title=" " alt="" coords="5,5,169,245"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -126,6 +126,7 @@ Collaboration diagram for ScheduleService:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a926152db4be01b5a2fc43e3aef3085a9" id="r_a926152db4be01b5a2fc43e3aef3085a9"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a926152db4be01b5a2fc43e3aef3085a9">ScheduleService</a> (<a class="el" href="class_shift_manager.html">ShiftManager</a> *manager=nullptr)</td></tr>
 <tr class="memitem:afad3b5d3ad737f061ad16b97cf7bd9a7" id="r_afad3b5d3ad737f061ad16b97cf7bd9a7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afad3b5d3ad737f061ad16b97cf7bd9a7">addSchedule</a> (const std::shared_ptr&lt; <a class="el" href="class_schedule.html">Schedule</a> &gt; &amp;schedule)</td></tr>
+<tr class="memitem:a58c39638b9e588241090b2d9986c890b" id="r_a58c39638b9e588241090b2d9986c890b"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a58c39638b9e588241090b2d9986c890b">deleteSchedule</a> (const std::string &amp;scheduleId)</td></tr>
 <tr class="memitem:a9b339222084e58e9cdf3bd117f59a30e" id="r_a9b339222084e58e9cdf3bd117f59a30e"><td class="memItemLeft">std::shared_ptr&lt; <a class="el" href="class_self_registered_schedule.html">SelfRegisteredSchedule</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a9b339222084e58e9cdf3bd117f59a30e">openOpenShift</a> (std::string scheduleId, std::string date, std::string start, std::string end, int breakTime, std::string branch, int required=1)</td></tr>
 <tr class="memitem:a4dc923e1678ca94d469cda4f3d38347f" id="r_a4dc923e1678ca94d469cda4f3d38347f"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4dc923e1678ca94d469cda4f3d38347f">registerForEmptyShift</a> (<a class="el" href="class_employee.html">Employee</a> &amp;employee, const std::string &amp;scheduleId)</td></tr>
 <tr class="memitem:a283e2d32ebba5403d13319696399aa15" id="r_a283e2d32ebba5403d13319696399aa15"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a283e2d32ebba5403d13319696399aa15">validateMinimumShifts</a> (const <a class="el" href="class_employee.html">Employee</a> &amp;employee, const std::string &amp;fromDate, const std::string &amp;toDate) const</td></tr>
@@ -188,6 +189,23 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a58c39638b9e588241090b2d9986c890b" name="a58c39638b9e588241090b2d9986c890b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58c39638b9e588241090b2d9986c890b">&#9670;&#160;</a></span>deleteSchedule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> ScheduleService::deleteSchedule </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>scheduleId</em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">

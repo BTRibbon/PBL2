@@ -2,6 +2,7 @@ var class_user =
 [
     [ "User", "class_user.html#a1615197a2599367bab87d4ccfbc90a09", null ],
     [ "~User", "class_user.html#a634d7ad22c3d2b5fed35f71e10d98628", null ],
+    [ "canManageAllBranches", "class_user.html#af4cf4fb3138cca0687ab3b1aef629916", null ],
     [ "canManageBranches", "class_user.html#aff5b70b14ed052ef0f0a3a1be911b6f8", null ],
     [ "canViewReports", "class_user.html#a353f753c64007a7e60f6da390db689b1", null ],
     [ "getName", "class_user.html#a446a64e63adafbc2e1428532275ad6a1", null ],

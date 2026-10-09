@@ -1,0 +1,75 @@
+\doxysection{Management\+UI Class Reference}
+\hypertarget{class_management_u_i}{}\label{class_management_u_i}\index{ManagementUI@{ManagementUI}}
+
+
+{\ttfamily \+\#include $<$Management\+UI.\+h$>$}
+
+
+
+Collaboration diagram for Management\+UI:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=171pt]{class_management_u_i__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_management_u_i_a7fdf9cc499b381b1e798c549d5b5a615}{Management\+UI}} (\doxymbox{\hyperlink{class_restaurant_chain}{Restaurant\+Chain}} \&restaurant\+Chain, std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branch\+Values, \doxymbox{\hyperlink{class_schedule_service}{Schedule\+Service}} \&service, \doxymbox{\hyperlink{class_shift_manager}{Shift\+Manager}} \&manager, std::\+vector$<$ \doxymbox{\hyperlink{class_timekeeping}{Timekeeping}} $>$ \&records, std::\+vector$<$ \doxymbox{\hyperlink{class_employee}{Employee}} \texorpdfstring{$\ast$}{*} $>$ \&employee\+Users)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_management_u_i_a8e85c66f6c51b71c8e638ae7e3e6b1f4}{handle\+Click}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, int active\+Tab, \doxymbox{\hyperlink{class_user}{User}} \&current\+User)
+\item 
+void \doxymbox{\hyperlink{class_management_u_i_aea69065e4d700b7114760443a08fa068}{update\+Input}} (int key)
+\item 
+void \doxymbox{\hyperlink{class_management_u_i_a272c5e97135bb0e8f0e8e737fb4d7461}{draw}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, int active\+Tab, \doxymbox{\hyperlink{class_user}{User}} \&current\+User)
+\item 
+const std::\+string \& \doxymbox{\hyperlink{class_management_u_i_a9a9edc657af0314647287b5ddf031187}{get\+Message}} () const
+\end{DoxyCompactItemize}
+
+
+\label{class_management_u_i_doc-constructors}
+\Hypertarget{class_management_u_i_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_management_u_i_a7fdf9cc499b381b1e798c549d5b5a615}\index{ManagementUI@{ManagementUI}!ManagementUI@{ManagementUI}}
+\index{ManagementUI@{ManagementUI}!ManagementUI@{ManagementUI}}
+\doxysubsubsection{\texorpdfstring{ManagementUI()}{ManagementUI()}}
+{\footnotesize\ttfamily \label{class_management_u_i_a7fdf9cc499b381b1e798c549d5b5a615} 
+Management\+UI::\+\+Management\+UI (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_restaurant_chain}{Restaurant\+Chain}} \&}]{restaurant\+Chain}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branch\+Values}{, }\item[{\doxymbox{\hyperlink{class_schedule_service}{Schedule\+Service}} \&}]{service}{, }\item[{\doxymbox{\hyperlink{class_shift_manager}{Shift\+Manager}} \&}]{manager}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_timekeeping}{Timekeeping}} $>$ \&}]{records}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_employee}{Employee}} \texorpdfstring{$\ast$}{*} $>$ \&}]{employee\+Users}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_management_u_i_doc-func-members}
+\Hypertarget{class_management_u_i_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_management_u_i_a272c5e97135bb0e8f0e8e737fb4d7461}\index{ManagementUI@{ManagementUI}!draw@{draw}}
+\index{draw@{draw}!ManagementUI@{ManagementUI}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \label{class_management_u_i_a272c5e97135bb0e8f0e8e737fb4d7461} 
+void Management\+UI::\+draw (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{int}]{active\+Tab}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_management_u_i_a9a9edc657af0314647287b5ddf031187}\index{ManagementUI@{ManagementUI}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!ManagementUI@{ManagementUI}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily \label{class_management_u_i_a9a9edc657af0314647287b5ddf031187} 
+const std::\+string \& Management\+UI::\+get\+Message (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_management_u_i_a8e85c66f6c51b71c8e638ae7e3e6b1f4}\index{ManagementUI@{ManagementUI}!handleClick@{handleClick}}
+\index{handleClick@{handleClick}!ManagementUI@{ManagementUI}}
+\doxysubsubsection{\texorpdfstring{handleClick()}{handleClick()}}
+{\footnotesize\ttfamily \label{class_management_u_i_a8e85c66f6c51b71c8e638ae7e3e6b1f4} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Management\+UI::\+handle\+Click (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{int}]{active\+Tab}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_management_u_i_aea69065e4d700b7114760443a08fa068}\index{ManagementUI@{ManagementUI}!updateInput@{updateInput}}
+\index{updateInput@{updateInput}!ManagementUI@{ManagementUI}}
+\doxysubsubsection{\texorpdfstring{updateInput()}{updateInput()}}
+{\footnotesize\ttfamily \label{class_management_u_i_aea69065e4d700b7114760443a08fa068} 
+void Management\+UI::\+update\+Input (\begin{DoxyParamCaption}\item[{int}]{key}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+UI/\doxymbox{\hyperlink{_management_u_i_8h}{Management\+UI.\+h}}\item 
+UI/\doxymbox{\hyperlink{_management_u_i_8cpp}{Management\+UI.\+cpp}}\end{DoxyCompactItemize}

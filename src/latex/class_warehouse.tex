@@ -6,11 +6,12 @@
 
 
 
-Collaboration diagram for Warehouse:\nopagebreak
+Collaboration diagram for Warehouse:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=148pt]{class_warehouse__coll__graph}
+\includegraphics[width=162pt]{class_warehouse__coll__graph}
 \end{center}
 \end{figure}
 \doxysubsubsection*{Public Member Functions}
@@ -19,6 +20,8 @@ Collaboration diagram for Warehouse:\nopagebreak
 void \doxymbox{\hyperlink{class_warehouse_a81ac61eb7e742e402de348467006800c}{add\+Stock}} (std::\+string item\+Id, int quantity)
 \item 
 \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_warehouse_a8b351d8d2e3c8aafe3f5e98a6b6ee160}{take\+Stock}} (std::\+string item\+Id, int quantity)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_warehouse_aaffc4ac048ecc4ca37033e5568d0b971}{remove\+Stock}} (std::\+string item\+Id, int quantity)
 \item 
 int \doxymbox{\hyperlink{class_warehouse_a2190a77163d6567a866ebb4123fadfef}{get\+Stock}} (std::\+string item\+Id) const
 \end{DoxyCompactItemize}
@@ -38,6 +41,12 @@ void Warehouse::\+add\+Stock (\begin{DoxyParamCaption}\item[{std::\+string}]{ite
 \doxysubsubsection{\texorpdfstring{getStock()}{getStock()}}
 {\footnotesize\ttfamily \label{class_warehouse_a2190a77163d6567a866ebb4123fadfef} 
 int Warehouse::\+get\+Stock (\begin{DoxyParamCaption}\item[{std::\+string}]{item\+Id}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_warehouse_aaffc4ac048ecc4ca37033e5568d0b971}\index{Warehouse@{Warehouse}!removeStock@{removeStock}}
+\index{removeStock@{removeStock}!Warehouse@{Warehouse}}
+\doxysubsubsection{\texorpdfstring{removeStock()}{removeStock()}}
+{\footnotesize\ttfamily \label{class_warehouse_aaffc4ac048ecc4ca37033e5568d0b971} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Warehouse::\+remove\+Stock (\begin{DoxyParamCaption}\item[{std::\+string}]{item\+Id}{, }\item[{int}]{quantity}{}\end{DoxyParamCaption})}
 
 \Hypertarget{class_warehouse_a8b351d8d2e3c8aafe3f5e98a6b6ee160}\index{Warehouse@{Warehouse}!takeStock@{takeStock}}
 \index{takeStock@{takeStock}!Warehouse@{Warehouse}}

@@ -67,5 +67,6 @@ var searchData=
   ['log_5fnone_64',['LOG_NONE',['../raylib_8h.html#a53d4e0542e6c07e7792510e986785285a85639df34979de4e5ff6f7b05e4de8f1',1,'raylib.h']]],
   ['log_5ftrace_65',['LOG_TRACE',['../raylib_8h.html#a53d4e0542e6c07e7792510e986785285a5b76dd51db62558b1952158ba38b723f',1,'raylib.h']]],
   ['log_5fwarning_66',['LOG_WARNING',['../raylib_8h.html#a53d4e0542e6c07e7792510e986785285a8f6fe15bfe15104da6d1b360194a5400',1,'raylib.h']]],
-  ['looping_67',['looping',['../struct_music.html#adc2254919c3d4d6ed6e1ec1878c5ac9b',1,'Music']]]
+  ['loginaccount_67',['LoginAccount',['../struct_login_account.html',1,'']]],
+  ['looping_68',['looping',['../struct_music.html#adc2254919c3d4d6ed6e1ec1878c5ac9b',1,'Music']]]
 ];

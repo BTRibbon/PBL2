@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$struct_vector3.html" title=" " alt="" coords="5,5,71,32"/>
+<area shape="rect" id="Node000000" href="$class_user.html" title=" " alt="" coords="5,5,55,32"/>
+<area shape="rect" id="Node000001" href="$class_employee.html" title=" " alt="" coords="103,5,182,32"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="70,16,105,18,100,19,71,21"/>
+<area shape="rect" id="Node000002" href="$class_manager.html" title=" " alt="" coords="230,5,301,32"/>
+<area shape="poly" id="edge5_Node000001_Node000002" title=" " alt="" coords="197,16,232,19,227,19,198,21"/>
+<area shape="rect" id="Node000003" href="$class_branch_manager.html" title=" " alt="" coords="349,5,462,32"/>
+<area shape="poly" id="edge6_Node000002_Node000003" title=" " alt="" coords="317,16,352,19,346,19,317,21"/>
 </map>

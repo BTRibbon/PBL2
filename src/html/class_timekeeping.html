@@ -118,7 +118,7 @@ Collaboration diagram for Timekeeping:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_timekeeping__coll__graph.png" border="0" usemap="#a_timekeeping_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="a_timekeeping_coll__map" id="a_timekeeping_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,124,139"/>
+<area shape="rect" title=" " alt="" coords="5,5,124,181"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -127,6 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a624bc15d421856bb52335b2994607008" id="r_a624bc15d421856bb52335b2994607008"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a624bc15d421856bb52335b2994607008">Timekeeping</a> (std::string employee)</td></tr>
 <tr class="memitem:ab7017155ad4e0db8106e3c6c63f953ae" id="r_ab7017155ad4e0db8106e3c6c63f953ae"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ab7017155ad4e0db8106e3c6c63f953ae">getEmployeeId</a> () const</td></tr>
 <tr class="memitem:a66a938d069b84ab772cb552c26d305b3" id="r_a66a938d069b84ab772cb552c26d305b3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a66a938d069b84ab772cb552c26d305b3">addRecord</a> (const <a class="el" href="struct_attendance_record.html">AttendanceRecord</a> &amp;record)</td></tr>
+<tr class="memitem:a930ea39cf709dda55061cc948616e945" id="r_a930ea39cf709dda55061cc948616e945"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a930ea39cf709dda55061cc948616e945">checkIn</a> (const std::string &amp;scheduleId, const std::string &amp;timestamp)</td></tr>
+<tr class="memitem:adb2bd8a32d4277675ae4fed24d6025ff" id="r_adb2bd8a32d4277675ae4fed24d6025ff"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#adb2bd8a32d4277675ae4fed24d6025ff">checkOut</a> (const std::string &amp;scheduleId, const std::string &amp;timestamp)</td></tr>
 <tr class="memitem:a436455ffb44b8f45fc7909d9b7c05369" id="r_a436455ffb44b8f45fc7909d9b7c05369"><td class="memItemLeft">const std::vector&lt; <a class="el" href="struct_attendance_record.html">AttendanceRecord</a> &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a436455ffb44b8f45fc7909d9b7c05369">getRecords</a> () const</td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -159,6 +161,48 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="struct_attendance_record.html">AttendanceRecord</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>record</em></span></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a930ea39cf709dda55061cc948616e945" name="a930ea39cf709dda55061cc948616e945"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a930ea39cf709dda55061cc948616e945">&#9670;&#160;</a></span>checkIn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> Timekeeping::checkIn </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>scheduleId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adb2bd8a32d4277675ae4fed24d6025ff" name="adb2bd8a32d4277675ae4fed24d6025ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb2bd8a32d4277675ae4fed24d6025ff">&#9670;&#160;</a></span>checkOut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a> Timekeeping::checkOut </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>scheduleId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>timestamp</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

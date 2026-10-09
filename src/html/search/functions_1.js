@@ -8,5 +8,6 @@ var searchData=
   ['beginshadermode_5',['BeginShaderMode',['../raylib_8h.html#a18002b7b9315feeda94dedf5a123ca7f',1,'raylib.h']]],
   ['begintexturemode_6',['BeginTextureMode',['../raylib_8h.html#a51ab6514d6399491b82116f3965414c2',1,'raylib.h']]],
   ['beginvrstereomode_7',['BeginVrStereoMode',['../raylib_8h.html#a70e9f442b69c253b5ae810dd6ed6426a',1,'raylib.h']]],
-  ['branch_8',['Branch',['../class_branch.html#aa03fe00afea18c9b76c25642f7e895af',1,'Branch']]]
+  ['branch_8',['Branch',['../class_branch.html#aa03fe00afea18c9b76c25642f7e895af',1,'Branch']]],
+  ['branchmanager_9',['BranchManager',['../class_branch_manager.html#aa50dc8c3dd7e938a2f9c80b21b3800cf',1,'BranchManager']]]
 ];

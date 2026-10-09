@@ -11,6 +11,5 @@ var searchData=
   ['cubemap_5flayout_5fcross_5ffour_5fby_5fthree_8',['CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE',['../raylib_8h.html#a37ba4eb2fc196467637ab94b12688ab4a894805a0be6bc1cbb14f3ba80a75534a',1,'raylib.h']]],
   ['cubemap_5flayout_5fcross_5fthree_5fby_5ffour_9',['CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR',['../raylib_8h.html#a37ba4eb2fc196467637ab94b12688ab4a4bfd69cf761deef48c2a454b51ff8955',1,'raylib.h']]],
   ['cubemap_5flayout_5fline_5fhorizontal_10',['CUBEMAP_LAYOUT_LINE_HORIZONTAL',['../raylib_8h.html#a37ba4eb2fc196467637ab94b12688ab4aed2d51219c2294e3363a404bfebf3dbd',1,'raylib.h']]],
-  ['cubemap_5flayout_5fline_5fvertical_11',['CUBEMAP_LAYOUT_LINE_VERTICAL',['../raylib_8h.html#a37ba4eb2fc196467637ab94b12688ab4a2340bd77b4779213598d39c93b0be761',1,'raylib.h']]],
-  ['customer_12',['Customer',['../_user_8h.html#acdd79a1a4f81dd6ee5cddcb21149b951ace26601dac0dea138b7295f02b7620a7',1,'User.h']]]
+  ['cubemap_5flayout_5fline_5fvertical_11',['CUBEMAP_LAYOUT_LINE_VERTICAL',['../raylib_8h.html#a37ba4eb2fc196467637ab94b12688ab4a2340bd77b4779213598d39c93b0be761',1,'raylib.h']]]
 ];

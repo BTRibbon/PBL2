@@ -19,6 +19,8 @@ var hierarchy =
     [ "GlyphInfo", "struct_glyph_info.html", null ],
     [ "GridPoint", "struct_grid_point.html", null ],
     [ "Image", "struct_image.html", null ],
+    [ "LoginAccount", "struct_login_account.html", null ],
+    [ "ManagementUI", "class_management_u_i.html", null ],
     [ "MapGraph", "class_map_graph.html", null ],
     [ "MapRoute", "struct_map_route.html", null ],
     [ "Material", "struct_material.html", null ],
@@ -59,9 +61,10 @@ var hierarchy =
     [ "Timekeeping", "class_timekeeping.html", null ],
     [ "Transform", "struct_transform.html", null ],
     [ "User", "class_user.html", [
-      [ "Customer", "class_customer.html", null ],
       [ "Employee", "class_employee.html", [
-        [ "Manager", "class_manager.html", null ]
+        [ "Manager", "class_manager.html", [
+          [ "BranchManager", "class_branch_manager.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "Vector2", "struct_vector2.html", null ],

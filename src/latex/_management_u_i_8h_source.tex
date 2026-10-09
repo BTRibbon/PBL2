@@ -1,0 +1,49 @@
+\doxysection{Management\+UI.\+h}
+\hypertarget{_management_u_i_8h_source}{}\label{_management_u_i_8h_source}\index{UI/ManagementUI.h@{UI/ManagementUI.h}}
+\doxymbox{\hyperlink{_management_u_i_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_branch_8h}{../models/Branch.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_restaurant_chain_8h}{../models/RestaurantChain.h}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_timekeeping_8h}{../models/Timekeeping.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_user_8h}{../models/User.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_schedule_service_8h}{../services/ScheduleService.h}}"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_shift_manager_8h}{../services/ShiftManager.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{raylib_8h}{raylib.h}}"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_management_u_i_a7fdf9cc499b381b1e798c549d5b5a615}{ManagementUI}}\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \doxymbox{\hyperlink{class_restaurant_chain}{RestaurantChain}}\&\ chain;}
+\DoxyCodeLine{00016\ \ \ \ \ std::vector<Branch>\&\ branches;}
+\DoxyCodeLine{00017\ \ \ \ \ \doxymbox{\hyperlink{class_schedule_service}{ScheduleService}}\&\ scheduleService;}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{class_shift_manager}{ShiftManager}}\&\ shiftManager;}
+\DoxyCodeLine{00019\ \ \ \ \ std::vector<Timekeeping>\&\ timekeepingRecords;}
+\DoxyCodeLine{00020\ \ \ \ \ std::vector<Employee*>\&\ employees;}
+\DoxyCodeLine{00021\ \ \ \ \ std::string\ message;}
+\DoxyCodeLine{00022\ \ \ \ \ std::string\ dateInput\ =\ \textcolor{stringliteral}{"{}2026-\/10-\/10"{}};}
+\DoxyCodeLine{00023\ \ \ \ \ std::string\ startInput\ =\ \textcolor{stringliteral}{"{}08:00"{}};}
+\DoxyCodeLine{00024\ \ \ \ \ std::string\ endInput\ =\ \textcolor{stringliteral}{"{}16:00"{}};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{int}\ focusedField\ =\ -\/1;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ drawButton(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ label,\ \textcolor{keywordtype}{bool}\ enabled\ =\ \textcolor{keyword}{true})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ drawManagementHeader(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ title,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ subtitle)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ drawInventoryTab(\doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \doxymbox{\hyperlink{class_user}{User}}\&\ currentUser)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ drawScheduleTab(\doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \doxymbox{\hyperlink{class_user}{User}}\&\ currentUser);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ drawAttendanceTab(\doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \doxymbox{\hyperlink{class_user}{User}}\&\ currentUser);}
+\DoxyCodeLine{00032\ \ \ \ \ \doxymbox{\hyperlink{class_timekeeping}{Timekeeping}}*\ getTimekeeping(\doxymbox{\hyperlink{class_user}{User}}\&\ currentUser)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ \doxymbox{\hyperlink{class_management_u_i_a7fdf9cc499b381b1e798c549d5b5a615}{ManagementUI}}(\doxymbox{\hyperlink{class_restaurant_chain}{RestaurantChain}}\&\ restaurantChain,\ std::vector<Branch>\&\ branchValues,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \doxymbox{\hyperlink{class_schedule_service}{ScheduleService}}\&\ service,\ \doxymbox{\hyperlink{class_shift_manager}{ShiftManager}}\&\ manager,}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ std::vector<Timekeeping>\&\ records,\ std::vector<Employee*>\&\ employeeUsers);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_management_u_i_a8e85c66f6c51b71c8e638ae7e3e6b1f4}{handleClick}}(\doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \textcolor{keywordtype}{int}\ activeTab,\ \doxymbox{\hyperlink{class_user}{User}}\&\ currentUser);}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_management_u_i_aea69065e4d700b7114760443a08fa068}{updateInput}}(\textcolor{keywordtype}{int}\ key);}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_management_u_i_a272c5e97135bb0e8f0e8e737fb4d7461}{draw}}(\doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \textcolor{keywordtype}{int}\ activeTab,\ \doxymbox{\hyperlink{class_user}{User}}\&\ currentUser);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ \doxymbox{\hyperlink{class_management_u_i_a9a9edc657af0314647287b5ddf031187}{getMessage}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00043\ \};}
+
+\end{DoxyCode}

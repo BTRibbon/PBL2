@@ -2,6 +2,7 @@ var main_8cpp =
 [
     [ "Product", "struct_product.html", "struct_product" ],
     [ "CartItem", "struct_cart_item.html", "struct_cart_item" ],
+    [ "LoginAccount", "struct_login_account.html", "struct_login_account" ],
     [ "GridPoint", "struct_grid_point.html", "struct_grid_point" ],
     [ "MapRoute", "struct_map_route.html", "struct_map_route" ],
     [ "MapGraph", "class_map_graph.html", "class_map_graph" ],

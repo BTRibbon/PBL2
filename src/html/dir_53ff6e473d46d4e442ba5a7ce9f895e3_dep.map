@@ -1,0 +1,12 @@
+<map id="UI" name="UI">
+<area shape="rect" id="node1" href="dir_53ff6e473d46d4e442ba5a7ce9f895e3.html" title="UI" alt="" coords="105,5,144,32"/>
+<area shape="rect" id="node2" href="dir_056ec8f0377ddc4293192cbc6b19c99c.html" title="services" alt="" coords="5,80,76,107"/>
+<area shape="poly" id="edge1" href="dir_000005_000004.html" alt="" coords="112,32,68,72,65,68,107,33"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000005_000004.html" title="2" alt="" coords="71,66,78,82"/>
+<area shape="rect" id="node3" href="dir_0a824aa1f70ce3b829ef378253b085da.html" title="Utils" alt="" coords="100,80,149,107"/>
+<area shape="poly" id="edge2" href="dir_000005_000006.html" alt="" coords="126,31,127,65,122,63,123,35"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000005_000006.html" title="1" alt="" coords="129,53,136,69"/>
+<area shape="rect" id="node4" href="dir_1ae4179d5e953611aae20c997279e02c.html" title="models" alt="" coords="173,80,236,107"/>
+<area shape="poly" id="edge3" href="dir_000005_000002.html" alt="" coords="139,30,182,69,177,70,137,35"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000005_000002.html" title="5" alt="" coords="179,53,186,69"/>
+</map>

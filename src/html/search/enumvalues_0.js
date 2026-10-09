@@ -7,5 +7,6 @@ var searchData=
   ['blend_5fcustom_4',['BLEND_CUSTOM',['../raylib_8h.html#a30323fa90e24ca484998b9fba6c40e85af7aa629feb357b97a137f99320b63acb',1,'raylib.h']]],
   ['blend_5fcustom_5fseparate_5',['BLEND_CUSTOM_SEPARATE',['../raylib_8h.html#a30323fa90e24ca484998b9fba6c40e85a0d38645cce75076386a33a0c1ea5f4e6',1,'raylib.h']]],
   ['blend_5fmultiplied_6',['BLEND_MULTIPLIED',['../raylib_8h.html#a30323fa90e24ca484998b9fba6c40e85a6d4dd1c4f8b58ba57aab8f08e3f0bcd3',1,'raylib.h']]],
-  ['blend_5fsubtract_5fcolors_7',['BLEND_SUBTRACT_COLORS',['../raylib_8h.html#a30323fa90e24ca484998b9fba6c40e85a87be6d0f84faec81cedc8836f5e75c4d',1,'raylib.h']]]
+  ['blend_5fsubtract_5fcolors_7',['BLEND_SUBTRACT_COLORS',['../raylib_8h.html#a30323fa90e24ca484998b9fba6c40e85a87be6d0f84faec81cedc8836f5e75c4d',1,'raylib.h']]],
+  ['branchmanager_8',['BranchManager',['../_user_8h.html#acdd79a1a4f81dd6ee5cddcb21149b951a700a7ee3dcca1310355fd89585df38f0',1,'User.h']]]
 ];

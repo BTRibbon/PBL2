@@ -31,13 +31,14 @@ var searchData=
   ['updateaudiostream_28',['UpdateAudioStream',['../raylib_8h.html#a5f195bac2a7cb3c4a634626bdc8c3972',1,'raylib.h']]],
   ['updatecamera_29',['UpdateCamera',['../raylib_8h.html#adc7bb09d8b200ff74240ee1375552020',1,'raylib.h']]],
   ['updatecamerapro_30',['UpdateCameraPro',['../raylib_8h.html#a53b986c83c1d53ddf37f035e55196989',1,'raylib.h']]],
-  ['updatemeshbuffer_31',['UpdateMeshBuffer',['../raylib_8h.html#a07f81aab6e30475cf789740e19e473d2',1,'raylib.h']]],
-  ['updatemodelanimation_32',['UpdateModelAnimation',['../raylib_8h.html#a3f031fc17ad69f7b451bf598243f7e83',1,'raylib.h']]],
-  ['updatemodelanimationex_33',['UpdateModelAnimationEx',['../raylib_8h.html#a2622590527074b94a06624827563ade2',1,'raylib.h']]],
-  ['updatemusicstream_34',['UpdateMusicStream',['../raylib_8h.html#a491674806da564a3161d175a3b1632b2',1,'raylib.h']]],
-  ['updatesound_35',['UpdateSound',['../raylib_8h.html#a73c7fdc13195e28ee680e7b44fc85dd7',1,'raylib.h']]],
-  ['updatetexture_36',['UpdateTexture',['../raylib_8h.html#a556ea45af3504bb489e9e1d78661f961',1,'raylib.h']]],
-  ['updatetexturerec_37',['UpdateTextureRec',['../raylib_8h.html#a6d9aa49f125c3f871fc5136301bab6fc',1,'raylib.h']]],
-  ['uploadmesh_38',['UploadMesh',['../raylib_8h.html#a43db261cf17665ad49db64fe83e213ad',1,'raylib.h']]],
-  ['user_39',['User',['../class_user.html#a1615197a2599367bab87d4ccfbc90a09',1,'User']]]
+  ['updateinput_31',['updateInput',['../class_management_u_i.html#aea69065e4d700b7114760443a08fa068',1,'ManagementUI']]],
+  ['updatemeshbuffer_32',['UpdateMeshBuffer',['../raylib_8h.html#a07f81aab6e30475cf789740e19e473d2',1,'raylib.h']]],
+  ['updatemodelanimation_33',['UpdateModelAnimation',['../raylib_8h.html#a3f031fc17ad69f7b451bf598243f7e83',1,'raylib.h']]],
+  ['updatemodelanimationex_34',['UpdateModelAnimationEx',['../raylib_8h.html#a2622590527074b94a06624827563ade2',1,'raylib.h']]],
+  ['updatemusicstream_35',['UpdateMusicStream',['../raylib_8h.html#a491674806da564a3161d175a3b1632b2',1,'raylib.h']]],
+  ['updatesound_36',['UpdateSound',['../raylib_8h.html#a73c7fdc13195e28ee680e7b44fc85dd7',1,'raylib.h']]],
+  ['updatetexture_37',['UpdateTexture',['../raylib_8h.html#a556ea45af3504bb489e9e1d78661f961',1,'raylib.h']]],
+  ['updatetexturerec_38',['UpdateTextureRec',['../raylib_8h.html#a6d9aa49f125c3f871fc5136301bab6fc',1,'raylib.h']]],
+  ['uploadmesh_39',['UploadMesh',['../raylib_8h.html#a43db261cf17665ad49db64fe83e213ad',1,'raylib.h']]],
+  ['user_40',['User',['../class_user.html#a1615197a2599367bab87d4ccfbc90a09',1,'User']]]
 ];
