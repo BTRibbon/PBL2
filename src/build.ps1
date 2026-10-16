@@ -54,7 +54,11 @@ function Get-PasswordHash([string]$password, [string]$salt) {
         $hash = $hash -bxor [UInt64]$byte
         $hash = ($hash * 1099511628211) -band $mask
     }
-    return $hash.ToString("x16")
+    $hex = $hash.ToString("x")
+    if ($hex.Length -gt 16) {
+        $hex = $hex.Substring($hex.Length - 16)
+    }
+    return $hex.PadLeft(16, "0")
 }
 
 $encodedAccounts = New-Object System.Collections.Generic.List[byte]

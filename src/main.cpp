@@ -11,16 +11,24 @@
 
 #include <algorithm>
 #include <array>
+#include <charconv>
 #include <cmath>
 #include <cctype>
 #include <cstdio>
 #include <cstdint>
+#include <ctime>
 #include <fstream>
 #include <functional>
 #include <limits>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
+#include <filesystem>
+#ifdef _WIN32
+extern "C" __declspec(dllimport) unsigned long __stdcall GetModuleFileNameA(
+	void* module, char* filename, unsigned long size);
+#endif
 
 struct Product {
 	const char* name;
@@ -34,17 +42,73 @@ struct CartItem {
 	int quantity;
 };
 
-static std::string encrypt(const std::string& value) {
-	std::string result = value;
-	for (char& character : result) character = static_cast<char>(character ^ 0x5A);
-	return result;
-}
-
 static int cartTotal(const std::array<CartItem, 8>& cart);
 
-static void saveEncryptedOrder(const Order& order) {
-	std::ofstream file("orders.dat", std::ios::app | std::ios::binary);
-	if (file) file << encrypt(std::to_string(order.id) + "|" + order.branch + "|" + std::to_string(order.total) + "\n");
+static std::vector<std::string> splitFields(const std::string& line, char delimiter = '|') {
+	std::vector<std::string> fields;
+	std::stringstream stream(line);
+	std::string field;
+	while (std::getline(stream, field, delimiter)) fields.push_back(field);
+	return fields;
+}
+
+static bool parseInteger(const std::string& value, int& result) {
+	const char* first = value.data();
+	const char* last = first + value.size();
+	const auto parsed = std::from_chars(first, last, result);
+	return parsed.ec == std::errc{} && parsed.ptr == last;
+}
+
+static bool replaceTextFile(const std::string& path, const std::string& content) {
+	const std::string temporaryPath = path + ".tmp";
+	{
+		std::ofstream file(temporaryPath, std::ios::trunc);
+		if (!file) return false;
+		file << content;
+		if (!file.good()) return false;
+	}
+	std::remove(path.c_str());
+	return std::rename(temporaryPath.c_str(), path.c_str()) == 0;
+}
+
+static bool loadOrders(std::vector<Order>& orders) {
+	std::ifstream file("data/orders.txt");
+	if (!file) return false;
+	std::string line;
+	while (std::getline(file, line)) {
+		if (line.empty()) continue;
+		const std::vector<std::string> fields = splitFields(line);
+		if (fields.size() != 7) return false;
+		Order order{};
+		if (!parseInteger(fields[0], order.id) || !parseInteger(fields[1], order.total)) return false;
+		order.branch = fields[2];
+		order.orderId = fields[3];
+		order.customerId = fields[4];
+		order.status = fields[5];
+		for (const std::string& item : splitFields(fields[6], ',')) {
+			const std::vector<std::string> itemFields = splitFields(item, ':');
+			if (itemFields.size() != 2) return false;
+			int quantity = 0;
+			if (!parseInteger(itemFields[1], quantity) || quantity <= 0) return false;
+			order.items.push_back({itemFields[0], quantity});
+		}
+		orders.push_back(order);
+	}
+	return true;
+}
+
+static bool saveOrders(const std::vector<Order>& orders) {
+	std::ostringstream content;
+	for (const Order& order : orders) {
+		content << order.id << "|" << order.total << "|" << order.branch << "|"
+			<< order.orderId << "|" << order.customerId << "|" << order.status << "|";
+		for (std::size_t i = 0; i < order.items.size(); ++i) {
+			if (i > 0) content << ",";
+			content << order.items[i].first << ":" << order.items[i].second;
+		}
+		content << "\n";
+	}
+	return replaceTextFile("data/orders.txt", content.str());
 }
 
 static const char* roleName(Role role) {
@@ -108,6 +172,122 @@ static bool loadAccounts(std::vector<AccountRecord>& accounts) {
 		accounts.push_back({fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]});
 	}
 	return !accounts.empty();
+}
+
+static bool loadInventory(std::vector<Branch>& branchValues) {
+	std::ifstream file("data/inventory.txt");
+	if (!file) return false;
+	std::string line;
+	while (std::getline(file, line)) {
+		if (line.empty()) continue;
+		const std::vector<std::string> fields = splitFields(line);
+		if (fields.size() != 3) return false;
+		int quantity = 0;
+		if (!parseInteger(fields[2], quantity) || quantity < 0) return false;
+		for (Branch& branch : branchValues)
+			if (branch.getId() == fields[0]) branch.addStock(fields[1], quantity);
+	}
+	return true;
+}
+
+static bool saveInventory(const std::vector<Branch>& branches) {
+	std::ostringstream content;
+	for (const Branch& branch : branches) {
+		content << branch.getId() << "|FLOUR|" << branch.getStock("FLOUR") << "\n";
+		content << branch.getId() << "|NOODLES|" << branch.getStock("NOODLES") << "\n";
+	}
+	return replaceTextFile("data/inventory.txt", content.str());
+}
+
+static bool loadSchedules(ScheduleService& scheduleService) {
+	std::ifstream file("data/schedules.txt");
+	if (!file) return false;
+	std::string line;
+	while (std::getline(file, line)) {
+		if (line.empty()) continue;
+		const std::vector<std::string> fields = splitFields(line);
+		if (fields.size() != 7 && fields.size() != 8) return false;
+		int breakMinutes = 0;
+		int requiredEmployees = 0;
+		if (!parseInteger(fields[4], breakMinutes) || !parseInteger(fields[6], requiredEmployees)) return false;
+		auto schedule = scheduleService.openOpenShift(fields[0], fields[1], fields[2], fields[3],
+			breakMinutes, fields[5], requiredEmployees);
+		if (fields.size() == 8) for (const std::string& employeeId : splitFields(fields[7], ','))
+			if (!employeeId.empty()) schedule->assignEmployee(employeeId);
+	}
+	return true;
+}
+
+static bool saveSchedules(const ScheduleService& scheduleService) {
+	std::ostringstream content;
+	for (const auto& schedule : scheduleService.getSchedules()) {
+		content << schedule->getId() << "|" << schedule->getDate() << "|"
+			<< schedule->getStartTime() << "|" << schedule->getEndTime() << "|"
+			<< schedule->getBreakMinutes() << "|" << schedule->getBranchId() << "|"
+			<< schedule->getRequiredEmployees() << "|";
+		for (std::size_t i = 0; i < schedule->getEmployeeIds().size(); ++i) {
+			if (i > 0) content << ",";
+			content << schedule->getEmployeeIds()[i];
+		}
+		content << "\n";
+	}
+	return replaceTextFile("data/schedules.txt", content.str());
+}
+
+static bool loadAttendance(std::vector<Timekeeping>& records) {
+	std::ifstream file("data/attendance.txt");
+	if (!file) return false;
+	std::string line;
+	while (std::getline(file, line)) {
+		if (line.empty()) continue;
+		const std::vector<std::string> fields = splitFields(line);
+		if (fields.size() != 5) return false;
+		for (Timekeeping& record : records) {
+			if (record.getEmployeeId() == fields[1])
+				record.addRecord({fields[0], fields[1], fields[2], fields[3], fields[4] == "1"});
+		}
+	}
+	return true;
+}
+
+static bool saveAttendance(const std::vector<Timekeeping>& records) {
+	std::ostringstream content;
+	for (const Timekeeping& record : records)
+		for (const AttendanceRecord& item : record.getRecords())
+			content << item.scheduleId << "|" << item.employeeId << "|" << item.checkIn << "|"
+				<< item.checkOut << "|" << (item.isPresent ? "1" : "0") << "\n";
+	return replaceTextFile("data/attendance.txt", content.str());
+}
+
+static std::string currentDateLabel() {
+	const std::time_t now = std::time(nullptr);
+	std::tm localTime{};
+#ifdef _WIN32
+	localtime_s(&localTime, &now);
+#else
+	localtime_r(&now, &localTime);
+#endif
+	char buffer[32];
+	std::strftime(buffer, sizeof(buffer), "%A, %d/%m/%Y", &localTime);
+	return buffer;
+}
+
+static bool setWorkingDirectoryToExecutable(const char* executablePath) {
+	(void)executablePath;
+	std::filesystem::path executable;
+#ifdef _WIN32
+	char buffer[260];
+	const unsigned long length = GetModuleFileNameA(nullptr, buffer, sizeof(buffer));
+	if (length == 0 || length == sizeof(buffer)) return false;
+	executable = std::filesystem::path(buffer);
+#else
+	executable = std::filesystem::absolute(executablePath);
+#endif
+	const std::filesystem::path directory = executable.parent_path();
+	if (directory.empty()) return false;
+	std::error_code error;
+	std::filesystem::current_path(directory, error);
+	return !error;
 }
 
 static std::string lowerText(std::string value) {
@@ -280,7 +460,11 @@ static void drawTextRight(const char* text, int right, int y, int size, Color co
 	DrawText(text, right - MeasureText(text, size), y, size, color);
 }
 
-int main() {
+int main(int argc, char** argv) {
+	if (!setWorkingDirectoryToExecutable(argc > 0 ? argv[0] : "")) {
+		std::fprintf(stderr, "Unable to locate the application directory.\n");
+		return 1;
+	}
 	SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE);
 	InitWindow(1280, 760, "Bep Nho - Quan ly ban hang");
 	SetWindowMinSize(900, 600);
@@ -335,6 +519,11 @@ int main() {
 	std::vector<Employee*> employees{&employeeOne, &employeeTwo, &employeeThree, &managerOne, &managerTwo, &branchManagerUser};
 	std::vector<Timekeeping> timekeepingRecords;
 	for (Employee* user : employees) timekeepingRecords.emplace_back(user->getId());
+	if (!loadAttendance(timekeepingRecords)) {
+		std::fprintf(stderr, "Unable to load data/attendance.txt.\n");
+		CloseWindow();
+		return 1;
+	}
 	employeeOneData->user = &employeeOne;
 	employeeTwoData->user = &employeeTwo;
 	employeeThreeData->user = &employeeThree;
@@ -360,15 +549,26 @@ int main() {
 	MapRoute aStarRoute = mapGraph.aStar(mapStart, mapTarget);
 	OrderQueue orderQueue;
 	std::vector<Order> orders;
+	if (!loadOrders(orders)) {
+		std::fprintf(stderr, "Unable to load data/orders.txt.\n");
+		CloseWindow();
+		return 1;
+	}
+	for (const Order& order : orders)
+		if (order.status == "pending") orderQueue.push(order);
 	MenuLookup menuLookup;
 	for (int i=0;i<static_cast<int>(products.size());++i) menuLookup.addItem({lowerText(productCode(i)),products[i].name,static_cast<float>(products[i].price)});
 	ShiftManager shiftManager;
 	ScheduleService scheduleService(&shiftManager);
-	scheduleService.openOpenShift("OPEN1", "2026-10-09", "08:00", "16:00", 30, "BR001", 2);
-	scheduleService.openOpenShift("OPEN2", "2026-10-10", "16:00", "23:00", 30, "BR002", 2);
-	for (Branch& branch : branchValues) {
-		branch.addStock("FLOUR", 50);
-		branch.addStock("NOODLES", 50);
+	if (!loadSchedules(scheduleService)) {
+		std::fprintf(stderr, "Unable to load data/schedules.txt.\n");
+		CloseWindow();
+		return 1;
+	}
+	if (!loadInventory(branchValues)) {
+		std::fprintf(stderr, "Unable to load data/inventory.txt.\n");
+		CloseWindow();
+		return 1;
 	}
 	ManagementUI managementUi(chain, branchValues, scheduleService, shiftManager, timekeepingRecords, employees);
 
@@ -385,6 +585,8 @@ int main() {
 	bool discount = false;
 	bool orderPlaced = false;
 	int nextOrderId = 1001;
+	for (const Order& order : orders) nextOrderId = std::max(nextOrderId, order.id + 1);
+	const std::string dateLabel = currentDateLabel();
 	float animationTime = 0.0f;
 	std::string statusMessage = "Please log in";
 
@@ -493,8 +695,10 @@ int main() {
 					nextOrderId++;
 					orderQueue.push(order);
 					orders.push_back(order);
-					saveEncryptedOrder(order);
-					statusMessage = "Order #" + std::to_string(order.id) + " added to queue";
+					if (saveOrders(orders))
+						statusMessage = "Order #" + std::to_string(order.id) + " added to queue";
+					else
+						statusMessage = "Order created but could not be saved";
 					cart = {};
 					for (int i = 0; i < static_cast<int>(cart.size()); ++i) cart[i] = {i, 0};
 				}
@@ -534,6 +738,11 @@ int main() {
 			}
 			if (activeTab >= 3 && managementUi.handleClick(mouse, activeTab, *currentUser)) {
 				statusMessage = managementUi.getMessage();
+				if (!saveInventory(branchValues) ||
+					!saveSchedules(scheduleService) ||
+					!saveAttendance(timekeepingRecords)) {
+					statusMessage = "Change applied but could not be saved";
+				}
 			}
 			}
 		}
@@ -596,7 +805,7 @@ int main() {
 		DrawRectangle(0, 89, static_cast<int>(1280.0f * (0.96f + 0.04f * std::sin(animationTime * 2.0f))), 3, {248, 218, 154, 255});
 		DrawText("SMALL KITCHEN", 30, 20, 30, {248, 218, 154, 255});
 		DrawText("SALES MANAGEMENT", 31, 56, 13, {190, 208, 196, 255});
-		DrawText("Tuesday, 25/08/2026", 1050, 24, 16, {224, 232, 222, 255});
+		DrawText(dateLabel.c_str(), 1050, 24, 16, {224, 232, 222, 255});
 		DrawText(currentUser ? currentUser->username.c_str() : "LOGIN REQUIRED", 1050, 52, 13, {170, 190, 180, 255});
 		DrawText(statusMessage.c_str(), 250, 715, 14, {35, 105, 78, 255});
 
