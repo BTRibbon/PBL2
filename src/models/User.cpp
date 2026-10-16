@@ -5,6 +5,10 @@ User::User(std::string userId,std::string userName,Role userRole) : id(userId),n
 
 std::string User::getName() const { return name; }
 
+std::string User::getBranchId() const { return {}; }
+
+void User::setUsername(const std::string& value) { username = value; }
+
 bool User::canManageBranches() const { return false; }
 
 bool User::canManageAllBranches() const { return false; }
@@ -14,6 +18,8 @@ bool User::canViewReports() const { return false; }
 Employee::Employee(std::string id,std::string name,std::string branch) : User(id,name,Role::Employee),branchId(branch) {}
 
 std::string Employee::getId() const { return id; }
+
+std::string Employee::getBranchId() const { return branchId; }
 
 int Employee::getMinimumShifts() const { return minimumShifts; }
 

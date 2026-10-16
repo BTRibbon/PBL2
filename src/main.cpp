@@ -14,9 +14,11 @@
 #include <cmath>
 #include <cctype>
 #include <cstdio>
+#include <cstdint>
 #include <fstream>
 #include <functional>
 #include <limits>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -60,15 +62,52 @@ static bool canAccessTab(const User* user, int tab) {
 	return false;
 }
 
-struct LoginAccount {
-	User* user;
+struct AccountRecord {
+	std::string id;
 	std::string username;
-	std::string password;
+	std::string name;
+	std::string role;
+	std::string branchId;
+	std::string salt;
+	std::string passwordHash;
+	User* user = nullptr;
 };
 
-static void saveEncryptedAccount(const User& user, const std::string& password) {
-	std::ofstream file("accounts.dat", std::ios::app | std::ios::binary);
-	if (file) file << encrypt(user.username + "|" + std::to_string(static_cast<int>(user.role)) + "|" + password + "\n");
+static std::string passwordHash(const std::string& password, const std::string& salt) {
+	const std::string input = salt + ":" + password;
+	std::uint64_t hash = 14695981039346656037ULL;
+	for (unsigned char character : input) {
+		hash ^= character;
+		hash *= 1099511628211ULL;
+	}
+	std::ostringstream result;
+	result << std::hex;
+	result.width(16);
+	result.fill('0');
+	result << hash;
+	return result.str();
+}
+
+static bool loadAccounts(std::vector<AccountRecord>& accounts) {
+	std::ifstream file("data/accounts.dat", std::ios::binary);
+	if (!file) return false;
+	std::string encrypted((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+	std::string plain;
+	plain.reserve(encrypted.size());
+	for (unsigned char character : encrypted) plain.push_back(static_cast<char>(character ^ 0x5A));
+
+	std::istringstream input(plain);
+	std::string line;
+	while (std::getline(input, line)) {
+		if (line.empty()) continue;
+		std::vector<std::string> fields;
+		std::stringstream lineStream(line);
+		std::string field;
+		while (std::getline(lineStream, field, '|')) fields.push_back(field);
+		if (fields.size() != 7) return false;
+		accounts.push_back({fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]});
+	}
+	return !accounts.empty();
 }
 
 static std::string lowerText(std::string value) {
@@ -184,6 +223,49 @@ static std::string productCode(int productIndex) {
 	return "M" + std::to_string(101 + productIndex);
 }
 
+static std::string formatCurrency(int value) {
+	std::string digits = std::to_string(value);
+	for (int position = static_cast<int>(digits.size()) - 3; position > 0; position -= 3)
+		digits.insert(static_cast<std::size_t>(position), ".");
+	return digits + " đ";
+}
+
+struct ReportStats {
+	int revenue = 0;
+	int orderCount = 0;
+	int pendingCount = 0;
+	std::array<int, products.size()> productQuantities{};
+};
+
+static ReportStats buildReportStats(const std::vector<Order>& orders, const User& user, const std::vector<Branch>& branches) {
+	ReportStats stats;
+	const bool allBranches = user.getRole() == Role::BranchManager;
+	std::string branchName;
+	if (!allBranches) {
+		for (const Branch& branch : branches) {
+			if (branch.getId() == user.getBranchId()) {
+				branchName = branch.getName();
+				break;
+			}
+		}
+	}
+	for (const Order& order : orders) {
+		if (!allBranches && order.branch != branchName) continue;
+		stats.revenue += order.total;
+		stats.orderCount++;
+		if (order.status == "pending") stats.pendingCount++;
+		for (const auto& item : order.items) {
+			for (int productIndex = 0; productIndex < static_cast<int>(products.size()); ++productIndex) {
+				if (item.first == productCode(productIndex)) {
+					stats.productQuantities[productIndex] += item.second;
+					break;
+				}
+			}
+		}
+	}
+	return stats;
+}
+
 static Font uiFont;
 
 static void drawUiText(const char* text, int x, int y, int size, Color color) {
@@ -209,12 +291,41 @@ int main() {
 	for (int i = 0; i < static_cast<int>(cart.size()); ++i) {
 		cart[i] = {i, 0};
 	}
-	Employee employeeOne("EMP001", "employee1", "BR001");
-	Employee employeeTwo("EMP002", "employee2", "BR002");
-	Employee employeeThree("EMP003", "employee3", "BR003");
-	Manager managerOne("MGR001", "manager1", "BR001");
-	Manager managerTwo("MGR002", "manager2", "BR002");
-	BranchManager branchManagerUser;
+	std::vector<AccountRecord> accounts;
+	if (!loadAccounts(accounts)) {
+		std::fprintf(stderr, "Unable to load data/accounts.dat. Run build.ps1 first.\n");
+		CloseWindow();
+		return 1;
+	}
+	auto findAccount = [&](const std::string& username) -> AccountRecord* {
+		for (AccountRecord& account : accounts)
+			if (account.username == username) return &account;
+		return nullptr;
+	};
+	AccountRecord* employeeOneData = findAccount("employee1");
+	AccountRecord* employeeTwoData = findAccount("employee2");
+	AccountRecord* employeeThreeData = findAccount("employee3");
+	AccountRecord* managerOneData = findAccount("manager1");
+	AccountRecord* managerTwoData = findAccount("manager2");
+	AccountRecord* branchManagerData = findAccount("branchmanager");
+	if (!employeeOneData || !employeeTwoData || !employeeThreeData ||
+		!managerOneData || !managerTwoData || !branchManagerData) {
+		std::fprintf(stderr, "Required account records are missing from data/accounts.dat.\n");
+		CloseWindow();
+		return 1;
+	}
+	Employee employeeOne(employeeOneData->id, employeeOneData->name, employeeOneData->branchId);
+	Employee employeeTwo(employeeTwoData->id, employeeTwoData->name, employeeTwoData->branchId);
+	Employee employeeThree(employeeThreeData->id, employeeThreeData->name, employeeThreeData->branchId);
+	Manager managerOne(managerOneData->id, managerOneData->name, managerOneData->branchId);
+	Manager managerTwo(managerTwoData->id, managerTwoData->name, managerTwoData->branchId);
+	BranchManager branchManagerUser(branchManagerData->id, branchManagerData->name);
+	employeeOne.setUsername(employeeOneData->username);
+	employeeTwo.setUsername(employeeTwoData->username);
+	employeeThree.setUsername(employeeThreeData->username);
+	managerOne.setUsername(managerOneData->username);
+	managerTwo.setUsername(managerTwoData->username);
+	branchManagerUser.setUsername(branchManagerData->username);
 	employeeOne.showMenuOptions();
 	employeeTwo.showMenuOptions();
 	employeeThree.showMenuOptions();
@@ -224,16 +335,12 @@ int main() {
 	std::vector<Employee*> employees{&employeeOne, &employeeTwo, &employeeThree, &managerOne, &managerTwo, &branchManagerUser};
 	std::vector<Timekeeping> timekeepingRecords;
 	for (Employee* user : employees) timekeepingRecords.emplace_back(user->getId());
-	std::vector<LoginAccount> accounts{
-		{&employeeOne, "employee1", "emp1pass"},
-		{&employeeTwo, "employee2", "emp2pass"},
-		{&employeeThree, "employee3", "emp3pass"},
-		{&managerOne, "manager1", "mgr1pass"},
-		{&managerTwo, "manager2", "mgr2pass"},
-		{&branchManagerUser, "branchmanager", "branchpass"}
-	};
-	for (const LoginAccount& account : accounts)
-		saveEncryptedAccount(*account.user, account.password);
+	employeeOneData->user = &employeeOne;
+	employeeTwoData->user = &employeeTwo;
+	employeeThreeData->user = &employeeThree;
+	managerOneData->user = &managerOne;
+	managerTwoData->user = &managerTwo;
+	branchManagerData->user = &branchManagerUser;
 	User* currentUser = nullptr;
 	RestaurantChain chain("Small Kitchen");
 	chain.addBranch("BR001","Central Branch",290.0f,285.0f);
@@ -252,6 +359,7 @@ int main() {
 	MapRoute dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
 	MapRoute aStarRoute = mapGraph.aStar(mapStart, mapTarget);
 	OrderQueue orderQueue;
+	std::vector<Order> orders;
 	MenuLookup menuLookup;
 	for (int i=0;i<static_cast<int>(products.size());++i) menuLookup.addItem({lowerText(productCode(i)),products[i].name,static_cast<float>(products[i].price)});
 	ShiftManager shiftManager;
@@ -276,8 +384,6 @@ int main() {
 	int activeTab = 0;
 	bool discount = false;
 	bool orderPlaced = false;
-	int ordersToday = 24;
-	int revenueToday = 4285000;
 	int nextOrderId = 1001;
 	float animationTime = 0.0f;
 	std::string statusMessage = "Please log in";
@@ -317,8 +423,9 @@ int main() {
 				if (CheckCollisionPointRec(mouse, {470, 330, 340, 46})) loginField = 0;
 				if (CheckCollisionPointRec(mouse, {470, 435, 340, 46})) loginField = 1;
 				if (CheckCollisionPointRec(mouse, {640, 500, 180, 40})) {
-					for (const LoginAccount& account : accounts) {
-						if (account.username == usernameInput && account.password == passwordInput) {
+					for (AccountRecord& account : accounts) {
+						if (account.username == usernameInput &&
+							passwordHash(passwordInput, account.salt) == account.passwordHash) {
 							currentUser = account.user;
 							activeTab = canAccessTab(currentUser, 0) ? 0 : 1;
 							loginDialog = false;
@@ -372,14 +479,22 @@ int main() {
 				if (CheckCollisionPointRec(mouse, {960, 606, 250, 42}) && cartTotal(cart) > 0) {
 					orderPlaced = true;
 					int paidTotal = cartTotal(cart) - promotionDiscount(cart, discount);
-					Order order{nextOrderId,paidTotal,branchValues.front().getName(),"ORD"+std::to_string(nextOrderId),"KIOSK",{},"pending"};
+					std::string orderBranch = branchValues.front().getName();
+					if (currentUser && currentUser->getRole() != Role::BranchManager) {
+						for (const Branch& branch : branchValues) {
+							if (branch.getId() == currentUser->getBranchId()) {
+								orderBranch = branch.getName();
+								break;
+							}
+						}
+					}
+					Order order{nextOrderId,paidTotal,orderBranch,"ORD"+std::to_string(nextOrderId),"KIOSK",{},"pending"};
 					for (const CartItem& item : cart) if (item.quantity>0) order.items.push_back({productCode(item.productIndex),item.quantity});
 					nextOrderId++;
 					orderQueue.push(order);
+					orders.push_back(order);
 					saveEncryptedOrder(order);
 					statusMessage = "Order #" + std::to_string(order.id) + " added to queue";
-					ordersToday++;
-					revenueToday += paidTotal;
 					cart = {};
 					for (int i = 0; i < static_cast<int>(cart.size()); ++i) cart[i] = {i, 0};
 				}
@@ -422,7 +537,6 @@ int main() {
 			}
 			}
 		}
-		if (activeTab == 0 && IsKeyPressed(KEY_A)) { cart[0].quantity++; statusMessage = "Key A: added Special Banh Mi"; }
 		if (activeTab == 0 && IsKeyPressed(KEY_ENTER) && !cartTotal(cart)) { statusMessage = "The cart is empty"; }
 
 		if (loginDialog) {
@@ -438,8 +552,9 @@ int main() {
 			}
 			if (IsKeyPressed(KEY_TAB)) loginField = loginField == 0 ? 1 : 0;
 			if (IsKeyPressed(KEY_ENTER)) {
-				for (const LoginAccount& account : accounts) {
-					if (account.username == usernameInput && account.password == passwordInput) {
+				for (AccountRecord& account : accounts) {
+					if (account.username == usernameInput &&
+						passwordHash(passwordInput, account.salt) == account.passwordHash) {
 						currentUser = account.user;
 						activeTab = canAccessTab(currentUser, 0) ? 0 : 1;
 						loginDialog = false;
@@ -474,8 +589,6 @@ int main() {
 				else statusMessage = "Filtering products by: " + search;
 			}
 		}
-		if (IsKeyPressed(KEY_P) && currentUser && currentUser->canViewReports() && !orderQueue.empty()) { orderQueue.popNext(); statusMessage = "Processed the first queued order"; }
-
 		BeginDrawing();
 		BeginMode2D({{GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f}, {640, 380}, 0, scale});
 		ClearBackground({245, 241, 232, 255});
@@ -572,26 +685,51 @@ int main() {
 			DrawText("PAY NOW", 1030, 619, 14, RAYWHITE);
 			if (orderPlaced) DrawText("New order created", 1000, 658, 13, {58, 125, 84, 255});
 		} else if (activeTab == 1) {
-			DrawText("Today's Overview", 250, 118, 28, {35, 55, 53, 255});
-			DrawText("Business performance for today", 250, 155, 14, {104, 115, 108, 255});
-			DrawRectangle(250, 200, 280, 130, {35, 105, 78, 255});
-			DrawText("DOANH THU", 274, 224, 13, {190, 220, 198, 255});
-			char revenue[64]; std::snprintf(revenue, sizeof(revenue), "%d đ", revenueToday);
-			DrawText(revenue, 274, 258, 26, RAYWHITE);
-			DrawRectangle(560, 200, 280, 130, {177, 105, 54, 255});
-			DrawText("ORDERS SOLD", 584, 224, 13, {244, 218, 185, 255});
-			char orders[32]; std::snprintf(orders, sizeof(orders), "%d orders", ordersToday);
-			DrawText(orders, 584, 258, 26, RAYWHITE);
-			DrawText("TOP PRODUCTS", 250, 380, 13, {93, 112, 103, 255});
-			DrawText("Grilled Chicken Rice", 270, 425, 18, {48, 64, 55, 255});
-			DrawRectangle(520, 426, 350, 16, {208, 220, 207, 255});
-			DrawRectangle(520, 426, 280, 16, {82, 150, 128, 255});
-			DrawText("Beef Pho", 270, 475, 18, {48, 64, 55, 255});
-			DrawRectangle(520, 476, 350, 16, {208, 220, 207, 255});
-			DrawRectangle(520, 476, 230, 16, {235, 142, 72, 255});
-			DrawText("Peach Lemongrass Tea", 270, 525, 18, {48, 64, 55, 255});
-			DrawRectangle(520, 526, 350, 16, {208, 220, 207, 255});
-			DrawRectangle(520, 526, 190, 16, {242, 126, 110, 255});
+			const ReportStats report = buildReportStats(orders, *currentUser, branchValues);
+			const int averageOrder = report.orderCount == 0 ? 0 : report.revenue / report.orderCount;
+			DrawText("Báo cáo bán hàng", 250, 118, 28, {35, 55, 53, 255});
+			DrawText(currentUser->getRole() == Role::BranchManager ? "Toàn bộ chi nhánh - phiên hiện tại" : "Chi nhánh của bạn - phiên hiện tại", 250, 155, 14, {104, 115, 108, 255});
+
+			const std::array<Rectangle, 4> cards{{
+				{250, 200, 220, 112}, {490, 200, 220, 112}, {730, 200, 220, 112}, {970, 200, 220, 112}
+			}};
+			const std::array<Color, 4> cardColors{{
+				{35, 105, 78, 255}, {177, 105, 54, 255}, {73, 116, 132, 255}, {125, 91, 135, 255}
+			}};
+			const std::array<const char*, 4> cardLabels{{"DOANH THU", "TỔNG ĐƠN", "TRUNG BÌNH / ĐƠN", "ĐANG CHỜ"}};
+			const std::array<std::string, 4> cardValues{{
+				formatCurrency(report.revenue),
+				std::to_string(report.orderCount) + " đơn",
+				formatCurrency(averageOrder),
+				std::to_string(report.pendingCount) + " đơn"
+			}};
+			for (int i = 0; i < 4; ++i) {
+				DrawRectangleRec(cards[i], cardColors[i]);
+				DrawText(cardLabels[i], static_cast<int>(cards[i].x + 18), static_cast<int>(cards[i].y + 22), 11, {235, 240, 232, 255});
+				DrawText(cardValues[i].c_str(), static_cast<int>(cards[i].x + 18), static_cast<int>(cards[i].y + 60), i == 0 || i == 2 ? 17 : 22, RAYWHITE);
+			}
+
+			DrawText("SẢN PHẨM BÁN CHẠY", 250, 365, 13, {93, 112, 103, 255});
+			std::array<int, products.size()> ranking{};
+			for (int i = 0; i < static_cast<int>(products.size()); ++i) ranking[i] = i;
+			std::sort(ranking.begin(), ranking.end(), [&](int left, int right) {
+				return report.productQuantities[left] > report.productQuantities[right];
+			});
+			int maxQuantity = 0;
+			for (int quantity : report.productQuantities) maxQuantity = std::max(maxQuantity, quantity);
+			for (int row = 0; row < 5; ++row) {
+				int productIndex = ranking[row];
+				int quantity = report.productQuantities[productIndex];
+				int y = 405 + row * 45;
+				DrawText((std::to_string(row + 1) + ".").c_str(), 252, y, 14, {93, 112, 103, 255});
+				DrawText(products[productIndex].name, 280, y, 15, {48, 64, 55, 255});
+				DrawRectangle(560, y + 3, 360, 14, {208, 220, 207, 255});
+				int barWidth = maxQuantity == 0 ? 0 : 360 * quantity / maxQuantity;
+				DrawRectangle(560, y + 3, barWidth, 14, products[productIndex].color);
+				DrawText((std::to_string(quantity) + " phần").c_str(), 940, y, 14, {48, 64, 55, 255});
+			}
+			DrawText("DỮ LIỆU ĐANG HIỂN THỊ", 250, 650, 12, {93, 112, 103, 255});
+			DrawText("Tính từ các đơn hàng được tạo trong phiên hiện tại.", 250, 675, 13, {104, 115, 108, 255});
 		} else if (activeTab == 2) {
 			int panelX = compactLayout ? 830 : 1090;
 			DrawText("Delivery Map", compactLayout ? 190 : 250, 118, 28, {35, 55, 53, 255});

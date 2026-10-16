@@ -19,6 +19,8 @@ public:
 	virtual Role getRole() const = 0;
 	virtual void showMenuOptions() const = 0;
 	std::string getName() const;
+	virtual std::string getBranchId() const;
+	void setUsername(const std::string& value);
 	virtual bool canManageBranches() const;
 	virtual bool canManageAllBranches() const;
 	virtual bool canViewReports() const;
@@ -29,6 +31,7 @@ public:
 	std::string branchId;
 	Employee(std::string id="EMP001",std::string name="Employee",std::string branch="BR001");
 	std::string getId() const;
+	std::string getBranchId() const override;
 	int getMinimumShifts() const;
 	void setMinimumShifts(int minimum);
 	bool registerForEmptyShift(ScheduleService& scheduleService, const std::string& scheduleId);

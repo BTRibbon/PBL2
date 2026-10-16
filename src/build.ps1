@@ -38,6 +38,42 @@ if (-not (Test-Path (Join-Path $libraryFolder "libraylib.a"))) {
 
 Set-Location -Path $scriptFolder
 
+$dataFolder = Join-Path $scriptFolder "data"
+$accountSource = Join-Path $dataFolder "accounts.txt"
+$accountDatabase = Join-Path $dataFolder "accounts.dat"
+if (-not (Test-Path $accountSource)) {
+    throw "Account source data was not found at $accountSource"
+}
+
+function Get-PasswordHash([string]$password, [string]$salt) {
+    Add-Type -AssemblyName System.Numerics
+    $text = [System.Text.Encoding]::UTF8.GetBytes($salt + ":" + $password)
+    $mask = ([System.Numerics.BigInteger]::One -shl 64) - 1
+    $hash = [System.Numerics.BigInteger]::Parse("14695981039346656037")
+    foreach ($byte in $text) {
+        $hash = $hash -bxor [UInt64]$byte
+        $hash = ($hash * 1099511628211) -band $mask
+    }
+    return $hash.ToString("x16")
+}
+
+$encodedAccounts = New-Object System.Collections.Generic.List[byte]
+foreach ($line in [System.IO.File]::ReadAllLines($accountSource)) {
+    if ([string]::IsNullOrWhiteSpace($line)) { continue }
+    $fields = $line.Split("|")
+    if ($fields.Count -ne 6) {
+        throw "Invalid account record: $line"
+    }
+    $salt = [guid]::NewGuid().ToString("N")
+    $passwordHash = Get-PasswordHash $fields[5] $salt
+    $record = ($fields[0..4] -join "|") + "|" + $salt + "|" + $passwordHash + "`n"
+    foreach ($byte in [System.Text.Encoding]::UTF8.GetBytes($record)) {
+        $encodedAccounts.Add([byte]($byte -bxor 0x5A))
+    }
+}
+[System.IO.File]::WriteAllBytes($accountDatabase, $encodedAccounts.ToArray())
+Write-Host "Generated encrypted account database: $accountDatabase"
+
 $sources = @(Get-ChildItem -Path $scriptFolder -Recurse -Filter *.cpp -File |
     Where-Object { $_.FullName -notmatch "[\\/]Utils[\\/]raylib-" } |
     Select-Object -ExpandProperty FullName)

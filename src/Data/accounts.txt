@@ -1,0 +1,6 @@
+EMP001|employee1|Employee One|Employee|BR001|emp1pass
+EMP002|employee2|Employee Two|Employee|BR002|emp2pass
+EMP003|employee3|Employee Three|Employee|BR003|emp3pass
+MGR001|manager1|Manager One|Manager|BR001|mgr1pass
+MGR002|manager2|Manager Two|Manager|BR002|mgr2pass
+BM001|branchmanager|Branch Manager|BranchManager|ALL|branchpass

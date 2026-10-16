@@ -72,3 +72,6 @@ Testing/
 .DS_Store
 
 instruction.md
+
+# Generated encrypted account database
+src/data/accounts.dat
