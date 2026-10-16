@@ -38,7 +38,7 @@ var searchData=
   ['branch_35',['branch',['../struct_order.html#aa4dda585993c88bf83b8e45029d6a290',1,'Order']]],
   ['branch_2ecpp_36',['Branch.cpp',['../_branch_8cpp.html',1,'']]],
   ['branch_2eh_37',['Branch.h',['../_branch_8h.html',1,'']]],
-  ['branchid_38',['branchId',['../class_schedule.html#adf62924a96f5f3379c9816262d484ff3',1,'Schedule::branchId'],['../class_employee.html#abb1790cdfd63d78e659ad1842216b418',1,'Employee::branchId']]],
+  ['branchid_38',['branchId',['../struct_account_record.html#a178a356dab36e24ad0eb31596fb9f4ce',1,'AccountRecord::branchId'],['../class_schedule.html#adf62924a96f5f3379c9816262d484ff3',1,'Schedule::branchId'],['../class_employee.html#abb1790cdfd63d78e659ad1842216b418',1,'Employee::branchId']]],
   ['branchlist_39',['BranchList',['../class_branch_list.html',1,'']]],
   ['branchlist_2ecpp_40',['BranchList.cpp',['../_branch_list_8cpp.html',1,'']]],
   ['branchlist_2eh_41',['BranchList.h',['../_branch_list_8h.html',1,'']]],

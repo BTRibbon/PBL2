@@ -42,8 +42,8 @@ var searchData=
   ['updatetexturerec_39',['UpdateTextureRec',['../raylib_8h.html#a6d9aa49f125c3f871fc5136301bab6fc',1,'raylib.h']]],
   ['uploadmesh_40',['UploadMesh',['../raylib_8h.html#a43db261cf17665ad49db64fe83e213ad',1,'raylib.h']]],
   ['user_41',['User',['../class_user.html',1,'User'],['../class_user.html#a1615197a2599367bab87d4ccfbc90a09',1,'User::User()']]],
-  ['user_42',['user',['../struct_login_account.html#a981d8b7e38d0cf77d44ab6474e41dc2d',1,'LoginAccount']]],
+  ['user_42',['user',['../struct_account_record.html#a2bad7113b58ebf76e65c0be1af128f74',1,'AccountRecord']]],
   ['user_2ecpp_43',['User.cpp',['../_user_8cpp.html',1,'']]],
   ['user_2eh_44',['User.h',['../_user_8h.html',1,'']]],
-  ['username_45',['username',['../struct_login_account.html#aa124b4ee91722cc36a33a25be04bd423',1,'LoginAccount::username'],['../class_user.html#aacbb807e514280f69e00bec7d71f3aee',1,'User::username']]]
+  ['username_45',['username',['../struct_account_record.html#a46d66e33de45d16c5f97bb749c6bdbbe',1,'AccountRecord::username'],['../class_user.html#aacbb807e514280f69e00bec7d71f3aee',1,'User::username']]]
 ];

@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "AccountRecord", "struct_account_record.html", null ],
     [ "AttendanceRecord", "struct_attendance_record.html", null ],
     [ "AudioStream", "struct_audio_stream.html", null ],
     [ "AutomationEvent", "struct_automation_event.html", null ],
@@ -19,7 +20,6 @@ var hierarchy =
     [ "GlyphInfo", "struct_glyph_info.html", null ],
     [ "GridPoint", "struct_grid_point.html", null ],
     [ "Image", "struct_image.html", null ],
-    [ "LoginAccount", "struct_login_account.html", null ],
     [ "ManagementUI", "class_management_u_i.html", null ],
     [ "MapGraph", "class_map_graph.html", null ],
     [ "MapRoute", "struct_map_route.html", null ],
@@ -43,6 +43,7 @@ var hierarchy =
     [ "RayCollision", "struct_ray_collision.html", null ],
     [ "Rectangle", "struct_rectangle.html", null ],
     [ "RenderTexture", "struct_render_texture.html", null ],
+    [ "ReportStats", "struct_report_stats.html", null ],
     [ "RestaurantChain", "class_restaurant_chain.html", null ],
     [ "rlDrawCall", "structrl_draw_call.html", null ],
     [ "rlRenderBatch", "structrl_render_batch.html", null ],

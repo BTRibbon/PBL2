@@ -12,14 +12,21 @@
 {\ttfamily \+\#include "{}UI/\+\+Management\+UI.\+h"{}}\newline
 {\ttfamily \+\#include $<$algorithm$>$}\newline
 {\ttfamily \+\#include $<$array$>$}\newline
+{\ttfamily \+\#include $<$charconv$>$}\newline
 {\ttfamily \+\#include $<$cmath$>$}\newline
 {\ttfamily \+\#include $<$cctype$>$}\newline
 {\ttfamily \+\#include $<$cstdio$>$}\newline
+{\ttfamily \+\#include $<$cstdlib$>$}\newline
+{\ttfamily \+\#include $<$cstdint$>$}\newline
+{\ttfamily \+\#include $<$ctime$>$}\newline
 {\ttfamily \+\#include $<$fstream$>$}\newline
 {\ttfamily \+\#include $<$functional$>$}\newline
 {\ttfamily \+\#include $<$limits$>$}\newline
+{\ttfamily \+\#include $<$sstream$>$}\newline
 {\ttfamily \+\#include $<$string$>$}\newline
+{\ttfamily \+\#include $<$unordered\+\_\+map$>$}\newline
 {\ttfamily \+\#include $<$vector$>$}\newline
+{\ttfamily \+\#include $<$filesystem$>$}\newline
 Include dependency graph for main.\+cpp:
 \nopagebreak
 \begin{figure}[H]
@@ -35,13 +42,15 @@ struct \doxymbox{\hyperlink{struct_product}{Product}}
 \item 
 struct \doxymbox{\hyperlink{struct_cart_item}{Cart\+Item}}
 \item 
-struct \doxymbox{\hyperlink{struct_login_account}{Login\+Account}}
+struct \doxymbox{\hyperlink{struct_account_record}{Account\+Record}}
 \item 
 struct \doxymbox{\hyperlink{struct_grid_point}{Grid\+Point}}
 \item 
 struct \doxymbox{\hyperlink{struct_map_route}{Map\+Route}}
 \item 
 class \doxymbox{\hyperlink{class_map_graph}{Map\+Graph}}
+\item 
+struct \doxymbox{\hyperlink{struct_report_stats}{Report\+Stats}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Macros}
 \begin{DoxyCompactItemize}
@@ -51,7 +60,7 @@ class \doxymbox{\hyperlink{class_map_graph}{Map\+Graph}}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-int \doxymbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+int \doxymbox{\hyperlink{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
 \end{DoxyCompactItemize}
 
 
@@ -69,9 +78,9 @@ int \doxymbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
 \label{main_8cpp_doc-func-members}
 \Hypertarget{main_8cpp_doc-func-members}
 \doxysubsection{Function Documentation}
-\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\index{main.cpp@{main.cpp}!main@{main}}
+\Hypertarget{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\index{main.cpp@{main.cpp}!main@{main}}
 \index{main@{main}!main.cpp@{main.cpp}}
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
-{\footnotesize\ttfamily \label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4} 
-int main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{}\end{DoxyParamCaption})}
 

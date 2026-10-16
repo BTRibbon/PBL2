@@ -13,8 +13,9 @@ var searchData=
   ['orange_10',['ORANGE',['../raylib_8h.html#ac5b6e19bf06822021f35602c59658de3',1,'raylib.h']]],
   ['order_11',['Order',['../struct_order.html',1,'']]],
   ['order_2eh_12',['Order.h',['../_order_8h.html',1,'']]],
-  ['orderid_13',['orderId',['../struct_order.html#acfbd42aa37e3c8e903d4b9828c87ff90',1,'Order']]],
-  ['orderqueue_14',['OrderQueue',['../class_order_queue.html',1,'']]],
-  ['orderqueue_2ecpp_15',['OrderQueue.cpp',['../_order_queue_8cpp.html',1,'']]],
-  ['orderqueue_2eh_16',['OrderQueue.h',['../_order_queue_8h.html',1,'']]]
+  ['ordercount_13',['orderCount',['../struct_report_stats.html#aa36ef174be2f0f8f9ede8cd934992027',1,'ReportStats']]],
+  ['orderid_14',['orderId',['../struct_order.html#acfbd42aa37e3c8e903d4b9828c87ff90',1,'Order']]],
+  ['orderqueue_15',['OrderQueue',['../class_order_queue.html',1,'']]],
+  ['orderqueue_2ecpp_16',['OrderQueue.cpp',['../_order_queue_8cpp.html',1,'']]],
+  ['orderqueue_2eh_17',['OrderQueue.h',['../_order_queue_8h.html',1,'']]]
 ];

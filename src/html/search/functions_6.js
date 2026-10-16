@@ -27,7 +27,7 @@ var searchData=
   ['getapplicationdirectory_24',['GetApplicationDirectory',['../raylib_8h.html#a309db766c62709969be4d5d27bcf52b3',1,'raylib.h']]],
   ['getassignedemployeecount_25',['getAssignedEmployeeCount',['../class_schedule.html#ac031d04315069017d830f6ea58a773e0',1,'Schedule']]],
   ['getbranches_26',['getBranches',['../class_restaurant_chain.html#a75c4eb4042978de5dfee6ff45380f9bd',1,'RestaurantChain']]],
-  ['getbranchid_27',['getBranchId',['../class_schedule.html#abb27b2fbc2eee5b328a12a598e746c90',1,'Schedule']]],
+  ['getbranchid_27',['getBranchId',['../class_schedule.html#abb27b2fbc2eee5b328a12a598e746c90',1,'Schedule::getBranchId()'],['../class_user.html#a60a7bedafbc2e189587c7d56a43cf634',1,'User::getBranchId()'],['../class_employee.html#a375c459e50633e11904f189991aecf56',1,'Employee::getBranchId()']]],
   ['getbreakminutes_28',['getBreakMinutes',['../class_schedule.html#a502d3edf2a17cc10e31c4fe4959703b0',1,'Schedule']]],
   ['getcameramatrix_29',['GetCameraMatrix',['../raylib_8h.html#a5b9ea0c687a247ea5950e1b7e02a7d11',1,'raylib.h']]],
   ['getcameramatrix2d_30',['GetCameraMatrix2D',['../raylib_8h.html#a701f8934a2a31043f62eeee3c6507cc3',1,'raylib.h']]],

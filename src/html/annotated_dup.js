@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "AccountRecord", "struct_account_record.html", "struct_account_record" ],
     [ "AttendanceRecord", "struct_attendance_record.html", "struct_attendance_record" ],
     [ "AudioStream", "struct_audio_stream.html", "struct_audio_stream" ],
     [ "AutomationEvent", "struct_automation_event.html", "struct_automation_event" ],
@@ -22,7 +23,6 @@ var annotated_dup =
     [ "GlyphInfo", "struct_glyph_info.html", "struct_glyph_info" ],
     [ "GridPoint", "struct_grid_point.html", "struct_grid_point" ],
     [ "Image", "struct_image.html", "struct_image" ],
-    [ "LoginAccount", "struct_login_account.html", "struct_login_account" ],
     [ "ManagementUI", "class_management_u_i.html", "class_management_u_i" ],
     [ "Manager", "class_manager.html", "class_manager" ],
     [ "MapGraph", "class_map_graph.html", "class_map_graph" ],
@@ -47,6 +47,7 @@ var annotated_dup =
     [ "RayCollision", "struct_ray_collision.html", "struct_ray_collision" ],
     [ "Rectangle", "struct_rectangle.html", "struct_rectangle" ],
     [ "RenderTexture", "struct_render_texture.html", "struct_render_texture" ],
+    [ "ReportStats", "struct_report_stats.html", "struct_report_stats" ],
     [ "RestaurantChain", "class_restaurant_chain.html", "class_restaurant_chain" ],
     [ "rlDrawCall", "structrl_draw_call.html", "structrl_draw_call" ],
     [ "rlRenderBatch", "structrl_render_batch.html", "structrl_render_batch" ],

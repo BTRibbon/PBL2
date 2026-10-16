@@ -52,14 +52,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_branch_8cpp.html",
-"functions_vars_u.html",
-"raylib_8h.html#a29f8cc2853339356998ddc4cc763844f",
-"raylib_8h.html#a6a849da547b86042cc556b5029e14497",
-"raylib_8h.html#a954d82056087a3efc516271550906a6d",
-"raylib_8h.html#aded1068501bbeff6d2ba97bfdb80e7e9",
-"raymath_8h.html#acaa552c2daada4f459d363ac9cf41259",
-"rlgl_8h.html#a9570374e3dbc873595100dae1e584459",
-"struct_login_account.html#a981d8b7e38d0cf77d44ab6474e41dc2d"
+"functions_vars_r.html",
+"raylib_8h.html#a29abcf238b156bde95cf23f3195d2dd5",
+"raylib_8h.html#a6a3ac7bbcae938b4c57bc8b609cfcac0",
+"raylib_8h.html#a94b4a5e76ed30c0af90a1bbbdc214b2bafa1c237398bdfc48e5c1a55ce4a977fe",
+"raylib_8h.html#ade78453778eeb19fe060af2628c547f8",
+"raymath_8h.html#ac5a945020d3528355cda82d383676736",
+"rlgl_8h.html#a93c5ef00ad99e88a63ac888f95cf0af7",
+"struct_glyph_info.html#aa9993ed2de20fa655f0afcc1e70d4ed9"
 ];
 
 const SYNCONMSG = 'click to disable panel synchronization';
