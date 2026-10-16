@@ -460,6 +460,14 @@ static void drawTextRight(const char* text, int right, int y, int size, Color co
 	DrawText(text, right - MeasureText(text, size), y, size, color);
 }
 
+static std::vector<int> vietnameseFontCodepoints() {
+	std::vector<int> codepoints;
+	for (int codepoint = 32; codepoint <= 126; ++codepoint) codepoints.push_back(codepoint);
+	for (int codepoint = 160; codepoint <= 383; ++codepoint) codepoints.push_back(codepoint);
+	for (int codepoint = 7840; codepoint <= 7929; ++codepoint) codepoints.push_back(codepoint);
+	return codepoints;
+}
+
 int main(int argc, char** argv) {
 	if (!setWorkingDirectoryToExecutable(argc > 0 ? argv[0] : "")) {
 		std::fprintf(stderr, "Unable to locate the application directory.\n");
@@ -468,7 +476,9 @@ int main(int argc, char** argv) {
 	SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE);
 	InitWindow(1280, 760, "Bep Nho - Quan ly ban hang");
 	SetWindowMinSize(900, 600);
-	uiFont = LoadFontEx("C:/Windows/Fonts/segoeuib.ttf", 48, nullptr, 0);
+	const std::vector<int> fontCodepoints = vietnameseFontCodepoints();
+	uiFont = LoadFontEx("C:/Windows/Fonts/segoeuib.ttf", 48, fontCodepoints.data(),
+		static_cast<int>(fontCodepoints.size()));
 	SetTargetFPS(60);
 
 	std::array<CartItem, 8> cart{};
