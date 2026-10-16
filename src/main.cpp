@@ -15,6 +15,7 @@
 #include <cmath>
 #include <cctype>
 #include <cstdio>
+#include <cstdlib>
 #include <cstdint>
 #include <ctime>
 #include <fstream>
@@ -468,6 +469,25 @@ static std::vector<int> vietnameseFontCodepoints() {
 	return codepoints;
 }
 
+static std::string findUiFontPath() {
+#ifdef _WIN32
+	const std::array<std::string, 2> candidates{{
+		"C:/Windows/Fonts/segoeuib.ttf",
+		"C:/Windows/Fonts/arial.ttf"
+	}};
+#else
+	const std::array<std::string, 4> candidates{{
+		"/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
+		"/System/Library/Fonts/Supplemental/Arial.ttf",
+		"/System/Library/Fonts/SFNS.ttf",
+		"/Library/Fonts/Arial.ttf"
+	}};
+#endif
+	for (const std::string& candidate : candidates)
+		if (std::filesystem::exists(candidate)) return candidate;
+	return {};
+}
+
 int main(int argc, char** argv) {
 	if (!setWorkingDirectoryToExecutable(argc > 0 ? argv[0] : "")) {
 		std::fprintf(stderr, "Unable to locate the application directory.\n");
@@ -477,8 +497,15 @@ int main(int argc, char** argv) {
 	InitWindow(1280, 760, "Bep Nho - Quan ly ban hang");
 	SetWindowMinSize(900, 600);
 	const std::vector<int> fontCodepoints = vietnameseFontCodepoints();
-	uiFont = LoadFontEx("C:/Windows/Fonts/segoeuib.ttf", 48, fontCodepoints.data(),
-		static_cast<int>(fontCodepoints.size()));
+	const std::string fontPath = findUiFontPath();
+	if (!fontPath.empty()) {
+		uiFont = LoadFontEx(fontPath.c_str(), 48, fontCodepoints.data(),
+			static_cast<int>(fontCodepoints.size()));
+		if (uiFont.texture.id == 0)
+			std::fprintf(stderr, "Unable to load UI font: %s. Using raylib default font.\n", fontPath.c_str());
+	} else {
+		std::fprintf(stderr, "No supported UI font was found. Using raylib default font.\n");
+	}
 	SetTargetFPS(60);
 
 	std::array<CartItem, 8> cart{};

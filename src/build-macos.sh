@@ -74,6 +74,46 @@ if [[ ${#sources[@]} -eq 0 ]]; then
     exit 1
 fi
 
+data_folder="$script_folder/data"
+account_source="$data_folder/accounts.txt"
+account_database="$data_folder/accounts.dat"
+if [[ ! -f "$account_source" ]]; then
+    printf 'Account source data was not found at %s.\n' "$account_source" >&2
+    exit 1
+fi
+if ! command -v python3 >/dev/null 2>&1; then
+    printf 'python3 was not found. Install Python 3 to generate the encrypted account database.\n' >&2
+    exit 1
+fi
+
+ACCOUNT_SOURCE="$account_source" ACCOUNT_DATABASE="$account_database" python3 - <<'PY'
+import os
+import secrets
+
+source = os.environ["ACCOUNT_SOURCE"]
+database = os.environ["ACCOUNT_DATABASE"]
+records = []
+with open(source, "r", encoding="utf-8") as file:
+    for line_number, line in enumerate(file, 1):
+        line = line.strip()
+        if not line:
+            continue
+        fields = line.split("|")
+        if len(fields) != 6:
+            raise SystemExit(f"Invalid account record at line {line_number}")
+        salt = secrets.token_hex(16)
+        value = (salt + ":" + fields[5]).encode("utf-8")
+        hash_value = 14695981039346656037
+        for byte in value:
+            hash_value = ((hash_value ^ byte) * 1099511628211) & ((1 << 64) - 1)
+        records.append("|".join(fields[:5] + [salt, f"{hash_value:016x}"]) + "\n")
+
+encoded = bytes(byte ^ 0x5A for byte in "".join(records).encode("utf-8"))
+with open(database, "wb") as file:
+    file.write(encoded)
+PY
+printf 'Generated encrypted account database: %s\n' "$account_database"
+
 app_path="$script_folder/$output_name"
 compile_args=(-std=c++20 -Wall -Wextra "${raylib_flags[@]}" "${sources[@]}" -o "$app_path")
 
