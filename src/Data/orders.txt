@@ -1,0 +1,3 @@
+1001|285000|Central Branch|ORD1001|KIOSK|pending|M102:3,M104:2
+1002|120000|Central Branch|ORD1002|KIOSK|pending|M104:2
+1003|336000|Central Branch|ORD1003|KIOSK|pending|M105:12
