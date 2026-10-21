@@ -1,3 +1,10 @@
-1001|285000|Central Branch|ORD1001|KIOSK|pending|M102:3,M104:2
-1002|120000|Central Branch|ORD1002|KIOSK|pending|M104:2
-1003|336000|Central Branch|ORD1003|KIOSK|pending|M105:12
+1001|285000|Chi nhánh Trung Tâm|ORD1001|KIOSK|completed|M102:3,M104:2
+1002|120000|Chi nhánh Trung Tâm|ORD1002|KIOSK|completed|M104:2
+1003|336000|Chi nhánh Trung Tâm|ORD1003|KIOSK|pending|M105:12
+1004|165000|Chi nhánh Phía Tây|ORD1004|KIOSK|completed|M102:3
+1005|192000|Chi nhánh Phía Tây|ORD1005|KIOSK|pending|M103:4
+1006|210000|Chi nhánh Phía Đông|ORD1006|KIOSK|completed|M101:6
+1007|180000|Chi nhánh Phía Đông|ORD1007|KIOSK|pending|M104:3
+1008|240000|Chi nhánh Phía Nam|ORD1008|KIOSK|completed|M104:4
+1009|90000|Chi nhánh Trung Tâm|ORD1009|KIOSK|pending|M101:1,M102:1
+1010|175000|Chi nhánh Trung Tâm|ORD1010|KIOSK|pending|M104:2,M102:1
