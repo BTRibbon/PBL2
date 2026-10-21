@@ -73,7 +73,16 @@ class ManagementUI {
 	std::string ingInitialStockInput = "50";
 	int ingDialogField = 0;
 
+	// Animation state
+	double dialogOpenTime = 0.0;
+	bool wasDialogOpen = false;
+	double subTabChangeTime = -10.0;
+	int lastSubTab = 0;
+
 	void drawButton(Rectangle bounds, const char* label, Vector2 mouse, bool enabled = true, Color bgColor = {35, 105, 78, 255}) const;
+	void drawPill(Rectangle bounds, const char* label, Vector2 mouse, bool selected, float fontSize = 13.0f) const;
+	float beginDialogTransition(Rectangle dialog) const;
+	void endDialogTransition() const;
 	void drawManagementHeader(const char* title, const char* subtitle) const;
 	void drawInventoryTab(Vector2 mouse, User& currentUser);
 	void drawMenuTab(Vector2 mouse, User& currentUser);

@@ -9,6 +9,8 @@
 #include "services/ShiftManager.h"
 #include "UI/ManagementUI.h"
 #include "UI/UIFont.h"
+#include "UI/UIAnim.h"
+#include "rlgl.h"
 
 #include <algorithm>
 #include <array>
@@ -750,6 +752,28 @@ int main(int argc, char** argv) {
 	const std::string dateLabel = currentDateLabel();
 	float animationTime = 0.0f;
 	std::string statusMessage = "Vui lòng đăng nhập để sử dụng hệ thống";
+	int statusVersion = 0;
+	int lastStatusVersion = 0;
+	double statusChangeTime = -10.0;
+	Anim::ToastType statusType = Anim::ToastType::Info;
+
+	// Animation state
+	int lastActiveTab = -1;
+	double tabChangeTime = -10.0;
+	double loginShakeTime = -10.0;
+	double loginOpenTime = 0.0;
+	bool wasLoginDialog = true;
+	float navIndicatorY = -1.0f;
+	float displayedTotal = 0.0f;
+	std::string cartFlashCode;
+	double cartFlashTime = -10.0;
+	struct CartFlyer {
+		Vector2 from;
+		Vector2 to;
+		double start;
+		Color color;
+	};
+	std::vector<CartFlyer> cartFlyers;
 
 	const Rectangle loginBoxRec = {380, 155, 520, 435};
 	const Rectangle loginUserBoxRec = {415, 275, 450, 42};
@@ -758,6 +782,7 @@ int main(int argc, char** argv) {
 
 	while (!WindowShouldClose()) {
 		animationTime += GetFrameTime();
+		Anim::BeginFrame();
 
 		if (activeTab == 2 && pathAnimation < 1000.0f) {
 			pathAnimation = std::min(1000.0f, pathAnimation + GetFrameTime() * 28.0f);
@@ -832,12 +857,12 @@ int main(int argc, char** argv) {
 							loginDialog = false;
 							usernameInput.clear();
 							passwordInput.clear();
-							statusMessage = "Đăng nhập thành công! Vai trò: " + std::string(roleName(currentUser->role));
+							statusVersion++, statusMessage = "Đăng nhập thành công! Vai trò: " + std::string(roleName(currentUser->role));
 							break;
 						}
 					}
 					if (!currentUser) {
-						statusMessage = "Sai tên đăng nhập hoặc mật khẩu!";
+						statusVersion++, statusMessage = "Sai tên đăng nhập hoặc mật khẩu!";
 						passwordInput.clear();
 					}
 				}
@@ -846,7 +871,7 @@ int main(int argc, char** argv) {
 					saveMenu(products);
 					saveIngredients(ingredientTypes);
 					saveInventory(branchValues, ingredientTypes);
-					statusMessage = managementUi.getMessage();
+					statusVersion++, statusMessage = managementUi.getMessage();
 				}
 			} else if (currentUser) {
 				// Dynamic sidebar tab switching
@@ -854,7 +879,7 @@ int main(int argc, char** argv) {
 					Rectangle navRec = {20, 136.0f + static_cast<float>(n) * 52.0f, 180, 44};
 					if (CheckCollisionPointRec(mouse, navRec)) {
 						activeTab = navItems[n].tabId;
-						statusMessage = std::string("Đã mở: ") + navItems[n].label;
+						statusVersion++, statusMessage = std::string("Đã mở: ") + navItems[n].label;
 					}
 				}
 
@@ -865,7 +890,7 @@ int main(int argc, char** argv) {
 					loginDialog = true;
 					usernameInput.clear();
 					passwordInput.clear();
-					statusMessage = "Đã đăng xuất khỏi hệ thống";
+					statusVersion++, statusMessage = "Đã đăng xuất khỏi hệ thống";
 				} else if (activeTab == 0) {
 					// TAB 0: POS & ORDERING
 					searchFocused = CheckCollisionPointRec(mouse, {245, 148, 285, 36});
@@ -914,7 +939,17 @@ int main(int argc, char** argv) {
 								cart.push_back({product.code, 1});
 								cartScrollOffset = std::max(0, static_cast<int>(cart.size()) - 7);
 							}
-							statusMessage = "Đã thêm vào giỏ: " + product.name;
+							cartFlashCode = product.code;
+							cartFlashTime = GetTime();
+							{
+								int cartIdx = 0;
+								for (int ci = 0; ci < static_cast<int>(cart.size()); ++ci)
+									if (cart[ci].productCode == product.code) cartIdx = ci;
+								int visRow = std::clamp(cartIdx - cartScrollOffset, 0, 6);
+								cartFlyers.push_back({{addBtn.x + addBtn.width / 2.0f, addBtn.y + addBtn.height / 2.0f},
+									{1000.0f, 173.0f + visRow * 34.0f}, GetTime(), product.color});
+							}
+							statusVersion++, statusMessage = "Đã thêm vào giỏ: " + product.name;
 						}
 					}
 
@@ -934,6 +969,8 @@ int main(int argc, char** argv) {
 						}
 						if (CheckCollisionPointRec(mouse, plusBtn)) {
 							cart[i].quantity++;
+							cartFlashCode = cart[i].productCode;
+							cartFlashTime = GetTime();
 							break;
 						}
 					}
@@ -942,7 +979,7 @@ int main(int argc, char** argv) {
 					if (!cart.empty() && CheckCollisionPointRec(mouse, {1175, 116, 66, 26})) {
 						cart.clear();
 						cartScrollOffset = 0;
-						statusMessage = "Đã xoá toàn bộ giỏ hàng";
+						statusVersion++, statusMessage = "Đã xoá toàn bộ giỏ hàng";
 					}
 
 					// Discount % preset buttons
@@ -964,7 +1001,7 @@ int main(int argc, char** argv) {
 					Rectangle comboBtn = {952, 544, 286, 28};
 					if (CheckCollisionPointRec(mouse, comboBtn)) {
 						comboPromotion = !comboPromotion;
-						statusMessage = comboPromotion ? "Đã bật ưu đãi combo (-15.000 đ)" : "Đã tắt ưu đãi combo";
+						statusVersion++, statusMessage = comboPromotion ? "Đã bật ưu đãi combo (-15.000 đ)" : "Đã tắt ưu đãi combo";
 					}
 
 					// Pay / Checkout button
@@ -972,6 +1009,9 @@ int main(int argc, char** argv) {
 					int discAmount = computeDiscount(cart, products, discountPercent, comboPromotion);
 					int finalPaid = std::max(0, totalAmount - discAmount);
 
+					if (CheckCollisionPointRec(mouse, {952, 634, 286, 42}) && totalAmount <= 0) {
+						statusVersion++, statusMessage = "Không thể thanh toán: giỏ hàng đang trống, vui lòng chọn món!";
+					}
 					if (CheckCollisionPointRec(mouse, {952, 634, 286, 42}) && totalAmount > 0) {
 						orderPlaced = true;
 						std::string orderBranch = branchValues.front().getName();
@@ -991,9 +1031,9 @@ int main(int argc, char** argv) {
 						orderQueue.push(order);
 						orders.push_back(order);
 						if (saveOrders(orders)) {
-							statusMessage = "Đã thanh toán thành công đơn hàng #" + order.orderId + " (" + formatCurrency(finalPaid) + ")!";
+							statusVersion++, statusMessage = "Đã thanh toán thành công đơn hàng #" + order.orderId + " (" + formatCurrency(finalPaid) + ")!";
 						} else {
-							statusMessage = "Đã tạo đơn nhưng không thể lưu file orders.txt";
+							statusVersion++, statusMessage = "Đã tạo đơn nhưng không thể lưu file orders.txt";
 						}
 						cart.clear();
 						cartScrollOffset = 0;
@@ -1037,7 +1077,7 @@ int main(int argc, char** argv) {
 							dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
 							aStarRoute = mapGraph.aStar(mapStart, mapTarget);
 							pathAnimation = 0.0f;
-							statusMessage = "Đã chọn chi nhánh: " + branchValues[i].getName();
+							statusVersion++, statusMessage = "Đã chọn chi nhánh: " + branchValues[i].getName();
 						}
 					}
 					int mapX = static_cast<int>((mouse.x - mapOriginX) / mapCellSize);
@@ -1048,19 +1088,19 @@ int main(int argc, char** argv) {
 						dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
 						aStarRoute = mapGraph.aStar(mapStart, mapTarget);
 						pathAnimation = 0.0f;
-						statusMessage = "Đã chọn điểm giao hàng tự do (" + std::to_string(mapX) + ", " + std::to_string(mapY) + ")";
+						statusVersion++, statusMessage = "Đã chọn điểm giao hàng tự do (" + std::to_string(mapX) + ", " + std::to_string(mapY) + ")";
 					}
 
 					Rectangle serviceBtn = {995, 425, 245, 36};
 					if (CheckCollisionPointRec(mouse, serviceBtn)) {
 						deliveryMode = !deliveryMode;
-						statusMessage = deliveryMode ? "Chế độ: Giao hàng tận nơi" : "Chế độ: Phục vụ tại bàn";
+						statusVersion++, statusMessage = deliveryMode ? "Chế độ: Giao hàng tận nơi" : "Chế độ: Phục vụ tại bàn";
 					}
 					Rectangle algoBtn = {995, 470, 245, 36};
 					if (CheckCollisionPointRec(mouse, algoBtn)) {
 						useAStar = !useAStar;
 						pathAnimation = 0.0f;
-						statusMessage = useAStar ? "Đã chuyển sang thuật toán A*" : "Đã chuyển sang thuật toán Dijkstra";
+						statusVersion++, statusMessage = useAStar ? "Đã chuyển sang thuật toán A*" : "Đã chuyển sang thuật toán Dijkstra";
 					}
 					Rectangle processBtn = {995, 515, 245, 40};
 					if (CheckCollisionPointRec(mouse, processBtn)) {
@@ -1073,15 +1113,15 @@ int main(int argc, char** argv) {
 								}
 							}
 							saveOrders(orders);
-							statusMessage = "Đã hoàn thành đơn hàng #" + nextOrd.orderId + " (" + nextOrd.branch + ")";
+							statusVersion++, statusMessage = "Đã hoàn thành đơn hàng #" + nextOrd.orderId + " (" + nextOrd.branch + ")";
 						} else {
-							statusMessage = "Hàng đợi đơn hàng đang trống!";
+							statusVersion++, statusMessage = "Hàng đợi đơn hàng đang trống!";
 						}
 					}
 				} else if (activeTab >= 3) {
 					// TABS 3, 4, 5: MANAGEMENT UI
 					if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
-						statusMessage = managementUi.getMessage();
+						statusVersion++, statusMessage = managementUi.getMessage();
 						saveMenu(products);
 						saveIngredients(ingredientTypes);
 						saveInventory(branchValues, ingredientTypes);
@@ -1103,9 +1143,9 @@ int main(int argc, char** argv) {
 					}
 				}
 				saveOrders(orders);
-				statusMessage = "Đã hoàn tất xử lý đơn #" + nextOrd.orderId + " (" + nextOrd.branch + ")";
+				statusVersion++, statusMessage = "Đã hoàn tất xử lý đơn #" + nextOrd.orderId + " (" + nextOrd.branch + ")";
 			} else {
-				statusMessage = "Hàng đợi rỗng!";
+				statusVersion++, statusMessage = "Hàng đợi rỗng!";
 			}
 		}
 
@@ -1130,12 +1170,12 @@ int main(int argc, char** argv) {
 						loginDialog = false;
 						usernameInput.clear();
 						passwordInput.clear();
-						statusMessage = "Đăng nhập thành công! Chức vụ: " + std::string(roleName(currentUser->role));
+						statusVersion++, statusMessage = "Đăng nhập thành công! Chức vụ: " + std::string(roleName(currentUser->role));
 						break;
 					}
 				}
 				if (!currentUser) {
-					statusMessage = "Sai tên đăng nhập hoặc mật khẩu!";
+					statusVersion++, statusMessage = "Sai tên đăng nhập hoặc mật khẩu!";
 					passwordInput.clear();
 				}
 			}
@@ -1146,14 +1186,14 @@ int main(int argc, char** argv) {
 				saveMenu(products);
 				saveIngredients(ingredientTypes);
 				saveInventory(branchValues, ingredientTypes);
-				statusMessage = managementUi.getMessage();
+				statusVersion++, statusMessage = managementUi.getMessage();
 			}
 			while ((keyChar = GetCharPressed()) > 0) {
 				if (managementUi.updateInput(0, keyChar)) {
 					saveMenu(products);
 					saveIngredients(ingredientTypes);
 					saveInventory(branchValues, ingredientTypes);
-					statusMessage = managementUi.getMessage();
+					statusVersion++, statusMessage = managementUi.getMessage();
 				}
 			}
 		} else if (activeTab == 0 && discountInputFocused) {
@@ -1193,6 +1233,27 @@ int main(int argc, char** argv) {
 			}
 		}
 
+		// ANIMATION / FEEDBACK STATE UPDATES
+		if (statusVersion != lastStatusVersion) {
+			lastStatusVersion = statusVersion;
+			statusChangeTime = GetTime();
+			statusType = Anim::Classify(statusMessage);
+			// Navigation messages are already visible via the tab transition; don't spam toasts
+			if (statusMessage.rfind("Đã mở:", 0) != 0) {
+				Anim::PushToast(statusMessage, statusType);
+			}
+			if (loginDialog && statusType == Anim::ToastType::Error) loginShakeTime = GetTime();
+		}
+		if (activeTab != lastActiveTab) {
+			lastActiveTab = activeTab;
+			tabChangeTime = GetTime();
+		}
+		if (loginDialog && !wasLoginDialog) loginOpenTime = GetTime();
+		if (!loginDialog && wasLoginDialog) tabChangeTime = GetTime();
+		wasLoginDialog = loginDialog;
+		const Vector2 uiMouse = dialogConsumed || loginDialog || managementUi.isDialogOpen()
+			? Vector2{-10000.0f, -10000.0f} : mouse;
+
 		// DRAWING
 		BeginDrawing();
 		BeginMode2D({{GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f}, {640, 380}, 0, scale});
@@ -1218,35 +1279,66 @@ int main(int argc, char** argv) {
 		DrawUiText("DANH MỤC CHỨC NĂNG", 24, 108, 12, {85, 104, 95, 255});
 
 		if (currentUser) {
+			// Sliding active indicator
+			int activeIndex = -1;
+			for (std::size_t n = 0; n < navItems.size(); ++n)
+				if (activeTab == navItems[n].tabId) activeIndex = static_cast<int>(n);
+			if (activeIndex >= 0) {
+				float targetY = 136.0f + static_cast<float>(activeIndex) * 52.0f;
+				navIndicatorY = navIndicatorY < 0.0f ? targetY : Anim::Smooth(navIndicatorY, targetY, 16.0f);
+			}
+
 			for (std::size_t n = 0; n < navItems.size(); ++n) {
 				Rectangle navRec = {18, 136.0f + static_cast<float>(n) * 52.0f, 184, 44};
 				bool isActive = (activeTab == navItems[n].tabId);
-				bool isHover = !dialogConsumed && CheckCollisionPointRec(mouse, navRec);
+				bool isHover = CheckCollisionPointRec(uiMouse, navRec);
 				if (isHover) hoverHint = navItems[n].hint;
-
-				Color bgCol = isActive
-					? Color{35, 55, 53, 255}
-					: (isHover ? Color{208, 220, 206, 255} : Color{224, 231, 220, 255});
-				DrawRectangleRounded(navRec, 0.22f, 4, bgCol);
-
-				if (isActive) {
-					DrawRectangleRounded({navRec.x + 6, navRec.y + 10, 4, navRec.height - 20}, 0.5f, 4, {248, 218, 154, 255});
+				if (!isActive) {
+					Anim::Button(navRec, Color{224, 231, 220, 255}, Color{208, 220, 206, 255}, uiMouse, true, 0.22f, false);
 				}
-				DrawUiTextInRect(navItems[n].label, navRec, 13,
-					isActive ? RAYWHITE : Color{32, 55, 47, 255}, -1, isActive ? 18.0f : 14.0f);
+			}
+
+			if (activeIndex >= 0) {
+				Rectangle pill = {18, navIndicatorY, 184, 44};
+				DrawRectangleRounded({pill.x + 1, pill.y + 3, pill.width, pill.height}, 0.22f, 6, Color{20, 40, 30, 40});
+				DrawRectangleRounded(pill, 0.22f, 6, Color{35, 55, 53, 255});
+				float barPulse = 0.5f + 0.5f * std::sin(animationTime * 3.0f);
+				DrawRectangleRounded({pill.x + 6, pill.y + 10, 4, pill.height - 20}, 0.5f, 4,
+					Anim::LerpColor(Color{248, 218, 154, 255}, Color{255, 236, 190, 255}, barPulse));
+			}
+
+			for (std::size_t n = 0; n < navItems.size(); ++n) {
+				Rectangle navRec = {18, 136.0f + static_cast<float>(n) * 52.0f, 184, 44};
+				bool isActive = (activeTab == navItems[n].tabId);
+				// Text nudges right on hover for a tactile feel
+				float nudge = isActive ? 4.0f : 4.0f * Anim::HoverAmount(navRec);
+				Rectangle textRec = {navRec.x + nudge, navRec.y, navRec.width - nudge, navRec.height};
+				float overlap = 1.0f - std::clamp(std::fabs(navIndicatorY - navRec.y) / 44.0f, 0.0f, 1.0f);
+				Color txt = Anim::LerpColor(Color{32, 55, 47, 255}, RAYWHITE, isActive ? 1.0f : overlap);
+				DrawUiTextInRect(navItems[n].label, textRec, 13, txt, -1, 14.0f);
 			}
 
 			Rectangle logoutRec = {18, 618, 184, 42};
-			bool hoverLogout = !dialogConsumed && CheckCollisionPointRec(mouse, logoutRec);
+			bool hoverLogout = CheckCollisionPointRec(uiMouse, logoutRec);
 			if (hoverLogout) hoverHint = "Đăng xuất tài khoản hiện tại";
-			DrawRectangleRounded(logoutRec, 0.22f, 4, hoverLogout ? Color{250, 218, 208, 255} : Color{242, 228, 218, 255});
-			DrawRectangleRoundedLines(logoutRec, 0.22f, 4, Color{220, 175, 165, 255});
-			DrawUiTextInRect("ĐĂNG XUẤT", logoutRec, 13, Color{185, 55, 45, 255}, 0, 10.0f);
+			Rectangle lv = Anim::Button(logoutRec, Color{242, 228, 218, 255}, Color{250, 210, 198, 255}, uiMouse, true, 0.22f);
+			DrawRectangleRoundedLines(lv, 0.22f, 4, Color{220, 175, 165, 255});
+			DrawUiTextInRect("ĐĂNG XUẤT", lv, 13, Color{185, 55, 45, 255}, 0, 10.0f);
 		}
 
 		DrawRectangleRounded({16, 676, 188, 66}, 0.15f, 4, Color{214, 223, 210, 255});
 		DrawUiText("TRẠNG THÁI HỆ THỐNG", 28, 688, 11, {65, 84, 75, 255});
-		DrawUiTextFitted("• Máy chủ: Đang trực tuyến", 28, 712, 165, 12, {35, 105, 78, 255});
+		{
+			float pulse = 0.5f + 0.5f * std::sin(animationTime * 3.2f);
+			DrawCircleV({33, 719}, 6.0f + 3.0f * pulse, Anim::WithAlpha(Color{35, 135, 90, 255}, 0.25f * (1.0f - pulse)));
+			DrawCircleV({33, 719}, 4.0f, Color{35, 135, 90, 255});
+		}
+		DrawUiTextFitted("Máy chủ: Đang trực tuyến", 44, 712, 150, 12, {35, 105, 78, 255});
+
+		// Page transition: content slides up slightly while fading in
+		float tabT = Anim::EaseOutCubic(static_cast<float>((GetTime() - tabChangeTime) / 0.32));
+		rlPushMatrix();
+		rlTranslatef(0.0f, (1.0f - tabT) * 16.0f, 0.0f);
 
 		// TAB 0: POS & ORDERING
 		if (activeTab == 0) {
@@ -1263,19 +1355,18 @@ int main(int argc, char** argv) {
 			for (int c = 0; c < 4; ++c) {
 				Rectangle catBtn = {540.0f + c * 88.0f, 148.0f, 82.0f, 36.0f};
 				bool activeCat = categoryFilter == filterCategories[c];
-				bool hovCat = !dialogConsumed && CheckCollisionPointRec(mouse, catBtn);
-				DrawRectangleRounded(catBtn, 0.25f, 4, activeCat ? green : (hovCat ? Color{220, 232, 222, 255} : Color{235, 240, 234, 255}));
-				DrawUiTextInRect(filterCategories[c], catBtn, 12, activeCat ? RAYWHITE : darkGreen, 0, 4.0f);
+				Color base = activeCat ? green : Color{235, 240, 234, 255};
+				Color hover = activeCat ? BrightenColor(green, 15) : Color{220, 232, 222, 255};
+				Rectangle v = Anim::Button(catBtn, base, hover, uiMouse, true, 0.25f, !activeCat);
+				DrawUiTextInRect(filterCategories[c], v, 12, activeCat ? RAYWHITE : darkGreen, 0, 4.0f);
 			}
 
-			// Up/Down scroll buttons if > 4 rows
+			// Up/Down scroll buttons if > 4 rows (rendered with vector arrows to prevent missing font glyphs)
 			if (totalPosRows > 4) {
 				Rectangle upBtn = {895, 148, 28, 17};
 				Rectangle dnBtn = {895, 167, 28, 17};
-				DrawRectangleRounded(upBtn, 0.2f, 2, posScrollRowOffset > 0 ? darkGreen : Color{195, 205, 196, 255});
-				DrawUiTextInRect("▲", upBtn, 10, RAYWHITE, 0, 2.0f);
-				DrawRectangleRounded(dnBtn, 0.2f, 2, posScrollRowOffset < maxPosRowScroll ? darkGreen : Color{195, 205, 196, 255});
-				DrawUiTextInRect("▼", dnBtn, 10, RAYWHITE, 0, 2.0f);
+				Anim::ArrowButton(upBtn, Anim::ArrowDir::Up, uiMouse, posScrollRowOffset > 0, darkGreen);
+				Anim::ArrowButton(dnBtn, Anim::ArrowDir::Down, uiMouse, posScrollRowOffset < maxPosRowScroll, darkGreen);
 			}
 
 			// Products Grid (2 columns, 4 visible rows, scrollable)
@@ -1288,22 +1379,38 @@ int main(int argc, char** argv) {
 				int row = slot / 2;
 
 				Rectangle card = {245.0f + column * 336.0f, 200.0f + row * 106.0f, 322, 94};
-				bool cardHover = !dialogConsumed && CheckCollisionPointRec(mouse, card);
-				DrawRectangleRounded(card, 0.08f, 4, cardHover ? Color{252, 255, 253, 255} : RAYWHITE);
-				DrawRectangleRoundedLines(card, 0.08f, 4, cardHover ? green : Color{225, 233, 226, 255});
+				bool cardHover = CheckCollisionPointRec(uiMouse, card);
+				Rectangle cardV = Anim::Button(card, RAYWHITE, Color{252, 255, 253, 255}, uiMouse, true, 0.08f, true);
+				DrawRectangleRoundedLines(cardV, 0.08f, 4, cardHover ? green : Color{225, 233, 226, 255});
 
 				// Accent stripe
-				DrawRectangle(static_cast<int>(card.x), static_cast<int>(card.y + 10), 6, 74, product.color);
+				DrawRectangle(static_cast<int>(cardV.x), static_cast<int>(cardV.y + 10), 6, 74, product.color);
 
-				DrawUiTextFitted(product.name.c_str(), card.x + 16, card.y + 12, 292, 15, {42, 55, 48, 255});
-				DrawUiTextFitted((product.code + "  •  " + product.category).c_str(), card.x + 16, card.y + 36, 185, 12, {126, 136, 127, 255});
-				DrawUiTextFitted(formatCurrency(product.price).c_str(), card.x + 16, card.y + 60, 185, 14, green);
+				DrawUiTextFitted(product.name.c_str(), cardV.x + 16, cardV.y + 12, 292, 15, {42, 55, 48, 255});
+				DrawUiTextFitted((product.code + "  •  " + product.category).c_str(), cardV.x + 16, cardV.y + 36, 185, 12, {126, 136, 127, 255});
+				DrawUiTextFitted(formatCurrency(product.price).c_str(), cardV.x + 16, cardV.y + 60, 185, 14, green);
 
-				// Add Button
-				Rectangle addBtn = {card.x + 208, card.y + 54, 100, 30};
-				bool addHover = !dialogConsumed && CheckCollisionPointRec(mouse, addBtn);
-				DrawRectangleRounded(addBtn, 0.25f, 4, addHover ? BrightenColor(green, 22) : green);
-				DrawUiTextInRect("+ Thêm", addBtn, 13, RAYWHITE, 0, 6.0f);
+				// Add Button with lift & click animation
+				Rectangle addBtn = {cardV.x + 208, cardV.y + 54, 100, 30};
+				Rectangle addV = Anim::Button(addBtn, green, BrightenColor(green, 24), uiMouse, true, 0.25f);
+				DrawUiTextInRect("+ Thêm", addV, 13, RAYWHITE, 0, 6.0f);
+			}
+
+			// Flying particles into cart
+			for (auto it = cartFlyers.begin(); it != cartFlyers.end();) {
+				double age = GetTime() - it->start;
+				if (age > 0.45) {
+					it = cartFlyers.erase(it);
+				} else {
+					float progress = Anim::EaseOutCubic(static_cast<float>(age / 0.45));
+					float cx = it->from.x + (it->to.x - it->from.x) * progress;
+					float cy = it->from.y + (it->to.y - it->from.y) * progress - std::sin(progress * 3.14159f) * 45.0f;
+					float radius = (1.0f - progress * 0.4f) * 9.0f;
+					float alpha = 1.0f - progress * 0.3f;
+					DrawCircleV({cx, cy}, radius, Anim::WithAlpha(it->color, alpha));
+					DrawCircleLines(static_cast<int>(cx), static_cast<int>(cy), radius, Anim::WithAlpha(RAYWHITE, alpha));
+					++it;
+				}
 			}
 
 			// Scrollbar for POS product grid
@@ -1317,9 +1424,8 @@ int main(int argc, char** argv) {
 			DrawUiText("ĐƠN HÀNG HIỆN TẠI", 952, 120, 15, darkGreen);
 			if (!cart.empty()) {
 				Rectangle clearBtn = {1175, 116, 66, 26};
-				bool hovClear = CheckCollisionPointRec(mouse, clearBtn);
-				DrawRectangleRounded(clearBtn, 0.2f, 4, hovClear ? Color{240, 210, 210, 255} : Color{245, 230, 230, 255});
-				DrawUiTextInRect("Xoá giỏ", clearBtn, 11, Color{195, 65, 50, 255}, 0, 4.0f);
+				Rectangle clrV = Anim::Button(clearBtn, Color{245, 230, 230, 255}, Color{252, 215, 215, 255}, uiMouse, true, 0.2f);
+				DrawUiTextInRect("Xoá giỏ", clrV, 11, Color{195, 65, 50, 255}, 0, 4.0f);
 			}
 
 			DrawLine(952, 150, 1238, 150, {220, 228, 221, 255});
@@ -1337,18 +1443,25 @@ int main(int argc, char** argv) {
 					const Product* p = findProduct(products, item.productCode);
 					std::string lineName = std::to_string(item.quantity) + "x " + (p ? p->name : item.productCode);
 
+					// Flash modified row
+					if (item.productCode == cartFlashCode && (GetTime() - cartFlashTime < 0.45)) {
+						float flashT = 1.0f - static_cast<float>((GetTime() - cartFlashTime) / 0.45);
+						DrawRectangleRounded({944, rowY - 2, 290, 28}, 0.15f, 4,
+							Anim::WithAlpha(Color{225, 248, 232, 255}, flashT * 0.95f));
+					}
+
 					DrawUiTextFitted(lineName.c_str(), 952, rowY + 3, 136, 13, {45, 56, 50, 255});
 
 					int itemPrice = (p ? p->price : 0) * item.quantity;
 					DrawUiTextRight(formatCurrency(itemPrice).c_str(), 1178, rowY + 3, 12, green);
 
 					Rectangle minusBtn = {1184, rowY, 22, 22};
-					DrawRectangleRounded(minusBtn, 0.2f, 2, CheckCollisionPointRec(mouse, minusBtn) ? Color{238, 215, 212, 255} : Color{245, 235, 233, 255});
-					DrawUiTextInRect("-", minusBtn, 13, {180, 70, 50, 255}, 0, 2.0f);
+					Rectangle mv = Anim::Button(minusBtn, Color{245, 235, 233, 255}, Color{250, 215, 212, 255}, uiMouse, true, 0.2f);
+					DrawUiTextInRect("-", mv, 13, {180, 70, 50, 255}, 0, 2.0f);
 
 					Rectangle plusBtn = {1210, rowY, 22, 22};
-					DrawRectangleRounded(plusBtn, 0.2f, 2, CheckCollisionPointRec(mouse, plusBtn) ? Color{215, 235, 222, 255} : Color{234, 244, 238, 255});
-					DrawUiTextInRect("+", plusBtn, 13, green, 0, 2.0f);
+					Rectangle pv = Anim::Button(plusBtn, Color{234, 244, 238, 255}, Color{215, 240, 224, 255}, uiMouse, true, 0.2f);
+					DrawUiTextInRect("+", pv, 13, green, 0, 2.0f);
 				}
 				DrawVerticalScrollbar({1240, 162, 6, 234}, static_cast<int>(cart.size()), visCartRows, cartScrollOffset);
 			}
@@ -1366,9 +1479,10 @@ int main(int argc, char** argv) {
 			for (int p = 0; p < 5; ++p) {
 				Rectangle pBtn = {952.0f + p * 58.0f, 478.0f, 52.0f, 26.0f};
 				bool active = discountPercent == presets[p];
-				bool hovP = CheckCollisionPointRec(mouse, pBtn);
-				DrawRectangleRounded(pBtn, 0.2f, 4, active ? amber : (hovP ? Color{225, 232, 225, 255} : Color{238, 242, 238, 255}));
-				DrawUiTextInRect((std::to_string(presets[p]) + "%").c_str(), pBtn, 12,
+				Color base = active ? amber : Color{238, 242, 238, 255};
+				Color hover = active ? BrightenColor(amber, 18) : Color{225, 232, 225, 255};
+				Rectangle pv = Anim::Button(pBtn, base, hover, uiMouse, true, 0.2f, !active);
+				DrawUiTextInRect((std::to_string(presets[p]) + "%").c_str(), pv, 12,
 					active ? RAYWHITE : Color{45, 56, 50, 255}, 0, 2.0f);
 			}
 
@@ -1377,23 +1491,32 @@ int main(int argc, char** argv) {
 			DrawUiInputBox(discBox, discountInputText + " %", "0 %", discountInputFocused, mouse);
 
 			Rectangle comboBtn = {952, 544, 286, 28};
-			bool hovCombo = CheckCollisionPointRec(mouse, comboBtn);
-			DrawRectangleRounded(comboBtn, 0.2f, 4, comboPromotion ? amber : (hovCombo ? Color{238, 230, 215, 255} : Color{245, 240, 230, 255}));
+			Color comboBase = comboPromotion ? amber : Color{245, 240, 230, 255};
+			Color comboHover = comboPromotion ? BrightenColor(amber, 18) : Color{238, 230, 215, 255};
+			Rectangle comboV = Anim::Button(comboBtn, comboBase, comboHover, uiMouse, true, 0.2f);
 			DrawUiTextInRect(comboPromotion ? "✓ Ưu đãi Combo (-15.000 đ)" : "Bật ưu đãi Combo (-15.000 đ)",
-				comboBtn, 12, comboPromotion ? RAYWHITE : Color{140, 95, 45, 255}, 0, 6.0f);
+				comboV, 12, comboPromotion ? RAYWHITE : Color{140, 95, 45, 255}, 0, 6.0f);
 
 			DrawUiText("Đã giảm:", 952, 580, 12, amber);
 			DrawUiTextRight(("- " + formatCurrency(discountAmount)).c_str(), 1238, 580, 12, amber);
 
 			DrawUiText("Tổng thanh toán:", 952, 604, 14, darkGreen);
-			DrawUiTextRight(formatCurrency(finalTotal).c_str(), 1238, 601, 17, green);
+			displayedTotal = Anim::Smooth(displayedTotal, static_cast<float>(finalTotal), 22.0f);
+			DrawUiTextRight(formatCurrency(static_cast<int>(std::round(displayedTotal))).c_str(), 1238, 601, 17, green);
 
 			Rectangle payBtn = {952, 634, 286, 42};
-			bool hovPay = subtotal > 0 && CheckCollisionPointRec(mouse, payBtn);
-			DrawRectangleRounded(payBtn, 0.2f, 4, subtotal > 0 ? (hovPay ? BrightenColor(green, 20) : green) : Color{180, 192, 182, 255});
-			DrawUiTextInRect("THANH TOÁN ĐƠN HÀNG", payBtn, 14, RAYWHITE, 0, 8.0f);
+			Rectangle payV = Anim::Button(payBtn, green, BrightenColor(green, 24), uiMouse, subtotal > 0, 0.2f);
+			DrawUiTextInRect("THANH TOÁN ĐƠN HÀNG", payV, 14, RAYWHITE, 0, 8.0f);
 			if (orderPlaced) {
-				DrawUiTextCenterFitted("Đã tạo đơn hàng thành công!", payBtn.x + payBtn.width / 2.0f, payBtn.y + 46, 280, 12, green);
+				float pop = Anim::EaseOutBack(std::clamp(static_cast<float>((GetTime() - statusChangeTime) / 0.35), 0.0f, 1.0f));
+				rlPushMatrix();
+				float pcx = payBtn.x + payBtn.width * 0.5f;
+				float pcy = payBtn.y + 46.0f;
+				rlTranslatef(pcx, pcy, 0.0f);
+				rlScalef(pop, pop, 1.0f);
+				rlTranslatef(-pcx, -pcy, 0.0f);
+				DrawUiTextCenterFitted("Đã tạo đơn hàng thành công!", pcx, pcy, 280, 12, green);
+				rlPopMatrix();
 			}
 
 		} else if (activeTab == 1) {
@@ -1408,33 +1531,34 @@ int main(int argc, char** argv) {
 				DrawUiText("Bộ lọc:", 245, 144, 13, {90, 100, 94, 255});
 				Rectangle allBtn = {310, 138, 110, 28};
 				bool allActive = selectedReportBranch == -1;
-				DrawRectangleRounded(allBtn, 0.2f, 4, allActive ? green : Color{235, 240, 235, 255});
-				DrawUiTextInRect("Tất cả CN", allBtn, 12, allActive ? RAYWHITE : darkGreen, 0, 4.0f);
+				Color allBase = allActive ? green : Color{235, 240, 235, 255};
+				Color allHov = allActive ? BrightenColor(green, 15) : Color{220, 232, 222, 255};
+				Rectangle allV = Anim::Button(allBtn, allBase, allHov, uiMouse, true, 0.2f, !allActive);
+				DrawUiTextInRect("Tất cả CN", allV, 12, allActive ? RAYWHITE : darkGreen, 0, 4.0f);
 
 				int totalBr = static_cast<int>(branchValues.size());
 				const int visBrPills = 3;
 				int maxBrFilter = std::max(0, totalBr - visBrPills);
 				reportBranchFilterScroll = std::clamp(reportBranchFilterScroll, 0, maxBrFilter);
 
-				// Left scroll button `<`
+				// Left scroll button `<` (vector arrow prevents font glyph `?`)
 				Rectangle leftBrBtn = {428, 138, 30, 28};
-				DrawRectangleRounded(leftBrBtn, 0.2f, 4, reportBranchFilterScroll > 0 ? darkGreen : Color{210, 218, 212, 255});
-				DrawUiTextInRect("<", leftBrBtn, 13, RAYWHITE, 0, 2.0f);
+				Anim::ArrowButton(leftBrBtn, Anim::ArrowDir::Left, uiMouse, reportBranchFilterScroll > 0, darkGreen);
 
 				int shown = std::min(totalBr - reportBranchFilterScroll, visBrPills);
 				for (int b = 0; b < shown; ++b) {
 					int brIdx = reportBranchFilterScroll + b;
 					Rectangle bBtn = {466.0f + b * 244.0f, 138.0f, 236.0f, 28.0f};
 					bool bActive = selectedReportBranch == brIdx;
-					bool bHover = CheckCollisionPointRec(mouse, bBtn);
-					DrawRectangleRounded(bBtn, 0.2f, 4, bActive ? green : (bHover ? Color{220, 232, 222, 255} : Color{235, 240, 235, 255}));
-					DrawUiTextInRect(branchValues[brIdx].getName().c_str(), bBtn, 12, bActive ? RAYWHITE : darkGreen, 0, 6.0f);
+					Color bBase = bActive ? green : Color{235, 240, 235, 255};
+					Color bHov = bActive ? BrightenColor(green, 15) : Color{220, 232, 222, 255};
+					Rectangle bV = Anim::Button(bBtn, bBase, bHov, uiMouse, true, 0.2f, !bActive);
+					DrawUiTextInRect(branchValues[brIdx].getName().c_str(), bV, 12, bActive ? RAYWHITE : darkGreen, 0, 6.0f);
 				}
 
-				// Right scroll button `>`
+				// Right scroll button `>` (vector arrow prevents font glyph `?`)
 				Rectangle rightBrBtn = {1202, 138, 30, 28};
-				DrawRectangleRounded(rightBrBtn, 0.2f, 4, reportBranchFilterScroll < maxBrFilter ? darkGreen : Color{210, 218, 212, 255});
-				DrawUiTextInRect(">", rightBrBtn, 13, RAYWHITE, 0, 2.0f);
+				Anim::ArrowButton(rightBrBtn, Anim::ArrowDir::Right, uiMouse, reportBranchFilterScroll < maxBrFilter, darkGreen);
 			} else {
 				std::string subTitle = "Phạm vi: " + currentUser->getBranchId() + " (Chi nhánh hiện tại của bạn)";
 				DrawUiTextFitted(subTitle.c_str(), 245, 142, 980, 13, muted);
@@ -1636,31 +1760,56 @@ int main(int argc, char** argv) {
 				{px, 362, pw, 48}, 12, muted);
 
 			Rectangle serviceBtn = {px, 425, pw, 36};
-			DrawRectangleRounded(serviceBtn, 0.2f, 4, CheckCollisionPointRec(mouse, serviceBtn) ? Color{240, 228, 195, 255} : Color{247, 239, 214, 255});
-			DrawUiTextInRect(deliveryMode ? "Chế độ: Giao hàng" : "Chế độ: Dùng tại bàn", serviceBtn, 13, {130, 91, 48, 255}, 0, 8.0f);
+			Rectangle svcV = Anim::Button(serviceBtn, Color{247, 239, 214, 255}, Color{240, 228, 195, 255}, uiMouse, true, 0.2f);
+			DrawUiTextInRect(deliveryMode ? "Chế độ: Giao hàng" : "Chế độ: Dùng tại bàn", svcV, 13, {130, 91, 48, 255}, 0, 8.0f);
 
 			Rectangle algoBtn = {px, 470, pw, 36};
-			DrawRectangleRounded(algoBtn, 0.2f, 4, CheckCollisionPointRec(mouse, algoBtn) ? Color{210, 222, 208, 255} : Color{224, 231, 220, 255});
-			DrawUiTextInRect(useAStar ? "Đổi sang: Thuật toán Dijkstra" : "Đổi sang: Thuật toán A*", algoBtn, 12, {54, 66, 58, 255}, 0, 8.0f);
+			Rectangle algoV = Anim::Button(algoBtn, Color{224, 231, 220, 255}, Color{210, 222, 208, 255}, uiMouse, true, 0.2f);
+			DrawUiTextInRect(useAStar ? "Đổi sang: Thuật toán Dijkstra" : "Đổi sang: Thuật toán A*", algoV, 12, {54, 66, 58, 255}, 0, 8.0f);
 
 			Rectangle processBtn = {px, 515, pw, 40};
-			bool hovProc = !orderQueue.empty() && CheckCollisionPointRec(mouse, processBtn);
-			DrawRectangleRounded(processBtn, 0.2f, 4, orderQueue.empty() ? Color{180, 192, 182, 255} : (hovProc ? BrightenColor(green, 20) : green));
-			DrawUiTextInRect("XỬ LÝ ĐƠN TIẾP THEO (Phím P)", processBtn, 13, RAYWHITE, 0, 8.0f);
+			Rectangle procV = Anim::Button(processBtn, green, BrightenColor(green, 22), uiMouse, !orderQueue.empty(), 0.2f);
+			DrawUiTextInRect("XỬ LÝ ĐƠN TIẾP THEO (Phím P)", procV, 13, RAYWHITE, 0, 8.0f);
 
 		} else if (currentUser) {
 			managementUi.draw(mouse, activeTab, *currentUser);
 		}
 
+		rlPopMatrix(); // End tab slide-in transformation
+
 		// Bottom Status Bar
 		DrawRectangle(220, 722, 1060, 38, Color{236, 232, 222, 255});
 		DrawLine(220, 722, 1280, 722, Color{218, 214, 204, 255});
-		DrawUiTextFitted(statusMessage.c_str(), 245, 733, 1010, 13, green);
 
-		// LOGIN MODAL
+		// Dynamic animated icon next to status message
+		Anim::DrawStatusIcon({240, 741}, 7.0f, statusType, 1.0f);
+		DrawUiTextFitted(statusMessage.c_str(), 255, 733, 1000, 13, Anim::ToastColor(statusType));
+
+		// LOGIN MODAL with smooth scale + fade-in & error shake
 		if (loginDialog) {
-			DrawRectangle(0, 0, 1280, 760, {20, 30, 28, 165});
+			float loginAge = static_cast<float>(GetTime() - loginOpenTime);
+			float fade = Anim::EaseOutCubic(std::clamp(loginAge / 0.35f, 0.0f, 1.0f));
+			float pop = Anim::EaseOutBack(std::clamp(loginAge / 0.38f, 0.0f, 1.0f));
 
+			DrawRectangle(0, 0, 1280, 760, Color{20, 30, 28, static_cast<unsigned char>(165.0f * fade)});
+
+			float shakeX = 0.0f;
+			double shakeAge = GetTime() - loginShakeTime;
+			if (shakeAge < 0.45) {
+				shakeX = static_cast<float>(std::sin(shakeAge * 45.0) * 8.0 * (1.0 - shakeAge / 0.45));
+			}
+
+			float cx = loginBoxRec.x + loginBoxRec.width * 0.5f;
+			float cy = loginBoxRec.y + loginBoxRec.height * 0.5f;
+			rlPushMatrix();
+			rlTranslatef(cx + shakeX, cy, 0.0f);
+			float s = 0.88f + 0.12f * pop;
+			rlScalef(s, s, 1.0f);
+			rlTranslatef(-cx, -cy, 0.0f);
+
+			// Soft shadow
+			DrawRectangleRounded({loginBoxRec.x + 2, loginBoxRec.y + 8, loginBoxRec.width, loginBoxRec.height}, 0.05f, 8,
+				Color{0, 0, 0, static_cast<unsigned char>(45.0f * fade)});
 			DrawRectangleRounded(loginBoxRec, 0.05f, 8, {250, 247, 238, 255});
 			DrawRectangleRoundedLines(loginBoxRec, 0.05f, 8, green);
 
@@ -1675,15 +1824,19 @@ int main(int argc, char** argv) {
 
 			DrawUiTextFitted("Phím Tab để chuyển ô  •  Phím Enter để đăng nhập", 415, 412, 450, 12, muted);
 
-			bool hovLogin = CheckCollisionPointRec(mouse, loginBtnRec);
-			DrawRectangleRounded(loginBtnRec, 0.2f, 4, hovLogin ? BrightenColor(green, 20) : green);
-			DrawUiTextInRect("ĐĂNG NHẬP HỆ THỐNG", loginBtnRec, 14, RAYWHITE, 0, 12.0f);
+			Rectangle loginBtnV = Anim::Button(loginBtnRec, green, BrightenColor(green, 24), mouse, true, 0.2f);
+			DrawUiTextInRect("ĐĂNG NHẬP HỆ THỐNG", loginBtnV, 14, RAYWHITE, 0, 12.0f);
 
 			Rectangle hintBox = {415, 502, 450, 68};
 			DrawRectangleRounded(hintBox, 0.12f, 4, Color{238, 242, 236, 255});
 			DrawUiTextFitted("Tài khoản mẫu:  NV: employee1 / emp1pass", 427, 512, 426, 12, {65, 84, 75, 255});
 			DrawUiTextFitted("QL: manager1 / mgr1pass  |  GĐ: branchmanager / branchpass", 427, 536, 426, 12, {65, 84, 75, 255});
+
+			rlPopMatrix();
 		}
+
+		// Floating Toast Notifications (animated slide-in from right with auto-dismiss)
+		Anim::DrawToasts();
 
 		// Tooltip
 		if (!hoverHint.empty()) {

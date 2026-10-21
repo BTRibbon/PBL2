@@ -1,4 +1,5 @@
 #include "UIFont.h"
+#include "UIAnim.h"
 #include <array>
 #include <filesystem>
 #include <cstdio>
@@ -247,13 +248,18 @@ void DrawVerticalScrollbar(Rectangle trackBounds, int totalItems, int visibleIte
 	float ratio = static_cast<float>(visibleItems) / static_cast<float>(totalItems);
 	float thumbH = std::max(28.0f, trackBounds.height * ratio);
 	float availH = trackBounds.height - thumbH;
-	float thumbY = trackBounds.y + availH * (static_cast<float>(std::clamp(scrollOffset, 0, maxScroll)) / static_cast<float>(maxScroll));
+	float targetFrac = static_cast<float>(std::clamp(scrollOffset, 0, maxScroll)) / static_cast<float>(maxScroll);
+	float frac = Anim::SmoothScroll(trackBounds, targetFrac);
+	float thumbY = trackBounds.y + availH * frac;
 
-	DrawRectangleRounded({trackBounds.x, thumbY, trackBounds.width, thumbH}, 0.5f, 4, Color{35, 105, 78, 200});
+	Rectangle thumb = {trackBounds.x, thumbY, trackBounds.width, thumbH};
+	bool moving = std::fabs(frac - targetFrac) > 0.002f;
+	DrawRectangleRounded(thumb, 0.5f, 4, moving ? Color{35, 125, 88, 235} : Color{35, 105, 78, 200});
 }
 
 void DrawUiInputBox(Rectangle bounds, const std::string& value, const char* placeholder, bool isFocused, Vector2 mouse, bool isPassword) {
 	bool hovered = CheckCollisionPointRec(mouse, bounds);
+	Anim::InputFocusGlow(bounds, isFocused);
 	DrawRectangleRounded(bounds, 0.15f, 4, isFocused ? RAYWHITE : (hovered ? Color{252, 254, 252, 255} : Color{248, 250, 248, 255}));
 	Color borderCol = isFocused ? Color{35, 105, 78, 255} : (hovered ? Color{140, 165, 150, 255} : Color{205, 214, 206, 255});
 	DrawRectangleRoundedLines(bounds, 0.15f, 4, borderCol);

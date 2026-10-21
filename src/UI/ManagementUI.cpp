@@ -1,5 +1,7 @@
 #include "ManagementUI.h"
 #include "UIFont.h"
+#include "UIAnim.h"
+#include "rlgl.h"
 
 #include <cstdio>
 #include <algorithm>
@@ -78,10 +80,37 @@ Timekeeping* ManagementUI::getTimekeeping(User& currentUser) const {
 }
 
 void ManagementUI::drawButton(Rectangle bounds, const char* label, Vector2 mouse, bool enabled, Color bgColor) const {
-	bool hovered = enabled && CheckCollisionPointRec(mouse, bounds);
-	Color finalBg = enabled ? (hovered ? BrightenColor(bgColor, 20) : bgColor) : Color{185, 195, 186, 255};
-	DrawRectangleRounded(bounds, 0.25f, 4, finalBg);
-	DrawUiTextInRect(label, bounds, 13, RAYWHITE, 0, 6.0f);
+	Rectangle v = Anim::Button(bounds, bgColor, mouse, enabled, 0.25f);
+	DrawUiTextInRect(label, v, 13, RAYWHITE, 0, 6.0f);
+}
+
+void ManagementUI::drawPill(Rectangle bounds, const char* label, Vector2 mouse, bool selected, float fontSize) const {
+	Color base = selected ? green : Color{232, 238, 233, 255};
+	Color hover = selected ? BrightenColor(green, 14) : Color{212, 226, 216, 255};
+	Rectangle v = Anim::Button(bounds, base, hover, mouse, true, 0.25f, !selected);
+	DrawUiTextInRect(label, v, fontSize, selected ? RAYWHITE : darkGreen, 0, 6.0f);
+}
+
+// Scale + fade-in transform for modal dialogs. Returns eased progress (0..1).
+float ManagementUI::beginDialogTransition(Rectangle dialog) const {
+	float t = static_cast<float>((GetTime() - dialogOpenTime) / 0.28);
+	float e = Anim::EaseOutBack(t);
+	float fade = Anim::EaseOutCubic(t);
+	DrawRectangle(0, 0, 1280, 760, Color{0, 0, 0, static_cast<unsigned char>(140.0f * fade)});
+	float s = 0.9f + 0.1f * e;
+	float cx = dialog.x + dialog.width * 0.5f;
+	float cy = dialog.y + dialog.height * 0.5f;
+	rlPushMatrix();
+	rlTranslatef(cx, cy + (1.0f - fade) * 18.0f, 0.0f);
+	rlScalef(s, s, 1.0f);
+	rlTranslatef(-cx, -cy, 0.0f);
+	// soft shadow under dialog
+	DrawRectangleRounded({dialog.x + 2, dialog.y + 10, dialog.width, dialog.height}, 0.05f, 8, Color{0, 0, 0, static_cast<unsigned char>(50.0f * fade)});
+	return fade;
+}
+
+void ManagementUI::endDialogTransition() const {
+	rlPopMatrix();
 }
 
 void ManagementUI::drawManagementHeader(const char* title, const char* subtitle) const {
@@ -106,8 +135,8 @@ void ManagementUI::drawMenuTab(Vector2 mouse, User& currentUser) {
 	DrawUiTextFitted(countText.c_str(), 245, 200, 680, 13, darkGreen);
 
 	if (total > visibleRows) {
-		drawButton({945, 192, 36, 32}, "▲", mouse, menuScrollOffset > 0, darkGreen);
-		drawButton({987, 192, 36, 32}, "▼", mouse, menuScrollOffset < maxScroll, darkGreen);
+		Anim::ArrowButton({945, 192, 36, 32}, Anim::ArrowDir::Up, mouse, menuScrollOffset > 0, darkGreen);
+		Anim::ArrowButton({987, 192, 36, 32}, Anim::ArrowDir::Down, mouse, menuScrollOffset < maxScroll, darkGreen);
 	}
 
 	if (canEditMenu) {
@@ -173,9 +202,8 @@ void ManagementUI::drawMenuTab(Vector2 mouse, User& currentUser) {
 void ManagementUI::drawMenuDialog(Vector2 mouse) {
 	if (!isMenuDialogOpen) return;
 
-	DrawRectangle(0, 0, 1280, 760, Color{0, 0, 0, 140});
-
 	Rectangle dialog = {380, 135, 520, 460};
+	beginDialogTransition(dialog);
 	DrawRectangleRounded(dialog, 0.05f, 8, panel);
 	DrawRectangleRoundedLines(dialog, 0.05f, 8, green);
 
@@ -198,10 +226,7 @@ void ManagementUI::drawMenuDialog(Vector2 mouse) {
 	const char* categories[] = {"Món chính", "Đồ uống", "Tráng miệng"};
 	for (int c = 0; c < 3; ++c) {
 		Rectangle catPill = {dialog.x + 30 + c * 156.0f, dialog.y + 256, 146, 34};
-		bool selected = menuCategoryInput == categories[c];
-		bool hov = CheckCollisionPointRec(mouse, catPill);
-		DrawRectangleRounded(catPill, 0.25f, 4, selected ? green : (hov ? Color{220, 232, 224, 255} : Color{235, 242, 237, 255}));
-		DrawUiTextInRect(categories[c], catPill, 13, selected ? RAYWHITE : darkGreen, 0, 8.0f);
+		drawPill(catPill, categories[c], mouse, menuCategoryInput == categories[c]);
 	}
 
 	// Field 3: Price
@@ -213,14 +238,14 @@ void ManagementUI::drawMenuDialog(Vector2 mouse) {
 
 	drawButton({dialog.x + 30, dialog.y + 402, 220, 40}, "LƯU MÓN ĂN", mouse, true, green);
 	drawButton({dialog.x + 270, dialog.y + 402, 220, 40}, "HỦY BỎ", mouse, true, Color{150, 160, 152, 255});
+	endDialogTransition();
 }
 
 void ManagementUI::drawIngredientDialog(Vector2 mouse) {
 	if (!isIngredientDialogOpen) return;
 
-	DrawRectangle(0, 0, 1280, 760, Color{0, 0, 0, 140});
-
 	Rectangle dialog = {380, 135, 520, 460};
+	beginDialogTransition(dialog);
 	DrawRectangleRounded(dialog, 0.05f, 8, panel);
 	DrawRectangleRoundedLines(dialog, 0.05f, 8, green);
 
@@ -242,10 +267,7 @@ void ManagementUI::drawIngredientDialog(Vector2 mouse) {
 	const char* units[] = {"kg", "lít", "hộp", "gói"};
 	for (int u = 0; u < 4; ++u) {
 		Rectangle uPill = {dialog.x + 30 + u * 116.0f, dialog.y + 256, 108, 34};
-		bool selected = ingUnitInput == units[u];
-		bool hov = CheckCollisionPointRec(mouse, uPill);
-		DrawRectangleRounded(uPill, 0.25f, 4, selected ? green : (hov ? Color{220, 232, 224, 255} : Color{235, 242, 237, 255}));
-		DrawUiTextInRect(units[u], uPill, 13, selected ? RAYWHITE : darkGreen, 0, 6.0f);
+		drawPill(uPill, units[u], mouse, ingUnitInput == units[u]);
 	}
 
 	// Field 3: Initial stock
@@ -257,26 +279,28 @@ void ManagementUI::drawIngredientDialog(Vector2 mouse) {
 
 	drawButton({dialog.x + 30, dialog.y + 402, 220, 40}, "THÊM NGUYÊN LIỆU", mouse, true, green);
 	drawButton({dialog.x + 270, dialog.y + 402, 220, 40}, "HỦY BỎ", mouse, true, Color{150, 160, 152, 255});
+	endDialogTransition();
 }
 
 void ManagementUI::drawInventoryTab(Vector2 mouse, User& currentUser) {
 	drawManagementHeader("Quản lý Kho & Thực đơn", "Quản lý thực đơn toàn chuỗi và tồn kho nguyên liệu từng chi nhánh");
 
-	// Sub-tab toggles
+	// Sub-tab toggles with a sliding selection indicator
 	Rectangle tabMenuRec = {245, 154, 220, 34};
 	Rectangle tabStockRec = {475, 154, 240, 34};
-	bool hovMenu = CheckCollisionPointRec(mouse, tabMenuRec);
-	bool hovStock = CheckCollisionPointRec(mouse, tabStockRec);
-
-	DrawRectangleRounded(tabMenuRec, 0.25f, 4, managementSubTab == 0 ? green : (hovMenu ? Color{212, 224, 214, 255} : Color{225, 233, 226, 255}));
-	DrawUiTextInRect("THỰC ĐƠN MÓN ĂN", tabMenuRec, 13, managementSubTab == 0 ? RAYWHITE : darkGreen, 0, 8.0f);
-
-	DrawRectangleRounded(tabStockRec, 0.25f, 4, managementSubTab == 1 ? green : (hovStock ? Color{212, 224, 214, 255} : Color{225, 233, 226, 255}));
-	DrawUiTextInRect("KHO NGUYÊN LIỆU", tabStockRec, 13, managementSubTab == 1 ? RAYWHITE : darkGreen, 0, 8.0f);
+	drawPill(tabMenuRec, "THỰC ĐƠN MÓN ĂN", mouse, managementSubTab == 0);
+	drawPill(tabStockRec, "KHO NGUYÊN LIỆU", mouse, managementSubTab == 1);
+	{
+		Rectangle target = managementSubTab == 0 ? tabMenuRec : tabStockRec;
+		static float indX = -1.0f, indW = 0.0f;
+		if (indX < 0.0f) { indX = target.x; indW = target.width; }
+		indX = Anim::Smooth(indX, target.x + 20.0f, 16.0f);
+		indW = Anim::Smooth(indW, target.width - 40.0f, 16.0f);
+		DrawRectangleRounded({indX, target.y + target.height + 3.0f, indW, 3.0f}, 1.0f, 4, Color{248, 218, 154, 255});
+	}
 
 	if (managementSubTab == 0) {
 		drawMenuTab(mouse, currentUser);
-		drawMenuDialog(mouse);
 		return;
 	}
 
@@ -313,20 +337,17 @@ void ManagementUI::drawInventoryTab(Vector2 mouse, User& currentUser) {
 
 		float startX = 325.0f;
 		if (totalBr > maxVisBranches) {
-			drawButton({325, 198, 28, 28}, "<", mouse, invBranchScrollOffset > 0, darkGreen);
+			Anim::ArrowButton({325, 198, 28, 28}, Anim::ArrowDir::Left, mouse, invBranchScrollOffset > 0, darkGreen);
 			startX = 360.0f;
 		}
 		int shown = std::min(totalBr - invBranchScrollOffset, maxVisBranches);
 		for (int b = 0; b < shown; ++b) {
 			int bIdx = invBranchScrollOffset + b;
 			Rectangle bPill = {startX + b * 204.0f, 198.0f, 196.0f, 28.0f};
-			bool sel = (selectedInventoryBranch == bIdx);
-			bool hov = CheckCollisionPointRec(mouse, bPill);
-			DrawRectangleRounded(bPill, 0.25f, 4, sel ? green : (hov ? Color{215, 228, 218, 255} : Color{232, 238, 233, 255}));
-			DrawUiTextInRect(branches[bIdx].getName().c_str(), bPill, 12, sel ? RAYWHITE : darkGreen, 0, 6.0f);
+			drawPill(bPill, branches[bIdx].getName().c_str(), mouse, selectedInventoryBranch == bIdx, 12.0f);
 		}
 		if (totalBr > maxVisBranches) {
-			drawButton({startX + shown * 204.0f, 198, 28, 28}, ">", mouse, invBranchScrollOffset < totalBr - maxVisBranches, darkGreen);
+			Anim::ArrowButton({startX + shown * 204.0f, 198, 28, 28}, Anim::ArrowDir::Right, mouse, invBranchScrollOffset < totalBr - maxVisBranches, darkGreen);
 		}
 		branchCardY = 234;
 	}
@@ -342,11 +363,7 @@ void ManagementUI::drawInventoryTab(Vector2 mouse, User& currentUser) {
 	std::string bHeader = activeBranch.getName() + " (" + activeBranch.getId() + ")  •  Giờ mở cửa: " +
 		activeBranch.getOpeningHours().getOpenTime() + " - " + activeBranch.getOpeningHours().getCloseTime() +
 		"  •  Số loại nguyên liệu: " + std::to_string(ingredientTypes.size());
-	DrawUiTextFitted(bHeader.c_str(), 265, branchCardY + 17, 710, 14, darkGreen);
-
-	if (canAdjustStock) {
-		drawButton({995, static_cast<float>(branchCardY + 11), 235, 30}, "Đặt giờ chuẩn (08:00 - 22:30)", mouse, true, darkGreen);
-	}
+	DrawUiTextFitted(bHeader.c_str(), 265, branchCardY + 17, 960, 14, darkGreen);
 
 	// Ingredient Types Table (scrollable)
 	int tableHeaderY = branchCardY + 62;
@@ -407,8 +424,6 @@ void ManagementUI::drawInventoryTab(Vector2 mouse, User& currentUser) {
 		DrawUiTextFitted("Lưu ý: Quản lý chi nhánh được phép nhập/xuất tồn kho. Chỉ Giám đốc chuỗi được thêm/xoá loại nguyên liệu.",
 			245, 672, 980, 12, muted);
 	}
-
-	drawIngredientDialog(mouse);
 }
 
 void ManagementUI::drawScheduleTab(Vector2 mouse, User& currentUser) {
@@ -947,12 +962,6 @@ bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) 
 		if (branches.empty()) return false;
 		Branch& activeBranch = branches[selectedInventoryBranch];
 
-		if (canAdjustStock && CheckCollisionPointRec(mouse, {995, static_cast<float>(branchCardY + 11), 235, 30})) {
-			activeBranch.setOpeningHours("08:00", "22:30");
-			message = "Đã cập nhật giờ mở cửa chuẩn (08:00 - 22:30) cho " + activeBranch.getName();
-			return true;
-		}
-
 		int tableHeaderY = branchCardY + 62;
 		int visibleIngRows = isBranchMgr ? 6 : 7;
 		int totalIng = static_cast<int>(ingredientTypes.size());
@@ -1087,9 +1096,32 @@ bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) 
 }
 
 void ManagementUI::draw(Vector2 mouse, int activeTab, User& currentUser) {
-	if (activeTab == 3) drawInventoryTab(mouse, currentUser);
-	else if (activeTab == 4) drawScheduleTab(mouse, currentUser);
-	else if (activeTab == 5) drawAttendanceTab(mouse, currentUser);
+	bool dialogOpen = isDialogOpen();
+	if (dialogOpen && !wasDialogOpen) dialogOpenTime = GetTime();
+	wasDialogOpen = dialogOpen;
+	if (managementSubTab != lastSubTab) {
+		subTabChangeTime = GetTime();
+		lastSubTab = managementSubTab;
+	}
+
+	// Widgets underneath an open dialog must not react to the mouse
+	Vector2 bgMouse = dialogOpen ? Vector2{-10000.0f, -10000.0f} : mouse;
+
+	if (activeTab == 3) {
+		drawInventoryTab(bgMouse, currentUser);
+		// Cross-fade when switching between "Thực đơn" and "Kho nguyên liệu"
+		float t = static_cast<float>((GetTime() - subTabChangeTime) / 0.25);
+		if (t < 1.0f) {
+			float a = 1.0f - Anim::EaseOutCubic(t);
+			DrawRectangle(221, 194, 1059, 528, Color{245, 241, 232, static_cast<unsigned char>(255.0f * a)});
+		}
+		drawMenuDialog(mouse);
+		drawIngredientDialog(mouse);
+	} else if (activeTab == 4) {
+		drawScheduleTab(mouse, currentUser);
+	} else if (activeTab == 5) {
+		drawAttendanceTab(mouse, currentUser);
+	}
 }
 
 const std::string& ManagementUI::getMessage() const {
