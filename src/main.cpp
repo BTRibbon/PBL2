@@ -10,6 +10,9 @@
 #include "UI/ManagementUI.h"
 #include "UI/UIFont.h"
 #include "UI/UIAnim.h"
+#include "UI/DutMapUI.h"
+#include "UI/StaffManagementUI.h"
+#include "models/AccountRecord.h"
 #include "rlgl.h"
 
 #include <algorithm>
@@ -265,6 +268,7 @@ static bool canAccessTab(const User* user, int tab) {
 	if (tab == 2) return true;
 	if (tab == 3) return true;
 	if (tab == 4 || tab == 5) return true;
+	if (tab == 6) return user->getRole() != Role::Employee;
 	return false;
 }
 
@@ -275,37 +279,56 @@ static std::vector<NavItem> buildNavItems(const User* user) {
 	if (canAccessTab(user, 1)) {
 		items.push_back({1, "BÁO CÁO DOANH THU", "Báo cáo doanh thu & Thống kê chi nhánh"});
 	}
-	items.push_back({2, "BẢN ĐỒ GIAO HÀNG", "Bản đồ giao hàng & Tìm đường tối ưu"});
+	items.push_back({2, "BẢN ĐỒ", "Bản đồ khu vực ĐH Bách Khoa & Tìm đường tối ưu"});
 	items.push_back({3, "KHO & THỰC ĐƠN", "Quản lý thực đơn & Kho nguyên liệu"});
 	items.push_back({4, "LỊCH LÀM VIỆC", "Lịch làm việc & Phân ca nhân sự"});
 	items.push_back({5, "ĐIỂM DANH CA", "Điểm danh vào/ra ca & Lịch sử chấm công"});
+	if (canAccessTab(user, 6)) {
+		items.push_back({6, "QUẢN LÝ NHÂN SỰ", "Quản lý tài khoản & Danh sách nhân sự"});
+	}
 	return items;
 }
 
-struct AccountRecord {
-	std::string id;
-	std::string username;
-	std::string name;
-	std::string role;
-	std::string branchId;
-	std::string salt;
-	std::string passwordHash;
-	User* user = nullptr;
-};
-
-static std::string passwordHash(const std::string& password, const std::string& salt) {
-	const std::string input = salt + ":" + password;
-	std::uint64_t hash = 14695981039346656037ULL;
-	for (unsigned char character : input) {
-		hash ^= character;
-		hash *= 1099511628211ULL;
+static bool loadBranches(std::vector<Branch>& branches, RestaurantChain& chain) {
+	branches.clear();
+	chain.clear();
+	std::ifstream file("data/branches.txt");
+	if (!file) {
+		branches.push_back(Branch("BR001", "Chi nhánh Bách Khoa", 12.0f, 3.0f));
+		branches.push_back(Branch("BR002", "Chi nhánh Chợ Hoà Khánh", 12.0f, 13.0f));
+		branches.push_back(Branch("BR003", "Chi nhánh Ngô Sĩ Liên", 21.0f, 5.0f));
+		branches.push_back(Branch("BR004", "Chi nhánh Nam Cao", 19.0f, 18.0f));
+		for (auto& b : branches) chain.addBranch(b.getId(), b.getName(), b.getX(), b.getY());
+		return true;
 	}
-	std::ostringstream result;
-	result << std::hex;
-	result.width(16);
-	result.fill('0');
-	result << hash;
-	return result.str();
+	std::string line;
+	while (std::getline(file, line)) {
+		if (line.empty()) continue;
+		const std::vector<std::string> fields = splitFields(line, '|');
+		if (fields.size() < 4) continue;
+		float gx = 12.0f, gy = 3.0f;
+		try {
+			gx = std::stof(fields[2]);
+			gy = std::stof(fields[3]);
+		} catch (...) {}
+		Branch b(fields[0], fields[1], gx, gy);
+		if (fields.size() >= 6) {
+			b.setOpeningHours(fields[4], fields[5]);
+		}
+		branches.push_back(b);
+		chain.addBranch(b.getId(), b.getName(), gx, gy);
+	}
+	return !branches.empty();
+}
+
+static bool saveBranches(const std::vector<Branch>& branches) {
+	std::ostringstream ss;
+	for (const auto& b : branches) {
+		ss << b.getId() << "|" << b.getName() << "|"
+		   << static_cast<int>(b.getX()) << "|" << static_cast<int>(b.getY()) << "|"
+		   << b.getOpeningHours().getOpenTime() << "|" << b.getOpeningHours().getCloseTime() << "\n";
+	}
+	return replaceTextFile("data/branches.txt", ss.str());
 }
 
 static bool loadAccounts(std::vector<AccountRecord>& accounts) {
@@ -325,7 +348,7 @@ static bool loadAccounts(std::vector<AccountRecord>& accounts) {
 		std::string field;
 		while (std::getline(lineStream, field, '|')) fields.push_back(field);
 		if (fields.size() != 7) continue;
-		accounts.push_back({fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]});
+		accounts.push_back({fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6], nullptr});
 	}
 	return !accounts.empty();
 }
@@ -626,74 +649,41 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	auto findAccount = [&](const std::string& username) -> AccountRecord* {
-		for (AccountRecord& account : accounts)
-			if (account.username == username) return &account;
-		return nullptr;
+	std::vector<std::unique_ptr<User>> userPool;
+	std::vector<Employee*> employees;
+
+	auto refreshUsers = [&]() {
+		userPool.clear();
+		employees.clear();
+		for (AccountRecord& acc : accounts) {
+			if (acc.role == "BranchManager") {
+				userPool.push_back(std::make_unique<BranchManager>(acc.id, acc.name));
+			} else if (acc.role == "Manager") {
+				userPool.push_back(std::make_unique<Manager>(acc.id, acc.name, acc.branchId));
+			} else {
+				userPool.push_back(std::make_unique<Employee>(acc.id, acc.name, acc.branchId));
+			}
+			userPool.back()->setUsername(acc.username);
+			acc.user = userPool.back().get();
+			if (auto* emp = dynamic_cast<Employee*>(acc.user)) {
+				employees.push_back(emp);
+			}
+		}
 	};
+	refreshUsers();
 
-	AccountRecord* employeeOneData = findAccount("employee1");
-	AccountRecord* employeeTwoData = findAccount("employee2");
-	AccountRecord* employeeThreeData = findAccount("employee3");
-	AccountRecord* managerOneData = findAccount("manager1");
-	AccountRecord* managerTwoData = findAccount("manager2");
-	AccountRecord* branchManagerData = findAccount("branchmanager");
-
-	if (!employeeOneData || !employeeTwoData || !employeeThreeData ||
-		!managerOneData || !managerTwoData || !branchManagerData) {
-		std::fprintf(stderr, "Thiếu tài khoản mặc định trong hệ thống.\n");
-		UnloadUiFont();
-		CloseWindow();
-		return 1;
-	}
-
-	Employee employeeOne(employeeOneData->id, employeeOneData->name, employeeOneData->branchId);
-	Employee employeeTwo(employeeTwoData->id, employeeTwoData->name, employeeTwoData->branchId);
-	Employee employeeThree(employeeThreeData->id, employeeThreeData->name, employeeThreeData->branchId);
-	Manager managerOne(managerOneData->id, managerOneData->name, managerOneData->branchId);
-	Manager managerTwo(managerTwoData->id, managerTwoData->name, managerTwoData->branchId);
-	BranchManager branchManagerUser(branchManagerData->id, branchManagerData->name);
-
-	employeeOne.setUsername(employeeOneData->username);
-	employeeTwo.setUsername(employeeTwoData->username);
-	employeeThree.setUsername(employeeThreeData->username);
-	managerOne.setUsername(managerOneData->username);
-	managerTwo.setUsername(managerTwoData->username);
-	branchManagerUser.setUsername(branchManagerData->username);
-
-	std::vector<Employee*> employees{&employeeOne, &employeeTwo, &employeeThree, &managerOne, &managerTwo, &branchManagerUser};
 	std::vector<Timekeeping> timekeepingRecords;
 	for (Employee* user : employees) timekeepingRecords.emplace_back(user->getId());
-
 	loadAttendance(timekeepingRecords);
-
-	employeeOneData->user = &employeeOne;
-	employeeTwoData->user = &employeeTwo;
-	employeeThreeData->user = &employeeThree;
-	managerOneData->user = &managerOne;
-	managerTwoData->user = &managerTwo;
-	branchManagerData->user = &branchManagerUser;
 
 	User* currentUser = nullptr;
 
 	RestaurantChain chain("Bếp Nhỏ");
-	chain.addBranch("BR001", "Chi nhánh Trung Tâm", 290.0f, 285.0f);
-	chain.addBranch("BR002", "Chi nhánh Phía Tây", 470.0f, 185.0f);
-	chain.addBranch("BR003", "Chi nhánh Phía Đông", 710.0f, 330.0f);
-	chain.addBranch("BR004", "Chi nhánh Phía Nam", 560.0f, 510.0f);
+	std::vector<Branch> branchValues;
+	loadBranches(branchValues, chain);
 
-	std::vector<Branch> branchValues = chain.getBranches();
-
-	int targetBranch = 2;
-	MapGraph mapGraph(30, 20);
-	std::array<GridPoint, 4> branchCells{{{2, 2}, {10, 2}, {26, 7}, {15, 17}}};
-	const float mapOriginX = 245.0f;
-	const float mapOriginY = 168.0f;
-	const float mapCellSize = 24.0f;
-	int mapStart = mapGraph.nodeAt(branchCells[0].x, branchCells[0].y);
-	int mapTarget = mapGraph.nodeAt(branchCells[targetBranch].x, branchCells[targetBranch].y);
-	MapRoute dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
-	MapRoute aStarRoute = mapGraph.aStar(mapStart, mapTarget);
+	DutMapUI dutMapUi;
+	StaffManagementUI staffManagementUi;
 
 	OrderQueue orderQueue;
 	std::vector<Order> orders;
@@ -733,9 +723,6 @@ int main(int argc, char** argv) {
 	std::string usernameInput;
 	std::string passwordInput;
 
-	bool deliveryMode = true;
-	bool useAStar = true;
-	float pathAnimation = 0.0f;
 	int activeTab = 0;
 
 	int discountPercent = 0;
@@ -784,17 +771,13 @@ int main(int argc, char** argv) {
 		animationTime += GetFrameTime();
 		Anim::BeginFrame();
 
-		if (activeTab == 2 && pathAnimation < 1000.0f) {
-			pathAnimation = std::min(1000.0f, pathAnimation + GetFrameTime() * 28.0f);
-		}
-
 		float scale = std::min(GetScreenWidth() / 1280.0f, GetScreenHeight() / 760.0f);
 		Vector2 mouse = GetMousePosition();
 		mouse.x = (mouse.x - GetScreenWidth() / 2.0f) / scale + 640.0f;
 		mouse.y = (mouse.y - GetScreenHeight() / 2.0f) / scale + 380.0f;
 
 		std::string hoverHint;
-		bool dialogConsumed = loginDialog || managementUi.isDialogOpen();
+		bool dialogConsumed = loginDialog || managementUi.isDialogOpen() || dutMapUi.isModalOpen() || staffManagementUi.isModalOpen();
 
 		// Filter products for POS
 		std::vector<int> filteredProductIndices;
@@ -835,8 +818,12 @@ int main(int argc, char** argv) {
 					int maxProdScroll = std::max(0, static_cast<int>(products.size()) - visProds);
 					reportProductScroll = std::clamp(reportProductScroll + step, 0, maxProdScroll);
 				}
-			} else if (activeTab >= 3) {
+			} else if (activeTab == 2) {
+				dutMapUi.handleScroll(mouse, wheel);
+			} else if (activeTab >= 3 && activeTab <= 5) {
 				managementUi.updateScroll(mouse, wheel, activeTab, *currentUser);
+			} else if (activeTab == 6) {
+				staffManagementUi.handleScroll(mouse, wheel);
 			}
 		}
 
@@ -851,7 +838,7 @@ int main(int argc, char** argv) {
 				if (CheckCollisionPointRec(mouse, loginBtnRec)) {
 					for (AccountRecord& account : accounts) {
 						if (account.username == usernameInput &&
-							passwordHash(passwordInput, account.salt) == account.passwordHash) {
+							HashPassword(passwordInput, account.salt) == account.passwordHash) {
 							currentUser = account.user;
 							activeTab = canAccessTab(currentUser, 0) ? 0 : 1;
 							loginDialog = false;
@@ -866,6 +853,15 @@ int main(int argc, char** argv) {
 						passwordInput.clear();
 					}
 				}
+			} else if (staffManagementUi.isModalOpen()) {
+				if (staffManagementUi.handleClick(mouse, accounts, userPool, branchValues, *currentUser, statusMessage, statusVersion)) {
+					refreshUsers();
+				}
+			} else if (dutMapUi.isModalOpen()) {
+				dutMapUi.handleClick(mouse, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion);
+				saveBranches(branchValues);
+				saveInventory(branchValues, ingredientTypes);
+				refreshUsers();
 			} else if (managementUi.isDialogOpen()) {
 				if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
 					saveMenu(products);
@@ -874,6 +870,10 @@ int main(int argc, char** argv) {
 					statusVersion++, statusMessage = managementUi.getMessage();
 				}
 			} else if (currentUser) {
+				// Header change password button
+				if (CheckCollisionPointRec(mouse, {1140, 38, 112, 30})) {
+					staffManagementUi.openChangePassModal();
+				}
 				// Dynamic sidebar tab switching
 				for (std::size_t n = 0; n < navItems.size(); ++n) {
 					Rectangle navRec = {20, 136.0f + static_cast<float>(n) * 52.0f, 180, 44};
@@ -1063,62 +1063,12 @@ int main(int argc, char** argv) {
 						reportBranchFilterScroll = std::min(maxBrFilter, reportBranchFilterScroll + 1);
 					}
 				} else if (activeTab == 2) {
-					// TAB 2: DELIVERY MAP
-					bool branchClicked = false;
-					for (int i = 0; i < static_cast<int>(branchValues.size()); ++i) {
-						float branchX = mapOriginX + branchCells[i].x * mapCellSize + mapCellSize / 2.0f;
-						float branchY = mapOriginY + branchCells[i].y * mapCellSize + mapCellSize / 2.0f;
-						float dx = mouse.x - branchX;
-						float dy = mouse.y - branchY;
-						if (dx * dx + dy * dy <= 400.0f) {
-							branchClicked = true;
-							targetBranch = i;
-							mapTarget = mapGraph.nodeAt(branchCells[targetBranch].x, branchCells[targetBranch].y);
-							dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
-							aStarRoute = mapGraph.aStar(mapStart, mapTarget);
-							pathAnimation = 0.0f;
-							statusVersion++, statusMessage = "Đã chọn chi nhánh: " + branchValues[i].getName();
-						}
-					}
-					int mapX = static_cast<int>((mouse.x - mapOriginX) / mapCellSize);
-					int mapY = static_cast<int>((mouse.y - mapOriginY) / mapCellSize);
-					if (!branchClicked && mapX >= 0 && mapX < mapGraph.width() && mapY >= 0 && mapY < mapGraph.height() && !mapGraph.isBlocked(mapX, mapY)) {
-						mapTarget = mapGraph.nodeAt(mapX, mapY);
-						targetBranch = -1;
-						dijkstraRoute = mapGraph.dijkstra(mapStart, mapTarget);
-						aStarRoute = mapGraph.aStar(mapStart, mapTarget);
-						pathAnimation = 0.0f;
-						statusVersion++, statusMessage = "Đã chọn điểm giao hàng tự do (" + std::to_string(mapX) + ", " + std::to_string(mapY) + ")";
-					}
-
-					Rectangle serviceBtn = {995, 425, 245, 36};
-					if (CheckCollisionPointRec(mouse, serviceBtn)) {
-						deliveryMode = !deliveryMode;
-						statusVersion++, statusMessage = deliveryMode ? "Chế độ: Giao hàng tận nơi" : "Chế độ: Phục vụ tại bàn";
-					}
-					Rectangle algoBtn = {995, 470, 245, 36};
-					if (CheckCollisionPointRec(mouse, algoBtn)) {
-						useAStar = !useAStar;
-						pathAnimation = 0.0f;
-						statusVersion++, statusMessage = useAStar ? "Đã chuyển sang thuật toán A*" : "Đã chuyển sang thuật toán Dijkstra";
-					}
-					Rectangle processBtn = {995, 515, 245, 40};
-					if (CheckCollisionPointRec(mouse, processBtn)) {
-						if (!orderQueue.empty()) {
-							Order nextOrd = orderQueue.popNext();
-							for (auto& ord : orders) {
-								if (ord.id == nextOrd.id) {
-									ord.status = "completed";
-									break;
-								}
-							}
-							saveOrders(orders);
-							statusVersion++, statusMessage = "Đã hoàn thành đơn hàng #" + nextOrd.orderId + " (" + nextOrd.branch + ")";
-						} else {
-							statusVersion++, statusMessage = "Hàng đợi đơn hàng đang trống!";
-						}
-					}
-				} else if (activeTab >= 3) {
+					// TAB 2: DUT MAP & PATHFINDING & BRANCH MANAGEMENT
+					dutMapUi.handleClick(mouse, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion);
+					saveBranches(branchValues);
+					saveInventory(branchValues, ingredientTypes);
+					refreshUsers();
+				} else if (activeTab >= 3 && activeTab <= 5) {
 					// TABS 3, 4, 5: MANAGEMENT UI
 					if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
 						statusVersion++, statusMessage = managementUi.getMessage();
@@ -1127,6 +1077,11 @@ int main(int argc, char** argv) {
 						saveInventory(branchValues, ingredientTypes);
 						saveSchedules(scheduleService);
 						saveAttendance(timekeepingRecords);
+					}
+				} else if (activeTab == 6) {
+					// TAB 6: STAFF MANAGEMENT
+					if (staffManagementUi.handleClick(mouse, accounts, userPool, branchValues, *currentUser, statusMessage, statusVersion)) {
+						refreshUsers();
 					}
 				}
 			}
@@ -1164,7 +1119,7 @@ int main(int argc, char** argv) {
 			if (IsKeyPressed(KEY_ENTER)) {
 				for (AccountRecord& account : accounts) {
 					if (account.username == usernameInput &&
-						passwordHash(passwordInput, account.salt) == account.passwordHash) {
+						HashPassword(passwordInput, account.salt) == account.passwordHash) {
 						currentUser = account.user;
 						activeTab = canAccessTab(currentUser, 0) ? 0 : 1;
 						loginDialog = false;
@@ -1177,6 +1132,32 @@ int main(int argc, char** argv) {
 				if (!currentUser) {
 					statusVersion++, statusMessage = "Sai tên đăng nhập hoặc mật khẩu!";
 					passwordInput.clear();
+				}
+			}
+		} else if (staffManagementUi.isModalOpen()) {
+			int keyPress = GetKeyPressed();
+			int keyChar = GetCharPressed();
+			if (staffManagementUi.handleInput(keyPress, keyChar, accounts, userPool, *currentUser, statusMessage, statusVersion)) {
+				refreshUsers();
+			}
+			while ((keyChar = GetCharPressed()) > 0) {
+				if (staffManagementUi.handleInput(0, keyChar, accounts, userPool, *currentUser, statusMessage, statusVersion)) {
+					refreshUsers();
+				}
+			}
+		} else if (dutMapUi.isModalOpen()) {
+			int keyPress = GetKeyPressed();
+			int keyChar = GetCharPressed();
+			if (dutMapUi.handleInput(keyPress, keyChar, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion)) {
+				saveBranches(branchValues);
+				saveInventory(branchValues, ingredientTypes);
+				refreshUsers();
+			}
+			while ((keyChar = GetCharPressed()) > 0) {
+				if (dutMapUi.handleInput(0, keyChar, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion)) {
+					saveBranches(branchValues);
+					saveInventory(branchValues, ingredientTypes);
+					refreshUsers();
 				}
 			}
 		} else if (managementUi.isDialogOpen()) {
@@ -1265,12 +1246,16 @@ int main(int argc, char** argv) {
 		DrawUiText("BẾP NHỎ", 28, 16, 26, {248, 218, 154, 255});
 		DrawUiText("HỆ THỐNG QUẢN LÝ BÁN HÀNG & CHUỖI NHÀ HÀNG", 28, 52, 13, {190, 208, 196, 255});
 
-		DrawUiTextRight(dateLabel.c_str(), 1252, 20, 14, {224, 232, 222, 255});
+		DrawUiTextRight(dateLabel.c_str(), 1252, 16, 13, {224, 232, 222, 255});
 		if (currentUser) {
 			std::string userBadge = std::string(roleName(currentUser->role)) + ": " + currentUser->getName();
-			DrawUiTextRight(userBadge.c_str(), 1252, 48, 13, {248, 218, 154, 255});
+			DrawUiTextRight(userBadge.c_str(), 1125, 46, 13, {248, 218, 154, 255});
+			Rectangle chgPassBtn = {1140, 38, 112, 30};
+			Rectangle chgPassV = Anim::Button(chgPassBtn, Color{55, 78, 72, 255}, Color{70, 96, 90, 255}, uiMouse, true, 0.25f);
+			DrawRectangleRoundedLines(chgPassV, 0.25f, 4, Color{248, 218, 154, 180});
+			DrawUiTextInRect("ĐỔI MK", chgPassV, 12, Color{248, 218, 154, 255}, 0, 4.0f);
 		} else {
-			DrawUiTextRight("CHƯA ĐĂNG NHẬP", 1252, 48, 13, {210, 92, 68, 255});
+			DrawUiTextRight("CHƯA ĐĂNG NHẬP", 1252, 46, 13, {210, 92, 68, 255});
 		}
 
 		// Left Navigation Sidebar (x = 0..220) — Dynamic, unnumbered, gap-free
@@ -1675,104 +1660,12 @@ int main(int argc, char** argv) {
 			}
 
 		} else if (activeTab == 2) {
-			// TAB 2: DELIVERY MAP & ORDER QUEUE
-			DrawUiText("Bản Đồ Giao Hàng & Tìm Đường", 245, 104, 24, darkGreen);
-			DrawUiTextFitted("Lưới toạ độ 30 x 20  •  Nhấp vào chi nhánh hoặc ô trống bất kỳ để tìm lộ trình ngắn nhất",
-				245, 136, 1000, 13, muted);
-
-			const float mapW = mapGraph.width() * mapCellSize;
-			const float mapH = mapGraph.height() * mapCellSize;
-			DrawRectangle(static_cast<int>(mapOriginX), static_cast<int>(mapOriginY), static_cast<int>(mapW), static_cast<int>(mapH), {235, 231, 218, 255});
-
-			for (int y = 0; y < mapGraph.height(); ++y) {
-				for (int x = 0; x < mapGraph.width(); ++x) {
-					Rectangle cell = {mapOriginX + x * mapCellSize, mapOriginY + y * mapCellSize, mapCellSize, mapCellSize};
-					DrawRectangleRec(cell, mapGraph.isBlocked(x, y) ? Color{104, 115, 108, 255} : Color{241, 238, 226, 255});
-					DrawRectangleLines(static_cast<int>(cell.x), static_cast<int>(cell.y), static_cast<int>(mapCellSize), static_cast<int>(mapCellSize), {218, 214, 201, 255});
-				}
-			}
-
-			const MapRoute& selectedRoute = useAStar ? aStarRoute : dijkstraRoute;
-			int exploredCount = std::min(static_cast<int>(selectedRoute.explored.size()), static_cast<int>(pathAnimation));
-			for (int i = 0; i < exploredCount; ++i) {
-				int node = selectedRoute.explored[i];
-				int nodeX = node % mapGraph.width();
-				int nodeY = node / mapGraph.width();
-				DrawRectangle(static_cast<int>(mapOriginX + nodeX * mapCellSize + 6), static_cast<int>(mapOriginY + nodeY * mapCellSize + 6), 12, 12, {184, 202, 191, 255});
-			}
-
-			int routeStart = static_cast<int>(selectedRoute.explored.size());
-			int visibleRouteNodes = pathAnimation >= routeStart
-				? std::min(static_cast<int>(selectedRoute.nodes.size()), static_cast<int>(pathAnimation) - routeStart)
-				: 0;
-			for (int i = 0; i < visibleRouteNodes; ++i) {
-				int node = selectedRoute.nodes[i];
-				int nodeX = node % mapGraph.width();
-				int nodeY = node / mapGraph.width();
-				DrawRectangle(static_cast<int>(mapOriginX + nodeX * mapCellSize + 4), static_cast<int>(mapOriginY + nodeY * mapCellSize + 4), 16, 16, useAStar ? Color{235, 142, 72, 255} : green);
-			}
-
-			for (int i = 0; i < static_cast<int>(branchValues.size()); ++i) {
-				float branchX = mapOriginX + branchCells[i].x * mapCellSize + mapCellSize / 2.0f;
-				float branchY = mapOriginY + branchCells[i].y * mapCellSize + mapCellSize / 2.0f;
-				DrawCircle(static_cast<int>(branchX), static_cast<int>(branchY), 10, i == targetBranch ? Color{210, 92, 68, 255} : darkGreen);
-
-				const std::string& bName = branchValues[i].getName();
-				float tagW = MeasureUiText(bName.c_str(), 11) + 12.0f;
-				float tagX = std::clamp(branchX - tagW / 2.0f, mapOriginX + 4.0f, mapOriginX + mapW - tagW - 4.0f);
-				float tagY = std::clamp(branchY + 12.0f, mapOriginY + 4.0f, mapOriginY + mapH - 22.0f);
-				Rectangle tagRec = {tagX, tagY, tagW, 18};
-				DrawRectangleRounded(tagRec, 0.3f, 4, Color{255, 255, 255, 225});
-				DrawUiTextInRect(bName.c_str(), tagRec, 11, darkGreen, 0, 4.0f);
-			}
-
-			Rectangle mapPanel = {980, 168, 275, 480};
-			DrawRectangleRounded(mapPanel, 0.05f, 4, RAYWHITE);
-			DrawRectangleRoundedLines(mapPanel, 0.05f, 4, Color{220, 228, 221, 255});
-
-			float px = mapPanel.x + 15.0f;
-			float pw = mapPanel.width - 30.0f;
-
-			DrawUiTextFitted(useAStar ? "THUẬT TOÁN A* (TỐI ƯU)" : "THUẬT TOÁN DIJKSTRA", px, 186, pw, 12, {93, 112, 103, 255});
-
-			std::string routeText = targetBranch >= 0
-				? "Trung Tâm -> " + branchValues[targetBranch].getName()
-				: "Trung Tâm -> Điểm tuỳ chọn";
-			DrawUiTextFitted(routeText.c_str(), px, 210, pw, 14, green);
-
-			char distanceText[100];
-			std::snprintf(distanceText, sizeof(distanceText), "Quãng đường: %.0f ô  |  Duyệt: %d ô",
-				selectedRoute.distance, static_cast<int>(selectedRoute.explored.size()));
-			DrawUiTextFitted(distanceText, px, 238, pw, 13, {54, 66, 58, 255});
-
-			DrawUiTextFitted(deliveryMode ? "Khuyến nghị: Giao tận nơi" : "Khuyến nghị: Dùng tại bàn", px, 266, pw, 13, amber);
-
-			std::string destStr = "Đích đến: " + (targetBranch >= 0 ? branchValues[targetBranch].getName() : "Toạ độ tuỳ chọn");
-			DrawUiTextFitted(destStr.c_str(), px, 294, pw, 13, {54, 66, 58, 255});
-
-			DrawLine(static_cast<int>(px), 322, static_cast<int>(px + pw), 322, {225, 232, 226, 255});
-
-			char queueText[64];
-			std::snprintf(queueText, sizeof(queueText), "Hàng đợi đơn hàng: %d đơn", orderQueue.size());
-			DrawUiTextFitted(queueText, px, 334, pw, 14, green);
-
-			DrawUiTextWrapped("Nhấn phím P hoặc bấm nút bên dưới để xử lý đơn hàng tiếp theo.",
-				{px, 362, pw, 48}, 12, muted);
-
-			Rectangle serviceBtn = {px, 425, pw, 36};
-			Rectangle svcV = Anim::Button(serviceBtn, Color{247, 239, 214, 255}, Color{240, 228, 195, 255}, uiMouse, true, 0.2f);
-			DrawUiTextInRect(deliveryMode ? "Chế độ: Giao hàng" : "Chế độ: Dùng tại bàn", svcV, 13, {130, 91, 48, 255}, 0, 8.0f);
-
-			Rectangle algoBtn = {px, 470, pw, 36};
-			Rectangle algoV = Anim::Button(algoBtn, Color{224, 231, 220, 255}, Color{210, 222, 208, 255}, uiMouse, true, 0.2f);
-			DrawUiTextInRect(useAStar ? "Đổi sang: Thuật toán Dijkstra" : "Đổi sang: Thuật toán A*", algoV, 12, {54, 66, 58, 255}, 0, 8.0f);
-
-			Rectangle processBtn = {px, 515, pw, 40};
-			Rectangle procV = Anim::Button(processBtn, green, BrightenColor(green, 22), uiMouse, !orderQueue.empty(), 0.2f);
-			DrawUiTextInRect("XỬ LÝ ĐƠN TIẾP THEO (Phím P)", procV, 13, RAYWHITE, 0, 8.0f);
-
-		} else if (currentUser) {
-			managementUi.draw(mouse, activeTab, *currentUser);
+			// TAB 2: DUT REALISTIC MAP & PATHFINDING & BRANCH MANAGEMENT
+			dutMapUi.draw(uiMouse, branchValues, orderQueue, currentUser);
+		} else if (currentUser && activeTab >= 3 && activeTab <= 5) {
+			managementUi.draw(uiMouse, activeTab, *currentUser);
+		} else if (currentUser && activeTab == 6) {
+			staffManagementUi.draw(uiMouse, accounts, branchValues, *currentUser);
 		}
 
 		rlPopMatrix(); // End tab slide-in transformation
@@ -1829,10 +1722,15 @@ int main(int argc, char** argv) {
 
 			Rectangle hintBox = {415, 502, 450, 68};
 			DrawRectangleRounded(hintBox, 0.12f, 4, Color{238, 242, 236, 255});
-			DrawUiTextFitted("Tài khoản mẫu:  NV: employee1 / emp1pass", 427, 512, 426, 12, {65, 84, 75, 255});
+			DrawUiTextFitted("Tài khoản mẫu:  NV: employee0101 / emp0101pass", 427, 512, 426, 12, {65, 84, 75, 255});
 			DrawUiTextFitted("QL: manager1 / mgr1pass  |  GĐ: branchmanager / branchpass", 427, 536, 426, 12, {65, 84, 75, 255});
 
 			rlPopMatrix();
+		}
+
+		// Change Password Modal (available on any tab for logged-in user)
+		if (currentUser) {
+			staffManagementUi.drawChangePassModal(mouse, *currentUser);
 		}
 
 		// Floating Toast Notifications (animated slide-in from right with auto-dismiss)

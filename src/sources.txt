@@ -14,3 +14,5 @@ D:/GitHub/pbl2/src/services/ShiftManager.cpp
 D:/GitHub/pbl2/src/UI/ManagementUI.cpp
 D:/GitHub/pbl2/src/UI/UIFont.cpp
 D:/GitHub/pbl2/src/UI/UIAnim.cpp
+D:/GitHub/pbl2/src/UI/DutMapUI.cpp
+D:/GitHub/pbl2/src/UI/StaffManagementUI.cpp

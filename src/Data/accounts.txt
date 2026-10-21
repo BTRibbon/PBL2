@@ -1,6 +1,18 @@
-EMP001|employee1|Nguyễn Minh Anh|Employee|BR001|emp1pass
-EMP002|employee2|Trần Quốc Bảo|Employee|BR002|emp2pass
-EMP003|employee3|Lê Thị Cẩm Tú|Employee|BR003|emp3pass
+EMP0101|employee0101|Nguyễn Minh Anh|Employee|BR001|emp0101pass
+EMP0102|employee0102|Trần Quốc Bảo|Employee|BR001|emp0102pass
+EMP0103|employee0103|Lê Thị Cẩm Tú|Employee|BR001|emp0103pass
+EMP0201|employee0201|Hoàng Văn Nam|Employee|BR002|emp0201pass
+EMP0202|employee0202|Đỗ Thuỳ Dung|Employee|BR002|emp0202pass
+EMP0203|employee0203|Vũ Minh Quân|Employee|BR002|emp0203pass
+EMP0301|employee0301|Phan Thanh Hải|Employee|BR003|emp0301pass
+EMP0302|employee0302|Đặng Mỹ Linh|Employee|BR003|emp0302pass
+EMP0303|employee0303|Bùi Quang Huy|Employee|BR003|emp0303pass
+EMP0401|employee0401|Trịnh Quốc Tuấn|Employee|BR004|emp0401pass
+EMP0402|employee0402|Ngô Phương Thảo|Employee|BR004|emp0402pass
+EMP0403|employee0403|Lâm Gia Phúc|Employee|BR004|emp0403pass
+EMP001|employee1|Nguyễn Minh Anh (Cũ)|Employee|BR001|emp1pass
 MGR001|manager1|Phạm Hoàng Nam|Manager|BR001|mgr1pass
 MGR002|manager2|Võ Ngọc Mai|Manager|BR002|mgr2pass
+MGR003|manager3|Nguyễn Văn Hưng|Manager|BR003|mgr3pass
+MGR004|manager4|Trần Thị Lan|Manager|BR004|mgr4pass
 BM001|branchmanager|Đỗ Gia Huy|BranchManager|ALL|branchpass

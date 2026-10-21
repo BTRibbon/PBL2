@@ -13,4 +13,5 @@ public:
 	Branch* findNearestBranch(float x,float y);
 	std::vector<Branch> getBranches() const;
 	std::string getName() const;
+	void clear() { branches.clear(); }
 };
