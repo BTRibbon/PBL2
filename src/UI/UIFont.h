@@ -23,3 +23,8 @@ void DrawUiTextWrapped(const char* text, Rectangle bounds, float size, Color col
 // UTF-8 string manipulation helpers
 void PopUtf8Char(std::string& text);
 void AppendUtf8Codepoint(std::string& text, int codepoint, std::size_t maxChars = 64);
+
+// Reactive UI Widgets
+void DrawVerticalScrollbar(Rectangle trackBounds, int totalItems, int visibleItems, int scrollOffset);
+void DrawUiInputBox(Rectangle bounds, const std::string& value, const char* placeholder, bool isFocused, Vector2 mouse, bool isPassword = false);
+Color BrightenColor(Color c, int delta = 18);

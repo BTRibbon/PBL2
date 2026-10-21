@@ -34,8 +34,11 @@ std::shared_ptr<Schedule> ScheduleService::findSchedule(const std::string& sched
 
 bool ScheduleService::registerForEmptyShift(Employee& employee, const std::string& scheduleId) {
 	auto schedule = findSchedule(scheduleId);
-	return schedule && schedule->isOpenShift() && schedule->getBranchId() == employee.branchId &&
-		schedule->assignEmployee(employee.getId());
+	if (!schedule || !schedule->isOpenShift()) return false;
+	bool branchMatches = (employee.branchId == "ALL") ||
+		(schedule->getBranchId() == "ALL") ||
+		(schedule->getBranchId() == employee.branchId);
+	return branchMatches && schedule->assignEmployee(employee.getId());
 }
 
 bool ScheduleService::validateMinimumShifts(const Employee& employee, const std::string& fromDate,
@@ -49,17 +52,24 @@ bool ScheduleService::validateMinimumShifts(const Employee& employee, const std:
 	return registered >= employee.getMinimumShifts();
 }
 
-std::vector<std::shared_ptr<Schedule>> ScheduleService::checkShiftCoverage() const {
+std::vector<std::shared_ptr<Schedule>> ScheduleService::checkShiftCoverage(const std::string& branchId) const {
 	std::vector<std::shared_ptr<Schedule>> uncovered;
-	for (const auto& schedule : schedules) if (!schedule->hasCoverage()) uncovered.push_back(schedule);
+	const bool checkAll = branchId.empty() || branchId == "ALL";
+	for (const auto& schedule : schedules) {
+		if (!checkAll && schedule->getBranchId() != branchId && schedule->getBranchId() != "ALL") continue;
+		if (!schedule->hasCoverage()) uncovered.push_back(schedule);
+	}
 	return uncovered;
 }
 
-void ScheduleService::notifyShiftManager() {
+void ScheduleService::notifyShiftManager(const std::string& branchId) {
 	if (!shiftManager) return;
-	for (const auto& schedule : checkShiftCoverage())
+	shiftManager->clearAlerts();
+	for (const auto& schedule : checkShiftCoverage(branchId)) {
 		shiftManager->notifyMissingCoverage(schedule->getId(),
-			schedule->getRequiredEmployees() - schedule->getAssignedEmployeeCount());
+			schedule->getRequiredEmployees() - schedule->getAssignedEmployeeCount(),
+			schedule->getBranchId());
+	}
 }
 
 const std::vector<std::shared_ptr<Schedule>>& ScheduleService::getSchedules() const { return schedules; }

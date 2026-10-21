@@ -63,10 +63,11 @@ static bool validTime(const std::string& value) {
 
 ManagementUI::ManagementUI(RestaurantChain& restaurantChain, std::vector<Branch>& branchValues,
 	ScheduleService& service, ShiftManager& manager, std::vector<Timekeeping>& records,
-	std::vector<Employee*>& employeeUsers, std::vector<Product>& productList, MenuLookup& lookup)
+	std::vector<Employee*>& employeeUsers, std::vector<Product>& productList, MenuLookup& lookup,
+	std::vector<IngredientType>& ingredients)
 	: chain(restaurantChain), branches(branchValues), scheduleService(service),
 	  shiftManager(manager), timekeepingRecords(records), employees(employeeUsers),
-	  products(productList), menuLookup(lookup) {}
+	  products(productList), menuLookup(lookup), ingredientTypes(ingredients) {}
 
 Timekeeping* ManagementUI::getTimekeeping(User& currentUser) const {
 	Employee* currentEmployee = dynamic_cast<Employee*>(&currentUser);
@@ -76,8 +77,10 @@ Timekeeping* ManagementUI::getTimekeeping(User& currentUser) const {
 	return nullptr;
 }
 
-void ManagementUI::drawButton(Rectangle bounds, const char* label, bool enabled, Color bgColor) const {
-	DrawRectangleRounded(bounds, 0.25f, 4, enabled ? bgColor : Color{185, 195, 186, 255});
+void ManagementUI::drawButton(Rectangle bounds, const char* label, Vector2 mouse, bool enabled, Color bgColor) const {
+	bool hovered = enabled && CheckCollisionPointRec(mouse, bounds);
+	Color finalBg = enabled ? (hovered ? BrightenColor(bgColor, 20) : bgColor) : Color{185, 195, 186, 255};
+	DrawRectangleRounded(bounds, 0.25f, 4, finalBg);
 	DrawUiTextInRect(label, bounds, 13, RAYWHITE, 0, 6.0f);
 }
 
@@ -88,36 +91,54 @@ void ManagementUI::drawManagementHeader(const char* title, const char* subtitle)
 }
 
 void ManagementUI::drawMenuTab(Vector2 mouse, User& currentUser) {
-	bool canEdit = currentUser.canManageBranches();
+	// ONLY BranchManager has permission to add/edit/delete menu dishes
+	bool canEditMenu = currentUser.canManageAllBranches();
 
-	std::string countText = "DANH SÁCH MÓN ĂN TRÊN TOÀN HỆ THỐNG (" + std::to_string(products.size()) + " món)";
-	DrawUiTextFitted(countText.c_str(), 245, 200, 750, 14, darkGreen);
+	const int visibleRows = 8;
+	int total = static_cast<int>(products.size());
+	int maxScroll = std::max(0, total - visibleRows);
+	menuScrollOffset = std::clamp(menuScrollOffset, 0, maxScroll);
 
-	if (canEdit) {
-		drawButton({1065, 192, 180, 34}, "+ THÊM MÓN MỚI", true, green);
+	int firstIdx = total == 0 ? 0 : menuScrollOffset + 1;
+	int lastIdx = std::min(total, menuScrollOffset + visibleRows);
+	std::string countText = "DANH SÁCH MÓN ĂN (" + std::to_string(firstIdx) + "-" +
+		std::to_string(lastIdx) + " / " + std::to_string(total) + " món  •  Lăn chuột để cuộn)";
+	DrawUiTextFitted(countText.c_str(), 245, 200, 680, 13, darkGreen);
+
+	if (total > visibleRows) {
+		drawButton({945, 192, 36, 32}, "▲", mouse, menuScrollOffset > 0, darkGreen);
+		drawButton({987, 192, 36, 32}, "▼", mouse, menuScrollOffset < maxScroll, darkGreen);
+	}
+
+	if (canEditMenu) {
+		drawButton({1035, 192, 210, 32}, "+ THÊM MÓN MỚI", mouse, true, green);
 	}
 
 	// Table header
-	int tableY = 234;
-	DrawRectangle(245, tableY, 1000, 34, Color{232, 238, 233, 255});
+	int tableY = 232;
+	DrawRectangle(245, tableY, 985, 34, Color{232, 238, 233, 255});
 	DrawUiText("MÃ MÓN", 265, tableY + 9, 12, darkGreen);
 	DrawUiText("TÊN MÓN ĂN", 375, tableY + 9, 12, darkGreen);
 	DrawUiText("PHÂN LOẠI", 685, tableY + 9, 12, darkGreen);
 	DrawUiText("ĐƠN GIÁ", 855, tableY + 9, 12, darkGreen);
-	DrawUiText("THAO TÁC", 1045, tableY + 9, 12, darkGreen);
+	DrawUiText("THAO TÁC", 1040, tableY + 9, 12, darkGreen);
 
 	int rowY = tableY + 38;
-	int displayCount = std::min(static_cast<int>(products.size()), 8);
-	for (int i = 0; i < displayCount; ++i) {
-		DrawRectangle(245, rowY, 1000, 46, (i % 2 == 0) ? panel : panelAlt);
-		DrawRectangleLines(245, rowY, 1000, 46, Color{235, 238, 235, 255});
+	for (int r = 0; r < visibleRows; ++r) {
+		int i = menuScrollOffset + r;
+		if (i >= total) break;
+
+		Rectangle rowRec = {245, static_cast<float>(rowY), 985, 46};
+		bool rowHover = CheckCollisionPointRec(mouse, rowRec) && !isDialogOpen();
+		DrawRectangleRec(rowRec, rowHover ? Color{240, 247, 242, 255} : ((i % 2 == 0) ? panel : panelAlt));
+		DrawRectangleLines(245, rowY, 985, 46, Color{232, 236, 232, 255});
 
 		// Code badge
 		Rectangle codeBadge = {262, static_cast<float>(rowY + 10), 82, 26};
-		DrawRectangleRounded(codeBadge, 0.2f, 4, Color{240, 244, 242, 255});
+		DrawRectangleRounded(codeBadge, 0.2f, 4, Color{238, 243, 240, 255});
 		DrawUiTextInRect(products[i].code.c_str(), codeBadge, 13, darkGreen, 0, 4.0f);
 
-		// Name (bounded to 290px)
+		// Name
 		DrawUiTextFitted(products[i].name.c_str(), 375, rowY + 15, 290, 14, Color{45, 56, 50, 255});
 
 		// Category pill
@@ -125,210 +146,358 @@ void ManagementUI::drawMenuTab(Vector2 mouse, User& currentUser) {
 		DrawRectangleRounded(catBadge, 0.25f, 4, Color{238, 243, 240, 255});
 		DrawUiTextInRect(products[i].category.c_str(), catBadge, 12, Color{60, 95, 75, 255}, 0, 6.0f);
 
-		// Price (bounded to 150px)
+		// Price
 		DrawUiTextFitted(formatMoney(products[i].price).c_str(), 855, rowY + 15, 150, 14, green);
 
 		// Buttons
-		if (canEdit) {
-			drawButton({1030, static_cast<float>(rowY + 8), 88, 30}, "Sửa", true, amber);
-			drawButton({1128, static_cast<float>(rowY + 8), 88, 30}, "Xoá", true, danger);
+		if (canEditMenu) {
+			drawButton({1025, static_cast<float>(rowY + 8), 86, 30}, "Sửa", mouse, true, amber);
+			drawButton({1121, static_cast<float>(rowY + 8), 86, 30}, "Xoá", mouse, true, danger);
 		} else {
-			DrawUiText("Chỉ xem", 1055, rowY + 15, 13, muted);
+			DrawUiText("Chỉ xem", 1045, rowY + 15, 13, muted);
 		}
 
 		rowY += 48;
 	}
 
-	if (!canEdit) {
-		DrawUiTextFitted("Lưu ý: Chỉ Quản lý chi nhánh và Giám đốc chuỗi mới có quyền thêm, sửa, xoá món ăn.",
-			245, rowY + 8, 980, 13, amber);
+	// Vertical scrollbar
+	DrawVerticalScrollbar({1236, static_cast<float>(tableY + 38), 8, static_cast<float>(visibleRows * 48 - 2)},
+		total, visibleRows, menuScrollOffset);
+
+	if (!canEditMenu) {
+		DrawUiTextFitted("Lưu ý: Chỉ Giám đốc chuỗi (Branch Manager) mới có quyền thêm, sửa, xoá món ăn.",
+			245, 665, 980, 13, amber);
 	}
-	(void)mouse;
 }
 
-void ManagementUI::drawMenuDialog() {
+void ManagementUI::drawMenuDialog(Vector2 mouse) {
 	if (!isMenuDialogOpen) return;
 
-	// Dark overlay
-	DrawRectangle(0, 0, 1280, 760, Color{0, 0, 0, 135});
+	DrawRectangle(0, 0, 1280, 760, Color{0, 0, 0, 140});
 
-	// Dialog frame
-	Rectangle dialog = {380, 140, 520, 450};
+	Rectangle dialog = {380, 135, 520, 460};
 	DrawRectangleRounded(dialog, 0.05f, 8, panel);
 	DrawRectangleRoundedLines(dialog, 0.05f, 8, green);
 
-	const char* dialogTitle = menuDialogMode == 0 ? "THÊM MÓN ĂN MỚI" : "CHỈNH SỬA MÓN ĂN";
-	DrawUiTextFitted(dialogTitle, dialog.x + 30, dialog.y + 24, 460, 20, darkGreen);
-	DrawUiTextFitted("Điền đầy đủ thông tin bên dưới và nhấn Lưu", dialog.x + 30, dialog.y + 52, 460, 13, muted);
+	const char* dialogTitle = menuDialogMode == 0 ? "THÊM MÓN ĂN MỚI (GIÁM ĐỐC CHUỖI)" : "CHỈNH SỬA MÓN ĂN";
+	DrawUiTextFitted(dialogTitle, dialog.x + 30, dialog.y + 22, 460, 19, darkGreen);
+	DrawUiTextFitted("Điền thông tin bên dưới rồi nhấn Lưu (hoặc phím Enter)", dialog.x + 30, dialog.y + 50, 460, 12, muted);
 
 	// Field 0: Code
-	DrawUiText("Mã món (Ví dụ: M109):", dialog.x + 30, dialog.y + 88, 13, darkGreen);
-	Rectangle codeBox = {dialog.x + 30, dialog.y + 112, 460, 38};
-	DrawRectangleRec(codeBox, Color{248, 250, 248, 255});
-	DrawRectangleLinesEx(codeBox, 1.5f, menuDialogField == 0 ? green : Color{210, 218, 212, 255});
-	DrawUiTextInRect(menuCodeInput.empty() ? "Nhập mã món..." : menuCodeInput.c_str(),
-		codeBox, 14, menuCodeInput.empty() ? muted : darkGreen, -1, 12.0f);
+	DrawUiText("Mã món (Ví dụ: M113):", dialog.x + 30, dialog.y + 84, 13, darkGreen);
+	Rectangle codeBox = {dialog.x + 30, dialog.y + 108, 460, 38};
+	DrawUiInputBox(codeBox, menuCodeInput, "Nhập mã món...", menuDialogField == 0, mouse);
 
 	// Field 1: Name
-	DrawUiText("Tên món ăn:", dialog.x + 30, dialog.y + 162, 13, darkGreen);
-	Rectangle nameBox = {dialog.x + 30, dialog.y + 186, 460, 38};
-	DrawRectangleRec(nameBox, Color{248, 250, 248, 255});
-	DrawRectangleLinesEx(nameBox, 1.5f, menuDialogField == 1 ? green : Color{210, 218, 212, 255});
-	DrawUiTextInRect(menuNameInput.empty() ? "Nhập tên món ăn..." : menuNameInput.c_str(),
-		nameBox, 14, menuNameInput.empty() ? muted : darkGreen, -1, 12.0f);
+	DrawUiText("Tên món ăn:", dialog.x + 30, dialog.y + 158, 13, darkGreen);
+	Rectangle nameBox = {dialog.x + 30, dialog.y + 182, 460, 38};
+	DrawUiInputBox(nameBox, menuNameInput, "Nhập tên món ăn...", menuDialogField == 1, mouse);
 
 	// Field 2: Category (Quick pills)
-	DrawUiText("Phân loại:", dialog.x + 30, dialog.y + 236, 13, darkGreen);
+	DrawUiText("Phân loại:", dialog.x + 30, dialog.y + 232, 13, darkGreen);
 	const char* categories[] = {"Món chính", "Đồ uống", "Tráng miệng"};
 	for (int c = 0; c < 3; ++c) {
-		Rectangle catPill = {dialog.x + 30 + c * 156.0f, dialog.y + 260, 146, 34};
+		Rectangle catPill = {dialog.x + 30 + c * 156.0f, dialog.y + 256, 146, 34};
 		bool selected = menuCategoryInput == categories[c];
-		DrawRectangleRounded(catPill, 0.25f, 4, selected ? green : Color{235, 242, 237, 255});
+		bool hov = CheckCollisionPointRec(mouse, catPill);
+		DrawRectangleRounded(catPill, 0.25f, 4, selected ? green : (hov ? Color{220, 232, 224, 255} : Color{235, 242, 237, 255}));
 		DrawUiTextInRect(categories[c], catPill, 13, selected ? RAYWHITE : darkGreen, 0, 8.0f);
 	}
 
 	// Field 3: Price
-	DrawUiText("Đơn giá (VNĐ):", dialog.x + 30, dialog.y + 310, 13, darkGreen);
-	Rectangle priceBox = {dialog.x + 30, dialog.y + 334, 460, 38};
-	DrawRectangleRec(priceBox, Color{248, 250, 248, 255});
-	DrawRectangleLinesEx(priceBox, 1.5f, menuDialogField == 3 ? green : Color{210, 218, 212, 255});
-	DrawUiTextInRect(menuPriceInput.empty() ? "Nhập giá bán (VD: 35000)..." : menuPriceInput.c_str(),
-		priceBox, 14, menuPriceInput.empty() ? muted : darkGreen, -1, 12.0f);
+	DrawUiText("Đơn giá (VNĐ):", dialog.x + 30, dialog.y + 304, 13, darkGreen);
+	Rectangle priceBox = {dialog.x + 30, dialog.y + 328, 460, 38};
+	DrawUiInputBox(priceBox, menuPriceInput, "Nhập giá bán (VD: 45000)...", menuDialogField == 3, mouse);
 
-	// Actions
-	drawButton({dialog.x + 30, dialog.y + 390, 220, 40}, "LƯU MÓN ĂN", true, green);
-	drawButton({dialog.x + 270, dialog.y + 390, 220, 40}, "HỦY BỎ", true, Color{150, 160, 152, 255});
+	DrawUiTextFitted("Phím Tab: Chuyển ô  •  Enter: Lưu  •  Esc: Đóng", dialog.x + 30, dialog.y + 375, 460, 12, muted);
+
+	drawButton({dialog.x + 30, dialog.y + 402, 220, 40}, "LƯU MÓN ĂN", mouse, true, green);
+	drawButton({dialog.x + 270, dialog.y + 402, 220, 40}, "HỦY BỎ", mouse, true, Color{150, 160, 152, 255});
+}
+
+void ManagementUI::drawIngredientDialog(Vector2 mouse) {
+	if (!isIngredientDialogOpen) return;
+
+	DrawRectangle(0, 0, 1280, 760, Color{0, 0, 0, 140});
+
+	Rectangle dialog = {380, 135, 520, 460};
+	DrawRectangleRounded(dialog, 0.05f, 8, panel);
+	DrawRectangleRoundedLines(dialog, 0.05f, 8, green);
+
+	DrawUiTextFitted("THÊM LOẠI NGUYÊN LIỆU MỚI", dialog.x + 30, dialog.y + 22, 460, 19, darkGreen);
+	DrawUiTextFitted("Nguyên liệu mới sẽ được áp dụng cho toàn bộ chuỗi chi nhánh", dialog.x + 30, dialog.y + 50, 460, 12, muted);
+
+	// Field 0: ID
+	DrawUiText("Mã nguyên liệu (VD: SUGAR, TEA):", dialog.x + 30, dialog.y + 84, 13, darkGreen);
+	Rectangle idBox = {dialog.x + 30, dialog.y + 108, 460, 38};
+	DrawUiInputBox(idBox, ingIdInput, "Nhập mã nguyên liệu viết hoa...", ingDialogField == 0, mouse);
+
+	// Field 1: Name
+	DrawUiText("Tên nguyên liệu:", dialog.x + 30, dialog.y + 158, 13, darkGreen);
+	Rectangle nameBox = {dialog.x + 30, dialog.y + 182, 460, 38};
+	DrawUiInputBox(nameBox, ingNameInput, "Nhập tên nguyên liệu (VD: Đường cát)...", ingDialogField == 1, mouse);
+
+	// Field 2: Unit pills
+	DrawUiText("Đơn vị tính:", dialog.x + 30, dialog.y + 232, 13, darkGreen);
+	const char* units[] = {"kg", "lít", "hộp", "gói"};
+	for (int u = 0; u < 4; ++u) {
+		Rectangle uPill = {dialog.x + 30 + u * 116.0f, dialog.y + 256, 108, 34};
+		bool selected = ingUnitInput == units[u];
+		bool hov = CheckCollisionPointRec(mouse, uPill);
+		DrawRectangleRounded(uPill, 0.25f, 4, selected ? green : (hov ? Color{220, 232, 224, 255} : Color{235, 242, 237, 255}));
+		DrawUiTextInRect(units[u], uPill, 13, selected ? RAYWHITE : darkGreen, 0, 6.0f);
+	}
+
+	// Field 3: Initial stock
+	DrawUiText("Số lượng tồn khởi tạo cho mỗi chi nhánh:", dialog.x + 30, dialog.y + 304, 13, darkGreen);
+	Rectangle stockBox = {dialog.x + 30, dialog.y + 328, 460, 38};
+	DrawUiInputBox(stockBox, ingInitialStockInput, "Nhập số lượng ban đầu (VD: 50)...", ingDialogField == 3, mouse);
+
+	DrawUiTextFitted("Phím Tab: Chuyển ô  •  Enter: Lưu  •  Esc: Đóng", dialog.x + 30, dialog.y + 375, 460, 12, muted);
+
+	drawButton({dialog.x + 30, dialog.y + 402, 220, 40}, "THÊM NGUYÊN LIỆU", mouse, true, green);
+	drawButton({dialog.x + 270, dialog.y + 402, 220, 40}, "HỦY BỎ", mouse, true, Color{150, 160, 152, 255});
 }
 
 void ManagementUI::drawInventoryTab(Vector2 mouse, User& currentUser) {
-	drawManagementHeader("Quản lý Kho & Thực đơn", "Quản lý danh sách món ăn, giá bán và tồn kho nguyên liệu chi nhánh");
+	drawManagementHeader("Quản lý Kho & Thực đơn", "Quản lý thực đơn toàn chuỗi và tồn kho nguyên liệu từng chi nhánh");
 
 	// Sub-tab toggles
 	Rectangle tabMenuRec = {245, 154, 220, 34};
 	Rectangle tabStockRec = {475, 154, 240, 34};
-	DrawRectangleRounded(tabMenuRec, 0.25f, 4, managementSubTab == 0 ? green : Color{225, 233, 226, 255});
-	DrawUiTextInRect("1. THỰC ĐƠN MÓN ĂN", tabMenuRec, 13, managementSubTab == 0 ? RAYWHITE : darkGreen, 0, 8.0f);
+	bool hovMenu = CheckCollisionPointRec(mouse, tabMenuRec);
+	bool hovStock = CheckCollisionPointRec(mouse, tabStockRec);
 
-	DrawRectangleRounded(tabStockRec, 0.25f, 4, managementSubTab == 1 ? green : Color{225, 233, 226, 255});
-	DrawUiTextInRect("2. KHO NGUYÊN LIỆU", tabStockRec, 13, managementSubTab == 1 ? RAYWHITE : darkGreen, 0, 8.0f);
+	DrawRectangleRounded(tabMenuRec, 0.25f, 4, managementSubTab == 0 ? green : (hovMenu ? Color{212, 224, 214, 255} : Color{225, 233, 226, 255}));
+	DrawUiTextInRect("THỰC ĐƠN MÓN ĂN", tabMenuRec, 13, managementSubTab == 0 ? RAYWHITE : darkGreen, 0, 8.0f);
+
+	DrawRectangleRounded(tabStockRec, 0.25f, 4, managementSubTab == 1 ? green : (hovStock ? Color{212, 224, 214, 255} : Color{225, 233, 226, 255}));
+	DrawUiTextInRect("KHO NGUYÊN LIỆU", tabStockRec, 13, managementSubTab == 1 ? RAYWHITE : darkGreen, 0, 8.0f);
 
 	if (managementSubTab == 0) {
 		drawMenuTab(mouse, currentUser);
-		drawMenuDialog();
+		drawMenuDialog(mouse);
 		return;
 	}
 
-	// Sub-tab 1: Inventory per branch
-	int visibleRow = 0;
-	int startY = 202;
-	for (int i = 0; i < static_cast<int>(branches.size()); ++i) {
-		Employee* currentEmployee = dynamic_cast<Employee*>(&currentUser);
-		if (currentEmployee && !currentUser.canManageAllBranches() &&
-			branches[i].getId() != currentEmployee->branchId) continue;
+	// Sub-tab 1: Inventory & Ingredient Types
+	bool isBranchMgr = currentUser.canManageAllBranches();
+	bool canAdjustStock = currentUser.canManageBranches();
 
-		int y = startY + visibleRow * 105;
-		Rectangle card = {245, static_cast<float>(y), 1000, 92};
-		DrawRectangleRounded(card, 0.08f, 4, panel);
-		DrawRectangleRoundedLines(card, 0.08f, 4, Color{225, 233, 226, 255});
-
-		// Branch name (bounded to 470px before buttons)
-		DrawUiTextFitted((branches[i].getName() + " (" + branches[i].getId() + ")").c_str(),
-			265, y + 14, 470, 16, darkGreen);
-
-		// Details (bounded to 470px)
-		char details1[160];
-		std::snprintf(details1, sizeof(details1), "Tồn kho: Bột mì %d kg  •  Mì sợi %d kg",
-			branches[i].getStock("FLOUR"), branches[i].getStock("NOODLES"));
-		DrawUiTextFitted(details1, 265, y + 40, 470, 13, green);
-
-		char details2[160];
-		std::snprintf(details2, sizeof(details2), "Giờ hoạt động: %s - %s  •  Doanh thu: %s",
-			branches[i].getOpeningHours().getOpenTime().c_str(),
-			branches[i].getOpeningHours().getCloseTime().c_str(),
-			formatMoney(branches[i].getRevenue()).c_str());
-		DrawUiTextFitted(details2, 265, y + 62, 470, 12, muted);
-
-		// Controls (x = 755..1230)
-		drawButton({755.0f, static_cast<float>(y + 14), 110, 30}, "+10kg Bột", true, green);
-		drawButton({873.0f, static_cast<float>(y + 14), 110, 30}, "-5kg Bột", true, amber);
-		drawButton({991.0f, static_cast<float>(y + 14), 110, 30}, "+10kg Mì", true, green);
-		drawButton({1109.0f, static_cast<float>(y + 14), 116, 30}, "-5kg Mì", true, amber);
-
-		drawButton({991.0f, static_cast<float>(y + 52), 234, 28}, "Đặt giờ chuẩn (08:00 - 22:30)", true, darkGreen);
-		visibleRow++;
+	if (isBranchMgr) {
+		drawButton({1015, 154, 230, 34}, "+ THÊM LOẠI NGUYÊN LIỆU", mouse, true, green);
 	}
-	(void)mouse;
+
+	// Determine active branch for viewing/editing inventory
+	if (!isBranchMgr) {
+		Employee* emp = dynamic_cast<Employee*>(&currentUser);
+		if (emp) {
+			for (int i = 0; i < static_cast<int>(branches.size()); ++i) {
+				if (branches[i].getId() == emp->branchId) {
+					selectedInventoryBranch = i;
+					break;
+				}
+			}
+		}
+	} else {
+		selectedInventoryBranch = std::clamp(selectedInventoryBranch, 0, std::max(0, static_cast<int>(branches.size()) - 1));
+	}
+
+	// Branch selector bar for BranchManager (scrollable if > 4 branches)
+	int branchCardY = 198;
+	if (isBranchMgr && !branches.empty()) {
+		DrawUiText("Chi nhánh:", 245, 203, 13, darkGreen);
+		const int maxVisBranches = 4;
+		int totalBr = static_cast<int>(branches.size());
+		invBranchScrollOffset = std::clamp(invBranchScrollOffset, 0, std::max(0, totalBr - maxVisBranches));
+
+		float startX = 325.0f;
+		if (totalBr > maxVisBranches) {
+			drawButton({325, 198, 28, 28}, "<", mouse, invBranchScrollOffset > 0, darkGreen);
+			startX = 360.0f;
+		}
+		int shown = std::min(totalBr - invBranchScrollOffset, maxVisBranches);
+		for (int b = 0; b < shown; ++b) {
+			int bIdx = invBranchScrollOffset + b;
+			Rectangle bPill = {startX + b * 204.0f, 198.0f, 196.0f, 28.0f};
+			bool sel = (selectedInventoryBranch == bIdx);
+			bool hov = CheckCollisionPointRec(mouse, bPill);
+			DrawRectangleRounded(bPill, 0.25f, 4, sel ? green : (hov ? Color{215, 228, 218, 255} : Color{232, 238, 233, 255}));
+			DrawUiTextInRect(branches[bIdx].getName().c_str(), bPill, 12, sel ? RAYWHITE : darkGreen, 0, 6.0f);
+		}
+		if (totalBr > maxVisBranches) {
+			drawButton({startX + shown * 204.0f, 198, 28, 28}, ">", mouse, invBranchScrollOffset < totalBr - maxVisBranches, darkGreen);
+		}
+		branchCardY = 234;
+	}
+
+	if (branches.empty()) return;
+	Branch& activeBranch = branches[selectedInventoryBranch];
+
+	// Branch info header card
+	Rectangle bInfoCard = {245, static_cast<float>(branchCardY), 1000, 52};
+	DrawRectangleRounded(bInfoCard, 0.1f, 4, panel);
+	DrawRectangleRoundedLines(bInfoCard, 0.1f, 4, Color{220, 228, 221, 255});
+
+	std::string bHeader = activeBranch.getName() + " (" + activeBranch.getId() + ")  •  Giờ mở cửa: " +
+		activeBranch.getOpeningHours().getOpenTime() + " - " + activeBranch.getOpeningHours().getCloseTime() +
+		"  •  Số loại nguyên liệu: " + std::to_string(ingredientTypes.size());
+	DrawUiTextFitted(bHeader.c_str(), 265, branchCardY + 17, 710, 14, darkGreen);
+
+	if (canAdjustStock) {
+		drawButton({995, static_cast<float>(branchCardY + 11), 235, 30}, "Đặt giờ chuẩn (08:00 - 22:30)", mouse, true, darkGreen);
+	}
+
+	// Ingredient Types Table (scrollable)
+	int tableHeaderY = branchCardY + 62;
+	int visibleIngRows = isBranchMgr ? 6 : 7;
+	int totalIng = static_cast<int>(ingredientTypes.size());
+	int maxIngScroll = std::max(0, totalIng - visibleIngRows);
+	ingredientScrollOffset = std::clamp(ingredientScrollOffset, 0, maxIngScroll);
+
+	DrawRectangle(245, tableHeaderY, 985, 34, Color{232, 238, 233, 255});
+	DrawUiText("MÃ NL", 265, tableHeaderY + 9, 12, darkGreen);
+	DrawUiText("TÊN NGUYÊN LIỆU", 380, tableHeaderY + 9, 12, darkGreen);
+	DrawUiText("ĐƠN VỊ", 630, tableHeaderY + 9, 12, darkGreen);
+	DrawUiText("TỒN KHO HIỆN TẠI", 740, tableHeaderY + 9, 12, darkGreen);
+	DrawUiText("NHẬP / XUẤT KHO", 925, tableHeaderY + 9, 12, darkGreen);
+	if (isBranchMgr) {
+		DrawUiText("XOÁ LOẠI", 1135, tableHeaderY + 9, 12, darkGreen);
+	}
+
+	int rowY = tableHeaderY + 38;
+	for (int r = 0; r < visibleIngRows; ++r) {
+		int idx = ingredientScrollOffset + r;
+		if (idx >= totalIng) break;
+		const auto& ing = ingredientTypes[idx];
+		int currentQty = activeBranch.getStock(ing.id);
+
+		Rectangle rowRec = {245, static_cast<float>(rowY), 985, 46};
+		DrawRectangleRec(rowRec, (idx % 2 == 0) ? panel : panelAlt);
+		DrawRectangleLines(245, rowY, 985, 46, Color{232, 236, 232, 255});
+
+		Rectangle idBadge = {262, static_cast<float>(rowY + 10), 95, 26};
+		DrawRectangleRounded(idBadge, 0.2f, 4, Color{238, 243, 240, 255});
+		DrawUiTextInRect(ing.id.c_str(), idBadge, 12, darkGreen, 0, 4.0f);
+
+		DrawUiTextFitted(ing.name.c_str(), 380, rowY + 15, 235, 14, Color{45, 56, 50, 255});
+		DrawUiTextFitted(ing.unit.c_str(), 630, rowY + 15, 90, 13, muted);
+
+		std::string stockStr = std::to_string(currentQty) + " " + ing.unit;
+		DrawUiTextFitted(stockStr.c_str(), 740, rowY + 15, 160, 14, currentQty > 10 ? green : amber);
+
+		if (canAdjustStock) {
+			drawButton({915, static_cast<float>(rowY + 8), 90, 30}, "+10", mouse, true, green);
+			drawButton({1015, static_cast<float>(rowY + 8), 90, 30}, "-5", mouse, currentQty >= 5, amber);
+		} else {
+			DrawUiText("Chỉ xem", 950, rowY + 15, 13, muted);
+		}
+
+		if (isBranchMgr) {
+			drawButton({1125, static_cast<float>(rowY + 8), 88, 30}, "Xoá loại", mouse, totalIng > 1, danger);
+		}
+
+		rowY += 48;
+	}
+
+	DrawVerticalScrollbar({1236, static_cast<float>(tableHeaderY + 38), 8, static_cast<float>(visibleIngRows * 48 - 2)},
+		totalIng, visibleIngRows, ingredientScrollOffset);
+
+	if (!isBranchMgr) {
+		DrawUiTextFitted("Lưu ý: Quản lý chi nhánh được phép nhập/xuất tồn kho. Chỉ Giám đốc chuỗi được thêm/xoá loại nguyên liệu.",
+			245, 672, 980, 12, muted);
+	}
+
+	drawIngredientDialog(mouse);
 }
 
 void ManagementUI::drawScheduleTab(Vector2 mouse, User& currentUser) {
-	drawManagementHeader("Lịch làm việc & Phân ca", "Tạo ca làm việc mở, đăng ký ca trực và kiểm tra độ phủ nhân sự");
+	drawManagementHeader("Lịch làm việc & Phân ca", "Tạo ca làm việc mở, đăng ký ca trực và kiểm tra độ phủ nhân sự theo chi nhánh");
 
+	bool isBranchMgr = currentUser.canManageAllBranches();
+	bool canManage = currentUser.canManageBranches();
 	bool isEmployee = currentUser.getRole() == Role::Employee ||
 		currentUser.getRole() == Role::Manager || currentUser.getRole() == Role::BranchManager;
 
-	std::string dateLabel = "Ngày: " + dateInput;
-	std::string startLabel = "Vào: " + startInput;
-	std::string endLabel = "Ra: " + endInput;
+	drawButton({245, 166, 140, 36}, "+ TẠO CA LÀM", mouse, canManage, green);
 
-	drawButton({245, 168, 145, 36}, "+ TẠO CA LÀM", currentUser.canManageBranches(), green);
+	Rectangle dBox = {395, 166, 148, 36};
+	Rectangle sBox = {551, 166, 118, 36};
+	Rectangle eBox = {677, 166, 118, 36};
+	DrawUiInputBox(dBox, "Ngày: " + dateInput, "YYYY-MM-DD", focusedField == 0, mouse);
+	DrawUiInputBox(sBox, "Vào: " + startInput, "HH:MM", focusedField == 1, mouse);
+	DrawUiInputBox(eBox, "Ra: " + endInput, "HH:MM", focusedField == 2, mouse);
 
-	Rectangle dBox = {402, 168, 155, 36};
-	Rectangle sBox = {569, 168, 135, 36};
-	Rectangle eBox = {716, 168, 135, 36};
-	DrawRectangleRec(dBox, panel);
-	DrawRectangleRec(sBox, panel);
-	DrawRectangleRec(eBox, panel);
-	DrawRectangleLinesEx(dBox, 1.5f, focusedField == 0 ? green : Color{202, 211, 201, 255});
-	DrawRectangleLinesEx(sBox, 1.5f, focusedField == 1 ? green : Color{202, 211, 201, 255});
-	DrawRectangleLinesEx(eBox, 1.5f, focusedField == 2 ? green : Color{202, 211, 201, 255});
+	// Branch selector button for BranchManager when creating shift
+	if (isBranchMgr && !branches.empty()) {
+		scheduleBranchIndex = std::clamp(scheduleBranchIndex, 0, static_cast<int>(branches.size()) - 1);
+		std::string brLabel = "CN: " + branches[scheduleBranchIndex].getId();
+		drawButton({803, 166, 105, 36}, brLabel.c_str(), mouse, true, amber);
+		drawButton({916, 166, 329, 36}, "KIỂM TRA ĐỘ PHỦ TẤT CẢ CN", mouse, true, darkGreen);
+	} else {
+		std::string checkLabel = "KIỂM TRA ĐỘ PHỦ (" + currentUser.getBranchId() + ")";
+		drawButton({805, 166, 260, 36}, checkLabel.c_str(), mouse, canManage, darkGreen);
+	}
 
-	DrawUiTextInRect(dateLabel.c_str(), dBox, 13, darkGreen, -1, 10.0f);
-	DrawUiTextInRect(startLabel.c_str(), sBox, 13, darkGreen, -1, 10.0f);
-	DrawUiTextInRect(endLabel.c_str(), eBox, 13, darkGreen, -1, 10.0f);
+	DrawUiTextFitted("Nhấp vào ô Ngày / Vào / Ra để nhập. Quản lý kiểm tra độ phủ cho chi nhánh mình; Giám đốc chuỗi kiểm tra toàn bộ.",
+		245, 210, 1000, 12, muted);
 
-	drawButton({865, 168, 215, 36}, "KIỂM TRA ĐỘ PHỦ CA", currentUser.canManageBranches(), darkGreen);
-
-	DrawUiTextFitted("Nhấp vào ô để nhập: Ngày (YYYY-MM-DD), Giờ bắt đầu (HH:MM), Giờ kết thúc (HH:MM).",
-		245, 212, 980, 12, muted);
-
-	DrawUiText("DANH SÁCH CA LÀM VIỆC", 245, 238, 14, darkGreen);
-
-	// Shift cards on the left (x = 245..885, width = 640)
-	int y = 264;
-	int shown = 0;
+	// Filter schedules visible to current user
+	std::vector<std::shared_ptr<Schedule>> visibleSchedules;
 	for (const auto& schedule : scheduleService.getSchedules()) {
-		if (shown >= 5) break;
-		DrawRectangleRounded({245, static_cast<float>(y), 640, 72}, 0.08f, 4, panel);
-		DrawRectangleRoundedLines({245, static_cast<float>(y), 640, 72}, 0.08f, 4, Color{225, 233, 226, 255});
+		if (isBranchMgr || schedule->getBranchId() == "ALL" || schedule->getBranchId() == currentUser.getBranchId()) {
+			visibleSchedules.push_back(schedule);
+		}
+	}
+
+	const int maxVisibleShifts = 5;
+	int totalShifts = static_cast<int>(visibleSchedules.size());
+	int maxShiftScroll = std::max(0, totalShifts - maxVisibleShifts);
+	scheduleScrollOffset = std::clamp(scheduleScrollOffset, 0, maxShiftScroll);
+
+	std::string listTitle = "DANH SÁCH CA LÀM VIỆC (" + std::to_string(totalShifts) + " ca)";
+	DrawUiTextFitted(listTitle.c_str(), 245, 236, 600, 14, darkGreen);
+
+	int y = 262;
+	for (int r = 0; r < maxVisibleShifts; ++r) {
+		int idx = scheduleScrollOffset + r;
+		if (idx >= totalShifts) break;
+		const auto& schedule = visibleSchedules[idx];
+
+		DrawRectangleRounded({245, static_cast<float>(y), 630, 72}, 0.08f, 4, panel);
+		DrawRectangleRoundedLines({245, static_cast<float>(y), 630, 72}, 0.08f, 4, Color{225, 233, 226, 255});
 
 		char details[200];
 		std::snprintf(details, sizeof(details), "Mã ca: %s  |  Ngày: %s  |  %s - %s  |  CN: %s",
 			schedule->getId().c_str(), schedule->getDate().c_str(),
 			schedule->getStartTime().c_str(), schedule->getEndTime().c_str(),
 			schedule->getBranchId().c_str());
-		DrawUiTextFitted(details, 262, y + 14, 390, 13, darkGreen);
+		DrawUiTextFitted(details, 262, y + 14, 380, 13, darkGreen);
 
 		bool covered = schedule->hasCoverage();
 		std::snprintf(details, sizeof(details), "Nhân sự: %d/%d  •  %s",
 			schedule->getAssignedEmployeeCount(), schedule->getRequiredEmployees(),
 			covered ? "Đã đủ người" : "Đang thiếu người");
-		DrawUiTextFitted(details, 262, y + 42, 390, 13, covered ? green : amber);
+		DrawUiTextFitted(details, 262, y + 42, 380, 13, covered ? green : amber);
 
 		if (isEmployee && schedule->isOpenShift())
-			drawButton({665, static_cast<float>(y + 20), 96, 32}, "Đăng ký", true, green);
-		if (currentUser.canManageBranches())
-			drawButton({771, static_cast<float>(y + 20), 96, 32}, "Xoá ca", true, danger);
+			drawButton({655, static_cast<float>(y + 20), 96, 32}, "Đăng ký", mouse, true, green);
+		if (canManage)
+			drawButton({761, static_cast<float>(y + 20), 96, 32}, "Xoá ca", mouse, true, danger);
 
 		y += 82;
-		shown++;
 	}
 
-	// Right Panel: Status & Coverage Alerts (x = 900..1245, width = 345)
-	Rectangle rightPanel = {900, 264, 345, 410};
+	DrawVerticalScrollbar({880, 262, 7, static_cast<float>(maxVisibleShifts * 82 - 10)},
+		totalShifts, maxVisibleShifts, scheduleScrollOffset);
+
+	// Right Panel: Status & Coverage Alerts
+	Rectangle rightPanel = {900, 262, 345, 412};
 	DrawRectangleRounded(rightPanel, 0.06f, 4, panel);
 	DrawRectangleRoundedLines(rightPanel, 0.06f, 4, Color{225, 233, 226, 255});
 
-	DrawUiText("CHỈ TIÊU & CẢNH BÁO", rightPanel.x + 18, rightPanel.y + 16, 14, darkGreen);
+	std::string panelScope = isBranchMgr ? "CẢNH BÁO CA (TOÀN CHUỖI)" : ("CẢNH BÁO CA (" + currentUser.getBranchId() + ")");
+	DrawUiTextFitted(panelScope.c_str(), rightPanel.x + 18, rightPanel.y + 16, 310, 14, darkGreen);
 	DrawLine(static_cast<int>(rightPanel.x + 18), static_cast<int>(rightPanel.y + 42),
 		static_cast<int>(rightPanel.x + rightPanel.width - 18), static_cast<int>(rightPanel.y + 42),
 		Color{230, 236, 231, 255});
@@ -340,20 +509,18 @@ void ManagementUI::drawScheduleTab(Vector2 mouse, User& currentUser) {
 	DrawUiTextInRect(minSatisfied ? "Chỉ tiêu ca tối thiểu: ĐẠT" : "Chỉ tiêu ca tối thiểu: CHƯA ĐẠT",
 		statusBadge, 13, minSatisfied ? green : amber, 0, 8.0f);
 
-	DrawUiText("Danh sách cảnh báo thiếu ca:", rightPanel.x + 18, rightPanel.y + 106, 13, muted);
-	float alertY = rightPanel.y + 132;
+	DrawUiText("Kết quả kiểm tra độ phủ ca:", rightPanel.x + 18, rightPanel.y + 104, 13, muted);
+	float alertY = rightPanel.y + 130;
 	if (shiftManager.getAlerts().empty()) {
-		DrawUiTextFitted("Không có cảnh báo. Mọi ca đã ổn định.",
-			rightPanel.x + 18, alertY, rightPanel.width - 36, 13, green);
+		DrawUiTextWrapped("Tất cả các ca trong phạm vi kiểm tra đã đủ nhân sự hoặc chưa có cảnh báo mới.",
+			{rightPanel.x + 18, alertY, rightPanel.width - 36, 60}, 12, green);
 	} else {
 		for (const std::string& alert : shiftManager.getAlerts()) {
-			if (alertY + 36 > rightPanel.y + rightPanel.height - 12) break;
-			DrawUiTextWrapped(alert.c_str(), {rightPanel.x + 18, alertY, rightPanel.width - 36, 38}, 12, amber);
-			alertY += 42;
+			if (alertY + 34 > rightPanel.y + rightPanel.height - 12) break;
+			DrawUiTextWrapped(alert.c_str(), {rightPanel.x + 18, alertY, rightPanel.width - 36, 36}, 12, amber);
+			alertY += 38;
 		}
 	}
-
-	(void)mouse;
 }
 
 void ManagementUI::drawAttendanceTab(Vector2 mouse, User& currentUser) {
@@ -362,18 +529,23 @@ void ManagementUI::drawAttendanceTab(Vector2 mouse, User& currentUser) {
 	bool isEmployee = currentUser.getRole() == Role::Employee ||
 		currentUser.getRole() == Role::Manager || currentUser.getRole() == Role::BranchManager;
 
-	drawButton({245, 172, 185, 40}, "VÀO CA (CHECK-IN)", isEmployee, green);
-	drawButton({445, 172, 185, 40}, "RA CA (CHECK-OUT)", isEmployee, amber);
+	drawButton({245, 172, 185, 40}, "VÀO CA (CHECK-IN)", mouse, isEmployee, green);
+	drawButton({445, 172, 185, 40}, "RA CA (CHECK-OUT)", mouse, isEmployee, amber);
 
 	Timekeeping* records = getTimekeeping(currentUser);
 	std::string empInfo = "Nhân sự: " + currentUser.getName() + "  •  Mã NV: " +
 		(records ? records->getEmployeeId() : currentUser.getBranchId());
-	DrawUiTextFitted(empInfo.c_str(), 245, 232, 980, 15, darkGreen);
+	DrawUiTextFitted(empInfo.c_str(), 245, 230, 980, 15, darkGreen);
 
-	DrawUiText("LỊCH SỬ ĐIỂM DANH GẦN ĐÂY", 245, 266, 13, muted);
+	int totalRecs = records ? static_cast<int>(records->getRecords().size()) : 0;
+	const int visibleRows = 8;
+	int maxScroll = std::max(0, totalRecs - visibleRows);
+	attendanceScrollOffset = std::clamp(attendanceScrollOffset, 0, maxScroll);
 
-	int tableY = 292;
-	DrawRectangle(245, tableY, 1000, 34, Color{232, 238, 233, 255});
+	DrawUiText(("LỊCH SỬ ĐIỂM DANH (" + std::to_string(totalRecs) + " lượt)").c_str(), 245, 264, 13, muted);
+
+	int tableY = 290;
+	DrawRectangle(245, tableY, 985, 34, Color{232, 238, 233, 255});
 	DrawUiText("MÃ CA TRỰC", 265, tableY + 9, 12, darkGreen);
 	DrawUiText("THỜI GIAN VÀO CA", 430, tableY + 9, 12, darkGreen);
 	DrawUiText("THỜI GIAN RA CA", 690, tableY + 9, 12, darkGreen);
@@ -381,40 +553,160 @@ void ManagementUI::drawAttendanceTab(Vector2 mouse, User& currentUser) {
 
 	int y = tableY + 38;
 	if (records) {
-		int count = 0;
-		for (const AttendanceRecord& record : records->getRecords()) {
-			if (count >= 8) break;
-			DrawRectangle(245, y, 1000, 40, (count % 2 == 0) ? panel : panelAlt);
-			DrawRectangleLines(245, y, 1000, 40, Color{225, 233, 226, 255});
+		const auto& recList = records->getRecords();
+		for (int r = 0; r < visibleRows; ++r) {
+			int idx = attendanceScrollOffset + r;
+			if (idx >= totalRecs) break;
+			const AttendanceRecord& record = recList[idx];
+
+			DrawRectangle(245, y, 985, 40, (idx % 2 == 0) ? panel : panelAlt);
+			DrawRectangleLines(245, y, 985, 40, Color{225, 233, 226, 255});
 
 			DrawUiTextFitted(record.scheduleId.c_str(), 265, y + 11, 145, 13, darkGreen);
 			DrawUiTextFitted(record.checkIn.empty() ? "---" : record.checkIn.c_str(), 430, y + 11, 240, 13, darkGreen);
 			DrawUiTextFitted(record.checkOut.empty() ? "Đang trong ca..." : record.checkOut.c_str(), 690, y + 11, 240, 13,
 				record.checkOut.empty() ? amber : darkGreen);
-			DrawUiTextFitted(record.isPresent ? "Có mặt đầy đủ" : "Chưa hoàn tất", 960, y + 11, 260, 13,
+			DrawUiTextFitted(record.isPresent ? "Có mặt đầy đủ" : "Chưa hoàn tất", 960, y + 11, 250, 13,
 				record.isPresent ? green : amber);
 			y += 44;
-			count++;
 		}
 	}
-	(void)mouse;
+
+	DrawVerticalScrollbar({1236, static_cast<float>(tableY + 38), 8, static_cast<float>(visibleRows * 44 - 4)},
+		totalRecs, visibleRows, attendanceScrollOffset);
 }
 
-void ManagementUI::updateInput(int key, int charPressed) {
+bool ManagementUI::submitMenuDialog() {
+	if (menuCodeInput.empty() || menuNameInput.empty() || menuPriceInput.empty()) {
+		message = "Vui lòng nhập đầy đủ Mã món, Tên món và Đơn giá!";
+		return true;
+	}
+	int price = 0;
+	try {
+		price = std::stoi(menuPriceInput);
+	} catch (...) {
+		message = "Giá tiền không hợp lệ. Vui lòng nhập số nguyên!";
+		return true;
+	}
+	if (price <= 0) {
+		message = "Giá tiền phải lớn hơn 0!";
+		return true;
+	}
+
+	Color col = {235, 142, 72, 255};
+	if (menuCategoryInput == "Món chính") col = {210, 92, 68, 255};
+	else if (menuCategoryInput == "Đồ uống") col = {82, 150, 128, 255};
+	else if (menuCategoryInput == "Tráng miệng") col = {192, 122, 155, 255};
+
+	if (menuDialogMode == 0) {
+		// Check duplicate code
+		for (const auto& existing : products) {
+			if (existing.code == menuCodeInput) {
+				message = "Mã món " + menuCodeInput + " đã tồn tại! Vui lòng chọn mã khác.";
+				return true;
+			}
+		}
+		Product newProd{menuCodeInput, menuNameInput, menuCategoryInput, price, col};
+		products.push_back(newProd);
+		menuLookup.addItem({menuCodeInput, menuNameInput, static_cast<float>(price)});
+		// Auto-scroll to show the newly added dish immediately
+		menuScrollOffset = std::max(0, static_cast<int>(products.size()) - 8);
+		message = "Đã thêm món mới thành công: " + menuNameInput + " (" + menuCodeInput + ")";
+	} else if (menuDialogMode == 1 && editingProductIndex >= 0 &&
+			   editingProductIndex < static_cast<int>(products.size())) {
+		products[editingProductIndex].code = menuCodeInput;
+		products[editingProductIndex].name = menuNameInput;
+		products[editingProductIndex].category = menuCategoryInput;
+		products[editingProductIndex].price = price;
+		products[editingProductIndex].color = col;
+		menuLookup.addItem({menuCodeInput, menuNameInput, static_cast<float>(price)});
+		message = "Đã cập nhật món ăn: " + menuNameInput;
+	}
+	isMenuDialogOpen = false;
+	return true;
+}
+
+bool ManagementUI::submitIngredientDialog() {
+	if (ingIdInput.empty() || ingNameInput.empty() || ingUnitInput.empty()) {
+		message = "Vui lòng nhập đầy đủ Mã và Tên nguyên liệu!";
+		return true;
+	}
+	for (char& c : ingIdInput) c = static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+	for (const auto& existing : ingredientTypes) {
+		if (existing.id == ingIdInput) {
+			message = "Mã nguyên liệu " + ingIdInput + " đã tồn tại!";
+			return true;
+		}
+	}
+	int initStock = 0;
+	try {
+		initStock = std::max(0, std::stoi(ingInitialStockInput));
+	} catch (...) {
+		initStock = 0;
+	}
+
+	ingredientTypes.push_back({ingIdInput, ingNameInput, ingUnitInput});
+	for (auto& br : branches) {
+		if (initStock > 0) br.addStock(ingIdInput, initStock);
+	}
+	ingredientScrollOffset = std::max(0, static_cast<int>(ingredientTypes.size()) - 6);
+	isIngredientDialogOpen = false;
+	message = "Đã thêm loại nguyên liệu mới: " + ingNameInput + " (" + ingIdInput + ")";
+	return true;
+}
+
+void ManagementUI::updateScroll(Vector2 mouse, float wheelMove, int activeTab, User& currentUser) {
+	if (std::abs(wheelMove) < 0.01f || isDialogOpen()) return;
+	int step = (wheelMove > 0) ? -1 : 1;
+
+	if (activeTab == 3) {
+		if (managementSubTab == 0) {
+			int maxScroll = std::max(0, static_cast<int>(products.size()) - 8);
+			menuScrollOffset = std::clamp(menuScrollOffset + step, 0, maxScroll);
+		} else {
+			bool isBranchMgr = currentUser.canManageAllBranches();
+			if (isBranchMgr && CheckCollisionPointRec(mouse, {245, 194, 1000, 36})) {
+				int maxBrScroll = std::max(0, static_cast<int>(branches.size()) - 4);
+				invBranchScrollOffset = std::clamp(invBranchScrollOffset + step, 0, maxBrScroll);
+			} else {
+				int visRows = isBranchMgr ? 6 : 7;
+				int maxIngScroll = std::max(0, static_cast<int>(ingredientTypes.size()) - visRows);
+				ingredientScrollOffset = std::clamp(ingredientScrollOffset + step, 0, maxIngScroll);
+			}
+		}
+	} else if (activeTab == 4) {
+		int maxScroll = std::max(0, static_cast<int>(scheduleService.getSchedules().size()) - 5);
+		scheduleScrollOffset = std::clamp(scheduleScrollOffset + step, 0, maxScroll);
+	} else if (activeTab == 5) {
+		Timekeeping* records = getTimekeeping(currentUser);
+		int total = records ? static_cast<int>(records->getRecords().size()) : 0;
+		int maxScroll = std::max(0, total - 8);
+		attendanceScrollOffset = std::clamp(attendanceScrollOffset + step, 0, maxScroll);
+	}
+}
+
+bool ManagementUI::updateInput(int key, int charPressed) {
 	if (isMenuDialogOpen) {
+		if (key == KEY_ESCAPE) {
+			isMenuDialogOpen = false;
+			return false;
+		}
+		if (key == KEY_ENTER) {
+			return submitMenuDialog();
+		}
+		if (key == KEY_TAB) {
+			menuDialogField = (menuDialogField == 0) ? 1 : (menuDialogField == 1 ? 3 : 0);
+			return false;
+		}
+
 		std::string* target = nullptr;
 		if (menuDialogField == 0) target = &menuCodeInput;
 		else if (menuDialogField == 1) target = &menuNameInput;
-		else if (menuDialogField == 2) target = &menuCategoryInput;
 		else if (menuDialogField == 3) target = &menuPriceInput;
 
 		if (key == KEY_BACKSPACE && target && !target->empty()) {
 			PopUtf8Char(*target);
-			return;
-		}
-		if (key == KEY_TAB) {
-			menuDialogField = (menuDialogField + 1) % 4;
-			return;
+			return false;
 		}
 		if (charPressed >= 32 && target) {
 			if (menuDialogField == 3) {
@@ -425,82 +717,117 @@ void ManagementUI::updateInput(int key, int charPressed) {
 				AppendUtf8Codepoint(*target, charPressed, 36);
 			}
 		}
-		return;
+		return false;
 	}
 
-	if (focusedField < 0) return;
+	if (isIngredientDialogOpen) {
+		if (key == KEY_ESCAPE) {
+			isIngredientDialogOpen = false;
+			return false;
+		}
+		if (key == KEY_ENTER) {
+			return submitIngredientDialog();
+		}
+		if (key == KEY_TAB) {
+			ingDialogField = (ingDialogField == 0) ? 1 : (ingDialogField == 1 ? 3 : 0);
+			return false;
+		}
+
+		std::string* target = nullptr;
+		if (ingDialogField == 0) target = &ingIdInput;
+		else if (ingDialogField == 1) target = &ingNameInput;
+		else if (ingDialogField == 3) target = &ingInitialStockInput;
+
+		if (key == KEY_BACKSPACE && target && !target->empty()) {
+			PopUtf8Char(*target);
+			return false;
+		}
+		if (charPressed >= 32 && target) {
+			if (ingDialogField == 3) {
+				if (std::isdigit(charPressed) && target->size() < 8) {
+					target->push_back(static_cast<char>(charPressed));
+				}
+			} else if (ingDialogField == 0) {
+				if (std::isalnum(charPressed) && target->size() < 14) {
+					target->push_back(static_cast<char>(std::toupper(charPressed)));
+				}
+			} else {
+				AppendUtf8Codepoint(*target, charPressed, 36);
+			}
+		}
+		return false;
+	}
+
+	if (focusedField < 0) return false;
 	std::string* target = focusedField == 0 ? &dateInput : focusedField == 1 ? &startInput : &endInput;
 	if (key == KEY_BACKSPACE) {
 		if (!target->empty()) PopUtf8Char(*target);
-		return;
+		return false;
+	}
+	if (key == KEY_TAB) {
+		focusedField = (focusedField + 1) % 3;
+		return false;
 	}
 	if (charPressed >= 32 && charPressed <= 126 && target->size() < 16) {
 		target->push_back(static_cast<char>(charPressed));
 	}
+	return false;
 }
 
 bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) {
 	if (activeTab == 3) {
-		// Handle Dialog if open
+		// Handle Menu Dialog if open
 		if (isMenuDialogOpen) {
-			Rectangle dialog = {380, 140, 520, 450};
-			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 112, 460, 38})) menuDialogField = 0;
-			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 186, 460, 38})) menuDialogField = 1;
-
-			const char* categories[] = {"Món chính", "Đồ uống", "Tráng miệng"};
-			for (int c = 0; c < 3; ++c) {
-				if (CheckCollisionPointRec(mouse, {dialog.x + 30 + c * 156.0f, dialog.y + 260, 146, 34})) {
-					menuCategoryInput = categories[c];
-				}
-			}
-			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 334, 460, 38})) menuDialogField = 3;
-
-			// Cancel button
-			if (CheckCollisionPointRec(mouse, {dialog.x + 270, dialog.y + 390, 220, 40})) {
+			Rectangle dialog = {380, 135, 520, 460};
+			if (!CheckCollisionPointRec(mouse, dialog)) {
 				isMenuDialogOpen = false;
 				return false;
 			}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 108, 460, 38})) menuDialogField = 0;
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 182, 460, 38})) menuDialogField = 1;
 
-			// Save button
-			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 390, 220, 40})) {
-				if (menuCodeInput.empty() || menuNameInput.empty() || menuPriceInput.empty()) {
-					message = "Vui lòng nhập đầy đủ thông tin món ăn!";
-					return true;
+			const char* categories[] = {"Món chính", "Đồ uống", "Tráng miệng"};
+			for (int c = 0; c < 3; ++c) {
+				if (CheckCollisionPointRec(mouse, {dialog.x + 30 + c * 156.0f, dialog.y + 256, 146, 34})) {
+					menuCategoryInput = categories[c];
 				}
-				int price = 0;
-				try {
-					price = std::stoi(menuPriceInput);
-				} catch (...) {
-					message = "Giá tiền không hợp lệ. Vui lòng nhập số nguyên!";
-					return true;
-				}
-				if (price <= 0) {
-					message = "Giá tiền phải lớn hơn 0!";
-					return true;
-				}
+			}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 328, 460, 38})) menuDialogField = 3;
 
-				Color col = {235, 142, 72, 255};
-				if (menuCategoryInput == "Món chính") col = {210, 92, 68, 255};
-				else if (menuCategoryInput == "Đồ uống") col = {82, 150, 128, 255};
-				else if (menuCategoryInput == "Tráng miệng") col = {192, 122, 155, 255};
-
-				if (menuDialogMode == 0) {
-					Product newProd{menuCodeInput, menuNameInput, menuCategoryInput, price, col};
-					products.push_back(newProd);
-					menuLookup.addItem({menuCodeInput, menuNameInput, static_cast<float>(price)});
-					message = "Đã thêm món mới: " + menuNameInput;
-				} else if (menuDialogMode == 1 && editingProductIndex >= 0 &&
-						   editingProductIndex < static_cast<int>(products.size())) {
-					products[editingProductIndex].code = menuCodeInput;
-					products[editingProductIndex].name = menuNameInput;
-					products[editingProductIndex].category = menuCategoryInput;
-					products[editingProductIndex].price = price;
-					products[editingProductIndex].color = col;
-					menuLookup.addItem({menuCodeInput, menuNameInput, static_cast<float>(price)});
-					message = "Đã cập nhật món: " + menuNameInput;
-				}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 270, dialog.y + 402, 220, 40})) {
 				isMenuDialogOpen = false;
-				return true;
+				return false;
+			}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 402, 220, 40})) {
+				return submitMenuDialog();
+			}
+			return false;
+		}
+
+		// Handle Ingredient Dialog if open
+		if (isIngredientDialogOpen) {
+			Rectangle dialog = {380, 135, 520, 460};
+			if (!CheckCollisionPointRec(mouse, dialog)) {
+				isIngredientDialogOpen = false;
+				return false;
+			}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 108, 460, 38})) ingDialogField = 0;
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 182, 460, 38})) ingDialogField = 1;
+
+			const char* units[] = {"kg", "lít", "hộp", "gói"};
+			for (int u = 0; u < 4; ++u) {
+				if (CheckCollisionPointRec(mouse, {dialog.x + 30 + u * 116.0f, dialog.y + 256, 108, 34})) {
+					ingUnitInput = units[u];
+				}
+			}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 328, 460, 38})) ingDialogField = 3;
+
+			if (CheckCollisionPointRec(mouse, {dialog.x + 270, dialog.y + 402, 220, 40})) {
+				isIngredientDialogOpen = false;
+				return false;
+			}
+			if (CheckCollisionPointRec(mouse, {dialog.x + 30, dialog.y + 402, 220, 40})) {
+				return submitIngredientDialog();
 			}
 			return false;
 		}
@@ -515,14 +842,30 @@ bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) 
 			return false;
 		}
 
-		// In Sub-tab 0: Menu management
+		// Sub-tab 0: Menu management
 		if (managementSubTab == 0) {
-			bool canEdit = currentUser.canManageBranches();
-			if (canEdit && CheckCollisionPointRec(mouse, {1065, 192, 180, 34})) {
+			bool canEditMenu = currentUser.canManageAllBranches();
+			const int visibleRows = 8;
+			int total = static_cast<int>(products.size());
+			int maxScroll = std::max(0, total - visibleRows);
+
+			if (total > visibleRows) {
+				if (CheckCollisionPointRec(mouse, {945, 192, 36, 32})) {
+					menuScrollOffset = std::max(0, menuScrollOffset - 1);
+					return false;
+				}
+				if (CheckCollisionPointRec(mouse, {987, 192, 36, 32})) {
+					menuScrollOffset = std::min(maxScroll, menuScrollOffset + 1);
+					return false;
+				}
+			}
+
+			if (canEditMenu && CheckCollisionPointRec(mouse, {1035, 192, 210, 32})) {
 				isMenuDialogOpen = true;
 				menuDialogMode = 0;
 				editingProductIndex = -1;
-				menuCodeInput = "M" + std::to_string(101 + products.size());
+				int nextNum = 101 + static_cast<int>(products.size());
+				menuCodeInput = "M" + std::to_string(nextNum);
 				menuNameInput = "";
 				menuCategoryInput = "Món chính";
 				menuPriceInput = "";
@@ -530,11 +873,12 @@ bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) 
 				return false;
 			}
 
-			if (canEdit) {
-				int rowY = 272;
-				int displayCount = std::min(static_cast<int>(products.size()), 8);
-				for (int i = 0; i < displayCount; ++i) {
-					if (CheckCollisionPointRec(mouse, {1030, static_cast<float>(rowY + 8), 88, 30})) {
+			if (canEditMenu) {
+				int rowY = 270;
+				for (int r = 0; r < visibleRows; ++r) {
+					int i = menuScrollOffset + r;
+					if (i >= total) break;
+					if (CheckCollisionPointRec(mouse, {1025, static_cast<float>(rowY + 8), 86, 30})) {
 						isMenuDialogOpen = true;
 						menuDialogMode = 1;
 						editingProductIndex = i;
@@ -545,9 +889,10 @@ bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) 
 						menuDialogField = 1;
 						return false;
 					}
-					if (CheckCollisionPointRec(mouse, {1128, static_cast<float>(rowY + 8), 88, 30})) {
+					if (CheckCollisionPointRec(mouse, {1121, static_cast<float>(rowY + 8), 86, 30})) {
 						std::string deletedName = products[i].name;
 						products.erase(products.begin() + i);
+						menuScrollOffset = std::clamp(menuScrollOffset, 0, std::max(0, static_cast<int>(products.size()) - visibleRows));
 						message = "Đã xoá món ăn: " + deletedName;
 						return true;
 					}
@@ -557,81 +902,160 @@ bool ManagementUI::handleClick(Vector2 mouse, int activeTab, User& currentUser) 
 			return false;
 		}
 
-		// Sub-tab 1: Inventory
-		int visibleRow = 0;
-		int startY = 202;
-		for (int i = 0; i < static_cast<int>(branches.size()); ++i) {
-			Employee* currentEmployee = dynamic_cast<Employee*>(&currentUser);
-			if (currentEmployee && !currentUser.canManageAllBranches() && branches[i].getId() != currentEmployee->branchId) continue;
-			int y = startY + visibleRow * 105;
+		// Sub-tab 1: Inventory & Ingredient Types
+		bool isBranchMgr = currentUser.canManageAllBranches();
+		bool canAdjustStock = currentUser.canManageBranches();
 
-			if (CheckCollisionPointRec(mouse, {755.0f, static_cast<float>(y + 14), 110, 30})) {
-				branches[i].addStock("FLOUR", 10);
-				message = "Đã nhập thêm 10kg bột mì cho " + branches[i].getName();
-				return true;
-			}
-			if (CheckCollisionPointRec(mouse, {873.0f, static_cast<float>(y + 14), 110, 30})) {
-				branches[i].removeStock("FLOUR", 5);
-				message = "Đã xuất 5kg bột mì cho " + branches[i].getName();
-				return true;
-			}
-			if (CheckCollisionPointRec(mouse, {991.0f, static_cast<float>(y + 14), 110, 30})) {
-				branches[i].addStock("NOODLES", 10);
-				message = "Đã nhập thêm 10kg mì sợi cho " + branches[i].getName();
-				return true;
-			}
-			if (CheckCollisionPointRec(mouse, {1109.0f, static_cast<float>(y + 14), 116, 30})) {
-				branches[i].removeStock("NOODLES", 5);
-				message = "Đã xuất 5kg mì sợi cho " + branches[i].getName();
-				return true;
-			}
-			if (CheckCollisionPointRec(mouse, {991.0f, static_cast<float>(y + 52), 234, 28})) {
-				branches[i].setOpeningHours("08:00", "22:30");
-				message = "Đã cập nhật giờ mở cửa chuẩn (08:00 - 22:30) cho " + branches[i].getName();
-				return true;
-			}
-			visibleRow++;
+		if (isBranchMgr && CheckCollisionPointRec(mouse, {1015, 154, 230, 34})) {
+			isIngredientDialogOpen = true;
+			ingIdInput = "";
+			ingNameInput = "";
+			ingUnitInput = "kg";
+			ingInitialStockInput = "50";
+			ingDialogField = 0;
+			return false;
 		}
+
+		int branchCardY = 198;
+		if (isBranchMgr && !branches.empty()) {
+			const int maxVisBranches = 4;
+			int totalBr = static_cast<int>(branches.size());
+			float startX = 325.0f;
+			if (totalBr > maxVisBranches) {
+				if (CheckCollisionPointRec(mouse, {325, 198, 28, 28})) {
+					invBranchScrollOffset = std::max(0, invBranchScrollOffset - 1);
+					return false;
+				}
+				startX = 360.0f;
+			}
+			int shown = std::min(totalBr - invBranchScrollOffset, maxVisBranches);
+			for (int b = 0; b < shown; ++b) {
+				int bIdx = invBranchScrollOffset + b;
+				Rectangle bPill = {startX + b * 204.0f, 198.0f, 196.0f, 28.0f};
+				if (CheckCollisionPointRec(mouse, bPill)) {
+					selectedInventoryBranch = bIdx;
+					return false;
+				}
+			}
+			if (totalBr > maxVisBranches && CheckCollisionPointRec(mouse, {startX + shown * 204.0f, 198, 28, 28})) {
+				invBranchScrollOffset = std::min(totalBr - maxVisBranches, invBranchScrollOffset + 1);
+				return false;
+			}
+			branchCardY = 234;
+		}
+
+		if (branches.empty()) return false;
+		Branch& activeBranch = branches[selectedInventoryBranch];
+
+		if (canAdjustStock && CheckCollisionPointRec(mouse, {995, static_cast<float>(branchCardY + 11), 235, 30})) {
+			activeBranch.setOpeningHours("08:00", "22:30");
+			message = "Đã cập nhật giờ mở cửa chuẩn (08:00 - 22:30) cho " + activeBranch.getName();
+			return true;
+		}
+
+		int tableHeaderY = branchCardY + 62;
+		int visibleIngRows = isBranchMgr ? 6 : 7;
+		int totalIng = static_cast<int>(ingredientTypes.size());
+		int rowY = tableHeaderY + 38;
+
+		for (int r = 0; r < visibleIngRows; ++r) {
+			int idx = ingredientScrollOffset + r;
+			if (idx >= totalIng) break;
+			const auto& ing = ingredientTypes[idx];
+
+			if (canAdjustStock && CheckCollisionPointRec(mouse, {915, static_cast<float>(rowY + 8), 90, 30})) {
+				activeBranch.addStock(ing.id, 10);
+				message = "Đã nhập +10 " + ing.unit + " " + ing.name + " vào " + activeBranch.getName();
+				return true;
+			}
+			if (canAdjustStock && activeBranch.getStock(ing.id) >= 5 &&
+				CheckCollisionPointRec(mouse, {1015, static_cast<float>(rowY + 8), 90, 30})) {
+				activeBranch.removeStock(ing.id, 5);
+				message = "Đã xuất -5 " + ing.unit + " " + ing.name + " khỏi " + activeBranch.getName();
+				return true;
+			}
+			if (isBranchMgr && totalIng > 1 &&
+				CheckCollisionPointRec(mouse, {1125, static_cast<float>(rowY + 8), 88, 30})) {
+				std::string removedName = ing.name;
+				ingredientTypes.erase(ingredientTypes.begin() + idx);
+				ingredientScrollOffset = std::clamp(ingredientScrollOffset, 0, std::max(0, static_cast<int>(ingredientTypes.size()) - visibleIngRows));
+				message = "Đã xoá loại nguyên liệu: " + removedName;
+				return true;
+			}
+			rowY += 48;
+		}
+		return false;
 	}
 
 	if (activeTab == 4) {
-		if (CheckCollisionPointRec(mouse, {245, 168, 145, 36}) && currentUser.canManageBranches()) {
+		bool isBranchMgr = currentUser.canManageAllBranches();
+		bool canManage = currentUser.canManageBranches();
+
+		if (CheckCollisionPointRec(mouse, {395, 166, 148, 36}) && canManage) { focusedField = 0; return false; }
+		if (CheckCollisionPointRec(mouse, {551, 166, 118, 36}) && canManage) { focusedField = 1; return false; }
+		if (CheckCollisionPointRec(mouse, {677, 166, 118, 36}) && canManage) { focusedField = 2; return false; }
+
+		if (isBranchMgr && !branches.empty() && CheckCollisionPointRec(mouse, {803, 166, 105, 36})) {
+			scheduleBranchIndex = (scheduleBranchIndex + 1) % static_cast<int>(branches.size());
+			return false;
+		}
+
+		// Create shift button
+		if (CheckCollisionPointRec(mouse, {245, 166, 140, 36}) && canManage) {
 			if (!validDate(dateInput) || !validTime(startInput) || !validTime(endInput) || startInput >= endInput) {
 				message = "Ngày hoặc giờ không hợp lệ. Định dạng: YYYY-MM-DD và HH:MM.";
 				return true;
 			}
-			Employee* currentEmployee = dynamic_cast<Employee*>(&currentUser);
+			std::string targetBranchId = currentUser.getBranchId();
+			if (isBranchMgr && !branches.empty()) {
+				targetBranchId = branches[scheduleBranchIndex].getId();
+			}
 			scheduleService.openOpenShift("OPEN" + std::to_string(scheduleService.getSchedules().size() + 1),
-				dateInput, startInput, endInput, 30, currentEmployee ? currentEmployee->branchId : "BR001", 2);
-			message = "Đã tạo ca làm việc mở mới thành công!";
-			return true;
-		}
-		if (CheckCollisionPointRec(mouse, {402, 168, 155, 36}) && currentUser.canManageBranches()) focusedField = 0;
-		if (CheckCollisionPointRec(mouse, {569, 168, 135, 36}) && currentUser.canManageBranches()) focusedField = 1;
-		if (CheckCollisionPointRec(mouse, {716, 168, 135, 36}) && currentUser.canManageBranches()) focusedField = 2;
-		if (CheckCollisionPointRec(mouse, {865, 168, 215, 36}) && currentUser.canManageBranches()) {
-			scheduleService.notifyShiftManager();
-			message = "Đã làm mới và kiểm tra cảnh báo phân ca!";
+				dateInput, startInput, endInput, 30, targetBranchId, 2);
+			message = "Đã tạo ca làm việc mới cho chi nhánh " + targetBranchId + "!";
 			return true;
 		}
 
-		int scheduleIndex = 0;
-		std::string scheduleToDelete;
+		// Coverage check button (branch-scoped for Manager, all branches for BranchManager)
+		Rectangle checkBtn = isBranchMgr ? Rectangle{916, 166, 329, 36} : Rectangle{805, 166, 260, 36};
+		if (CheckCollisionPointRec(mouse, checkBtn) && canManage) {
+			if (isBranchMgr) {
+				scheduleService.notifyShiftManager("ALL");
+				message = "Đã kiểm tra độ phủ ca cho TOÀN BỘ các chi nhánh!";
+			} else {
+				scheduleService.notifyShiftManager(currentUser.getBranchId());
+				message = "Đã kiểm tra độ phủ ca cho chi nhánh " + currentUser.getBranchId() + "!";
+			}
+			return true;
+		}
+
+		std::vector<std::shared_ptr<Schedule>> visibleSchedules;
 		for (const auto& schedule : scheduleService.getSchedules()) {
-			if (scheduleIndex >= 5) break;
-			int cardY = 264 + scheduleIndex * 82;
-			if (schedule->isOpenShift() && CheckCollisionPointRec(mouse, {665, static_cast<float>(cardY + 20), 96, 32})) {
+			if (isBranchMgr || schedule->getBranchId() == "ALL" || schedule->getBranchId() == currentUser.getBranchId()) {
+				visibleSchedules.push_back(schedule);
+			}
+		}
+
+		const int maxVisibleShifts = 5;
+		int totalShifts = static_cast<int>(visibleSchedules.size());
+		std::string scheduleToDelete;
+		for (int r = 0; r < maxVisibleShifts; ++r) {
+			int idx = scheduleScrollOffset + r;
+			if (idx >= totalShifts) break;
+			const auto& schedule = visibleSchedules[idx];
+			int cardY = 262 + r * 82;
+
+			if (schedule->isOpenShift() && CheckCollisionPointRec(mouse, {655, static_cast<float>(cardY + 20), 96, 32})) {
 				Employee* currentEmployee = dynamic_cast<Employee*>(&currentUser);
 				message = currentEmployee && currentEmployee->registerForEmptyShift(scheduleService, schedule->getId())
-					? "Đăng ký ca làm việc thành công!" : "Không thể đăng ký ca làm việc này!";
+					? ("Đăng ký ca " + schedule->getId() + " thành công!")
+					: "Không thể đăng ký ca này (đã đăng ký hoặc khác chi nhánh)!";
 				return true;
 			}
-			if (currentUser.canManageBranches() &&
-				CheckCollisionPointRec(mouse, {771, static_cast<float>(cardY + 20), 96, 32})) {
+			if (canManage && CheckCollisionPointRec(mouse, {761, static_cast<float>(cardY + 20), 96, 32})) {
 				scheduleToDelete = schedule->getId();
 				break;
 			}
-			++scheduleIndex;
 		}
 		if (!scheduleToDelete.empty()) {
 			message = scheduleService.deleteSchedule(scheduleToDelete)

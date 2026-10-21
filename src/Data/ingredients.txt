@@ -1,0 +1,6 @@
+FLOUR|Bột mì|kg
+NOODLES|Mì sợi|kg
+BEEF|Thịt bò tươi|kg
+CHICKEN|Thịt gà|kg
+COFFEE|Cà phê hạt|kg
+MILK|Sữa đặc|hộp

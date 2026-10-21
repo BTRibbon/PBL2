@@ -24,7 +24,7 @@ public:
 	bool registerForEmptyShift(Employee& employee, const std::string& scheduleId);
 	bool validateMinimumShifts(const Employee& employee, const std::string& fromDate,
 		const std::string& toDate) const;
-	std::vector<std::shared_ptr<Schedule>> checkShiftCoverage() const;
-	void notifyShiftManager();
+	std::vector<std::shared_ptr<Schedule>> checkShiftCoverage(const std::string& branchId = "") const;
+	void notifyShiftManager(const std::string& branchId = "");
 	const std::vector<std::shared_ptr<Schedule>>& getSchedules() const;
 };

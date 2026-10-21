@@ -10,25 +10,15 @@ static Font g_uiFont{};
 
 static std::vector<int> generateVietnameseCodepoints() {
 	std::vector<int> codepoints;
-	// Basic Latin (ASCII)
 	for (int cp = 32; cp <= 126; ++cp) codepoints.push_back(cp);
-	// Latin-1 Supplement
 	for (int cp = 160; cp <= 255; ++cp) codepoints.push_back(cp);
-	// Latin Extended-A
 	for (int cp = 256; cp <= 383; ++cp) codepoints.push_back(cp);
-	// Latin Extended-B (Ơ, ơ, Ư, ư, etc.)
 	for (int cp = 384; cp <= 591; ++cp) codepoints.push_back(cp);
-	// Combining Diacritical Marks
 	for (int cp = 768; cp <= 879; ++cp) codepoints.push_back(cp);
-	// General Punctuation (quotes, dashes, bullet, ellipsis)
 	for (int cp = 8192; cp <= 8303; ++cp) codepoints.push_back(cp);
-	// Arrows & Math symbols (->, etc.)
 	for (int cp = 8592; cp <= 8703; ++cp) codepoints.push_back(cp);
-	// Currency Symbols (₫)
 	for (int cp = 8352; cp <= 8399; ++cp) codepoints.push_back(cp);
-	// Latin Extended Additional (precomposed Vietnamese vowels)
 	for (int cp = 7840; cp <= 7935; ++cp) codepoints.push_back(cp);
-	// Checkmark / UI symbols
 	codepoints.push_back(10003); // ✓
 	codepoints.push_back(10004); // ✔
 	return codepoints;
@@ -116,7 +106,7 @@ void PopUtf8Char(std::string& text) {
 	while (!text.empty()) {
 		unsigned char c = static_cast<unsigned char>(text.back());
 		text.pop_back();
-		if ((c & 0xC0) != 0x80) break; // Reached leading byte of UTF-8 sequence
+		if ((c & 0xC0) != 0x80) break;
 	}
 }
 
@@ -156,7 +146,6 @@ std::string FitTextToWidth(const char* text, float maxWidth, float size) {
 void DrawUiTextFitted(const char* text, float x, float y, float maxWidth, float size, Color color) {
 	if (!text || text[0] == '\0' || maxWidth <= 0.0f) return;
 	float currentSize = size;
-	// Try shrinking up to 2px first before truncating with ellipsis
 	while (currentSize > std::max(10.0f, size - 2.0f) && MeasureUiText(text, currentSize) > maxWidth) {
 		currentSize -= 0.5f;
 	}
@@ -238,5 +227,46 @@ void DrawUiTextWrapped(const char* text, Rectangle bounds, float size, Color col
 	}
 	if (!currentLine.empty() && curY <= bounds.y + bounds.height) {
 		DrawUiTextFitted(currentLine.c_str(), bounds.x, curY, bounds.width, size, color);
+	}
+}
+
+Color BrightenColor(Color c, int delta) {
+	return Color{
+		static_cast<unsigned char>(std::clamp(static_cast<int>(c.r) + delta, 0, 255)),
+		static_cast<unsigned char>(std::clamp(static_cast<int>(c.g) + delta, 0, 255)),
+		static_cast<unsigned char>(std::clamp(static_cast<int>(c.b) + delta, 0, 255)),
+		c.a
+	};
+}
+
+void DrawVerticalScrollbar(Rectangle trackBounds, int totalItems, int visibleItems, int scrollOffset) {
+	if (totalItems <= visibleItems || visibleItems <= 0) return;
+	DrawRectangleRounded(trackBounds, 0.5f, 4, Color{226, 232, 226, 255});
+
+	int maxScroll = std::max(1, totalItems - visibleItems);
+	float ratio = static_cast<float>(visibleItems) / static_cast<float>(totalItems);
+	float thumbH = std::max(28.0f, trackBounds.height * ratio);
+	float availH = trackBounds.height - thumbH;
+	float thumbY = trackBounds.y + availH * (static_cast<float>(std::clamp(scrollOffset, 0, maxScroll)) / static_cast<float>(maxScroll));
+
+	DrawRectangleRounded({trackBounds.x, thumbY, trackBounds.width, thumbH}, 0.5f, 4, Color{35, 105, 78, 200});
+}
+
+void DrawUiInputBox(Rectangle bounds, const std::string& value, const char* placeholder, bool isFocused, Vector2 mouse, bool isPassword) {
+	bool hovered = CheckCollisionPointRec(mouse, bounds);
+	DrawRectangleRounded(bounds, 0.15f, 4, isFocused ? RAYWHITE : (hovered ? Color{252, 254, 252, 255} : Color{248, 250, 248, 255}));
+	Color borderCol = isFocused ? Color{35, 105, 78, 255} : (hovered ? Color{140, 165, 150, 255} : Color{205, 214, 206, 255});
+	DrawRectangleRoundedLines(bounds, 0.15f, 4, borderCol);
+
+	std::string displayStr = isPassword ? std::string(value.size(), '*') : value;
+	if (isFocused) {
+		bool blink = std::fmod(GetTime(), 1.0) < 0.55;
+		if (blink) displayStr += "|";
+	}
+
+	if (value.empty() && !isFocused) {
+		DrawUiTextInRect(placeholder, bounds, 13, Color{150, 158, 151, 255}, -1, 12.0f);
+	} else {
+		DrawUiTextInRect(displayStr.c_str(), bounds, 13, Color{38, 52, 45, 255}, -1, 12.0f);
 	}
 }

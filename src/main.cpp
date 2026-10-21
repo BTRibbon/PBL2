@@ -46,6 +46,12 @@ struct CartItem {
 	int quantity;
 };
 
+struct NavItem {
+	int tabId;
+	const char* label;
+	const char* hint;
+};
+
 static std::vector<std::string> splitFields(const std::string& line, char delimiter = '|') {
 	std::vector<std::string> fields;
 	std::stringstream stream(line);
@@ -166,6 +172,44 @@ static bool saveMenu(const std::vector<Product>& products) {
 	return replaceTextFile("data/menu.txt", content.str());
 }
 
+static bool loadIngredients(std::vector<IngredientType>& ingredients) {
+	std::ifstream file("data/ingredients.txt");
+	if (!file) {
+		ingredients = {
+			{"FLOUR", "Bột mì", "kg"},
+			{"NOODLES", "Mì sợi", "kg"},
+			{"BEEF", "Thịt bò tươi", "kg"},
+			{"CHICKEN", "Thịt gà", "kg"},
+			{"COFFEE", "Cà phê hạt", "kg"},
+			{"MILK", "Sữa đặc", "hộp"}
+		};
+		return true;
+	}
+	ingredients.clear();
+	std::string line;
+	while (std::getline(file, line)) {
+		if (line.empty()) continue;
+		std::vector<std::string> fields = splitFields(line);
+		if (fields.size() < 3) continue;
+		ingredients.push_back({fields[0], fields[1], fields[2]});
+	}
+	if (ingredients.empty()) {
+		ingredients = {
+			{"FLOUR", "Bột mì", "kg"},
+			{"NOODLES", "Mì sợi", "kg"}
+		};
+	}
+	return true;
+}
+
+static bool saveIngredients(const std::vector<IngredientType>& ingredients) {
+	std::ostringstream content;
+	for (const auto& ing : ingredients) {
+		content << ing.id << "|" << ing.name << "|" << ing.unit << "\n";
+	}
+	return replaceTextFile("data/ingredients.txt", content.str());
+}
+
 static bool loadOrders(std::vector<Order>& orders) {
 	std::ifstream file("data/orders.txt");
 	if (!file) return false;
@@ -220,6 +264,20 @@ static bool canAccessTab(const User* user, int tab) {
 	if (tab == 3) return true;
 	if (tab == 4 || tab == 5) return true;
 	return false;
+}
+
+static std::vector<NavItem> buildNavItems(const User* user) {
+	std::vector<NavItem> items;
+	if (!user) return items;
+	items.push_back({0, "BÁN HÀNG", "Màn hình bán hàng & Tạo đơn (POS)"});
+	if (canAccessTab(user, 1)) {
+		items.push_back({1, "BÁO CÁO DOANH THU", "Báo cáo doanh thu & Thống kê chi nhánh"});
+	}
+	items.push_back({2, "BẢN ĐỒ GIAO HÀNG", "Bản đồ giao hàng & Tìm đường tối ưu"});
+	items.push_back({3, "KHO & THỰC ĐƠN", "Quản lý thực đơn & Kho nguyên liệu"});
+	items.push_back({4, "LỊCH LÀM VIỆC", "Lịch làm việc & Phân ca nhân sự"});
+	items.push_back({5, "ĐIỂM DANH CA", "Điểm danh vào/ra ca & Lịch sử chấm công"});
+	return items;
 }
 
 struct AccountRecord {
@@ -286,11 +344,12 @@ static bool loadInventory(std::vector<Branch>& branchValues) {
 	return true;
 }
 
-static bool saveInventory(const std::vector<Branch>& branches) {
+static bool saveInventory(const std::vector<Branch>& branches, const std::vector<IngredientType>& ingredients) {
 	std::ostringstream content;
 	for (const Branch& branch : branches) {
-		content << branch.getId() << "|FLOUR|" << branch.getStock("FLOUR") << "\n";
-		content << branch.getId() << "|NOODLES|" << branch.getStock("NOODLES") << "\n";
+		for (const auto& ing : ingredients) {
+			content << branch.getId() << "|" << ing.id << "|" << branch.getStock(ing.id) << "\n";
+		}
 	}
 	return replaceTextFile("data/inventory.txt", content.str());
 }
@@ -644,18 +703,28 @@ int main(int argc, char** argv) {
 	std::vector<Product> products;
 	loadMenu(products, menuLookup);
 
+	std::vector<IngredientType> ingredientTypes;
+	loadIngredients(ingredientTypes);
+
 	ShiftManager shiftManager;
 	ScheduleService scheduleService(&shiftManager);
 	loadSchedules(scheduleService);
 	loadInventory(branchValues);
 
 	ManagementUI managementUi(chain, branchValues, scheduleService, shiftManager,
-		timekeepingRecords, employees, products, menuLookup);
+		timekeepingRecords, employees, products, menuLookup, ingredientTypes);
 
 	std::vector<CartItem> cart;
 	std::string search;
 	bool searchFocused = false;
 	std::string categoryFilter = "Tất cả";
+
+	// Scroll states
+	int posScrollRowOffset = 0;
+	int cartScrollOffset = 0;
+	int reportBranchFilterScroll = 0;
+	int reportBranchTableScroll = 0;
+	int reportProductScroll = 0;
 
 	bool loginDialog = true;
 	int loginField = 0;
@@ -682,7 +751,6 @@ int main(int argc, char** argv) {
 	float animationTime = 0.0f;
 	std::string statusMessage = "Vui lòng đăng nhập để sử dụng hệ thống";
 
-	// Shared layout rectangles for Login Modal
 	const Rectangle loginBoxRec = {380, 155, 520, 435};
 	const Rectangle loginUserBoxRec = {415, 275, 450, 42};
 	const Rectangle loginPassBoxRec = {415, 355, 450, 42};
@@ -703,21 +771,52 @@ int main(int argc, char** argv) {
 		std::string hoverHint;
 		bool dialogConsumed = loginDialog || managementUi.isDialogOpen();
 
-		auto isHovered = [&](Rectangle bounds, const char* hint) {
-			if (CheckCollisionPointRec(mouse, bounds)) {
-				hoverHint = hint;
-				return true;
-			}
-			return false;
-		};
+		// Filter products for POS
+		std::vector<int> filteredProductIndices;
+		std::string normalizedSearch = lowerText(search);
+		for (int i = 0; i < static_cast<int>(products.size()); ++i) {
+			const Product& product = products[i];
+			if (categoryFilter != "Tất cả" && product.category != categoryFilter) continue;
+			if (!search.empty() && lowerText(product.name).find(normalizedSearch) == std::string::npos &&
+				lowerText(product.code).find(normalizedSearch) == std::string::npos) continue;
+			filteredProductIndices.push_back(i);
+		}
+		int totalPosRows = (static_cast<int>(filteredProductIndices.size()) + 1) / 2;
+		int maxPosRowScroll = std::max(0, totalPosRows - 4);
+		posScrollRowOffset = std::clamp(posScrollRowOffset, 0, maxPosRowScroll);
 
-		bool hoverOrderTab = isHovered({20, 134, 180, 44}, "Màn hình bán hàng & Tạo đơn");
-		bool hoverStatsTab = canAccessTab(currentUser, 1) && isHovered({20, 188, 180, 44}, "Báo cáo doanh thu & Thống kê");
-		bool hoverMapTab = isHovered({20, 242, 180, 44}, "Bản đồ giao hàng & Tìm đường");
-		bool hoverInventoryTab = isHovered({20, 296, 180, 44}, "Quản lý thực đơn & Kho nguyên liệu");
-		bool hoverScheduleTab = isHovered({20, 350, 180, 44}, "Lịch làm việc & Phân ca");
-		bool hoverAttendanceTab = isHovered({20, 404, 180, 44}, "Điểm danh & Chấm công");
-		bool hoverLogout = isHovered({20, 470, 180, 42}, "Đăng xuất tài khoản");
+		int maxCartScroll = std::max(0, static_cast<int>(cart.size()) - 7);
+		cartScrollOffset = std::clamp(cartScrollOffset, 0, maxCartScroll);
+
+		// MOUSE WHEEL SCROLLING
+		float wheel = GetMouseWheelMove();
+		if (std::abs(wheel) > 0.01f && !dialogConsumed && currentUser) {
+			int step = (wheel > 0) ? -1 : 1;
+			if (activeTab == 0) {
+				if (CheckCollisionPointRec(mouse, {935, 150, 320, 300})) {
+					cartScrollOffset = std::clamp(cartScrollOffset + step, 0, maxCartScroll);
+				} else {
+					posScrollRowOffset = std::clamp(posScrollRowOffset + step, 0, maxPosRowScroll);
+				}
+			} else if (activeTab == 1) {
+				if (CheckCollisionPointRec(mouse, {245, 134, 1000, 36})) {
+					int maxBrFilter = std::max(0, static_cast<int>(branchValues.size()) - 3);
+					reportBranchFilterScroll = std::clamp(reportBranchFilterScroll + step, 0, maxBrFilter);
+				} else if (currentUser->getRole() == Role::BranchManager && CheckCollisionPointRec(mouse, {245, 290, 1000, 195})) {
+					int maxBrTable = std::max(0, static_cast<int>(branchValues.size()) - 4);
+					reportBranchTableScroll = std::clamp(reportBranchTableScroll + step, 0, maxBrTable);
+				} else {
+					int visProds = (currentUser->getRole() == Role::BranchManager) ? 4 : 7;
+					int maxProdScroll = std::max(0, static_cast<int>(products.size()) - visProds);
+					reportProductScroll = std::clamp(reportProductScroll + step, 0, maxProdScroll);
+				}
+			} else if (activeTab >= 3) {
+				managementUi.updateScroll(mouse, wheel, activeTab, *currentUser);
+			}
+		}
+
+		// Build dynamic navigation items for current user
+		std::vector<NavItem> navItems = buildNavItems(currentUser);
 
 		// MOUSE CLICK HANDLING
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -745,53 +844,61 @@ int main(int argc, char** argv) {
 			} else if (managementUi.isDialogOpen()) {
 				if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
 					saveMenu(products);
+					saveIngredients(ingredientTypes);
+					saveInventory(branchValues, ingredientTypes);
 					statusMessage = managementUi.getMessage();
 				}
-			} else {
-				// Sidebar tab switching
-				if (CheckCollisionPointRec(mouse, {20, 134, 180, 44})) { activeTab = 0; statusMessage = "Đã mở màn hình Bán hàng"; }
-				if (canAccessTab(currentUser, 1) && CheckCollisionPointRec(mouse, {20, 188, 180, 44})) { activeTab = 1; statusMessage = "Đã mở Báo cáo bán hàng"; }
-				if (CheckCollisionPointRec(mouse, {20, 242, 180, 44})) { activeTab = 2; statusMessage = "Đã mở Bản đồ giao hàng"; }
-				if (CheckCollisionPointRec(mouse, {20, 296, 180, 44})) { activeTab = 3; statusMessage = "Đã mở Quản lý Kho & Thực đơn"; }
-				if (CheckCollisionPointRec(mouse, {20, 350, 180, 44})) { activeTab = 4; statusMessage = "Đã mở Lịch làm việc"; }
-				if (CheckCollisionPointRec(mouse, {20, 404, 180, 44})) { activeTab = 5; statusMessage = "Đã mở Điểm danh"; }
+			} else if (currentUser) {
+				// Dynamic sidebar tab switching
+				for (std::size_t n = 0; n < navItems.size(); ++n) {
+					Rectangle navRec = {20, 136.0f + static_cast<float>(n) * 52.0f, 180, 44};
+					if (CheckCollisionPointRec(mouse, navRec)) {
+						activeTab = navItems[n].tabId;
+						statusMessage = std::string("Đã mở: ") + navItems[n].label;
+					}
+				}
 
 				// Logout button
-				if (CheckCollisionPointRec(mouse, {20, 470, 180, 42})) {
+				if (CheckCollisionPointRec(mouse, {20, 618, 180, 42})) {
 					currentUser = nullptr;
 					activeTab = 0;
 					loginDialog = true;
 					usernameInput.clear();
 					passwordInput.clear();
 					statusMessage = "Đã đăng xuất khỏi hệ thống";
-				}
-
-				// TAB 0: POS & ORDERING
-				if (activeTab == 0) {
-					searchFocused = CheckCollisionPointRec(mouse, {245, 148, 305, 36});
+				} else if (activeTab == 0) {
+					// TAB 0: POS & ORDERING
+					searchFocused = CheckCollisionPointRec(mouse, {245, 148, 285, 36});
 
 					const char* filterCategories[] = {"Tất cả", "Món chính", "Đồ uống", "Tráng miệng"};
 					for (int c = 0; c < 4; ++c) {
-						Rectangle catBtn = {562.0f + c * 90.0f, 148.0f, 84.0f, 36.0f};
+						Rectangle catBtn = {540.0f + c * 88.0f, 148.0f, 82.0f, 36.0f};
 						if (CheckCollisionPointRec(mouse, catBtn)) {
 							categoryFilter = filterCategories[c];
+							posScrollRowOffset = 0;
 						}
 					}
 
-					int visibleIndex = 0;
-					for (int i = 0; i < static_cast<int>(products.size()); ++i) {
-						const Product& product = products[i];
-						if (categoryFilter != "Tất cả" && product.category != categoryFilter) continue;
-						std::string normalizedSearch = lowerText(search);
-						if (!search.empty() && lowerText(product.name).find(normalizedSearch) == std::string::npos &&
-							lowerText(product.code).find(normalizedSearch) == std::string::npos) continue;
+					// Up/Down scroll buttons for POS grid
+					if (totalPosRows > 4) {
+						if (CheckCollisionPointRec(mouse, {895, 148, 28, 17})) {
+							posScrollRowOffset = std::max(0, posScrollRowOffset - 1);
+						}
+						if (CheckCollisionPointRec(mouse, {895, 167, 28, 17})) {
+							posScrollRowOffset = std::min(maxPosRowScroll, posScrollRowOffset + 1);
+						}
+					}
 
-						int column = visibleIndex % 2;
-						int row = visibleIndex / 2;
-						if (row >= 4) break;
+					// Visible product cards click
+					for (int slot = 0; slot < 8; ++slot) {
+						int filteredIdx = posScrollRowOffset * 2 + slot;
+						if (filteredIdx >= static_cast<int>(filteredProductIndices.size())) break;
+						const Product& product = products[filteredProductIndices[filteredIdx]];
 
-						Rectangle card = {245.0f + column * 340.0f, 200.0f + row * 106.0f, 325, 94};
-						Rectangle addBtn = {card.x + 210, card.y + 54, 100, 30};
+						int column = slot % 2;
+						int row = slot / 2;
+						Rectangle card = {245.0f + column * 336.0f, 200.0f + row * 106.0f, 322, 94};
+						Rectangle addBtn = {card.x + 208, card.y + 54, 100, 30};
 
 						if (CheckCollisionPointRec(mouse, addBtn) || CheckCollisionPointRec(mouse, card)) {
 							orderPlaced = false;
@@ -803,24 +910,25 @@ int main(int argc, char** argv) {
 									break;
 								}
 							}
-							if (!found) cart.push_back({product.code, 1});
-							statusMessage = "Đã thêm món: " + product.name;
+							if (!found) {
+								cart.push_back({product.code, 1});
+								cartScrollOffset = std::max(0, static_cast<int>(cart.size()) - 7);
+							}
+							statusMessage = "Đã thêm vào giỏ: " + product.name;
 						}
-						visibleIndex++;
 					}
 
-					// Cart item row buttons
-					int cartRow = 0;
-					for (int i = 0; i < static_cast<int>(cart.size()); ++i) {
-						if (cartRow >= 8) break;
-						float rowY = 162.0f + cartRow * 34.0f;
-						Rectangle minusBtn = {1190, rowY, 22, 22};
-						Rectangle plusBtn = {1216, rowY, 22, 22};
+					// Cart item row buttons (scrollable)
+					for (int r = 0; r < 7; ++r) {
+						int i = cartScrollOffset + r;
+						if (i >= static_cast<int>(cart.size())) break;
+						float rowY = 162.0f + r * 34.0f;
+						Rectangle minusBtn = {1184, rowY, 22, 22};
+						Rectangle plusBtn = {1210, rowY, 22, 22};
 						if (CheckCollisionPointRec(mouse, minusBtn)) {
 							cart[i].quantity--;
 							if (cart[i].quantity <= 0) {
 								cart.erase(cart.begin() + i);
-								--i;
 							}
 							break;
 						}
@@ -828,12 +936,12 @@ int main(int argc, char** argv) {
 							cart[i].quantity++;
 							break;
 						}
-						cartRow++;
 					}
 
 					// Clear cart button
 					if (!cart.empty() && CheckCollisionPointRec(mouse, {1175, 116, 66, 26})) {
 						cart.clear();
+						cartScrollOffset = 0;
 						statusMessage = "Đã xoá toàn bộ giỏ hàng";
 					}
 
@@ -888,25 +996,34 @@ int main(int argc, char** argv) {
 							statusMessage = "Đã tạo đơn nhưng không thể lưu file orders.txt";
 						}
 						cart.clear();
+						cartScrollOffset = 0;
 					}
-				}
+				} else if (activeTab == 1 && currentUser->getRole() == Role::BranchManager) {
+					// TAB 1: Scrollable Branch Filter Bar for BranchManager
+					int totalBr = static_cast<int>(branchValues.size());
+					const int visBrPills = 3;
+					int maxBrFilter = std::max(0, totalBr - visBrPills);
+					reportBranchFilterScroll = std::clamp(reportBranchFilterScroll, 0, maxBrFilter);
 
-				// TAB 1: REPORTS & ANALYTICS
-				if (activeTab == 1 && currentUser && currentUser->getRole() == Role::BranchManager) {
-					Rectangle allBtn = {310, 138, 115, 28};
-					if (CheckCollisionPointRec(mouse, allBtn)) {
+					if (CheckCollisionPointRec(mouse, {310, 138, 110, 28})) {
 						selectedReportBranch = -1;
 					}
-					for (int b = 0; b < static_cast<int>(branchValues.size()); ++b) {
-						Rectangle bBtn = {433.0f + b * 204.0f, 138.0f, 196.0f, 28.0f};
+					if (CheckCollisionPointRec(mouse, {428, 138, 30, 28})) {
+						reportBranchFilterScroll = std::max(0, reportBranchFilterScroll - 1);
+					}
+					int shown = std::min(totalBr - reportBranchFilterScroll, visBrPills);
+					for (int b = 0; b < shown; ++b) {
+						int brIdx = reportBranchFilterScroll + b;
+						Rectangle bBtn = {466.0f + b * 244.0f, 138.0f, 236.0f, 28.0f};
 						if (CheckCollisionPointRec(mouse, bBtn)) {
-							selectedReportBranch = b;
+							selectedReportBranch = brIdx;
 						}
 					}
-				}
-
-				// TAB 2: DELIVERY MAP
-				if (activeTab == 2) {
+					if (CheckCollisionPointRec(mouse, {1202, 138, 30, 28})) {
+						reportBranchFilterScroll = std::min(maxBrFilter, reportBranchFilterScroll + 1);
+					}
+				} else if (activeTab == 2) {
+					// TAB 2: DELIVERY MAP
 					bool branchClicked = false;
 					for (int i = 0; i < static_cast<int>(branchValues.size()); ++i) {
 						float branchX = mapOriginX + branchCells[i].x * mapCellSize + mapCellSize / 2.0f;
@@ -961,15 +1078,16 @@ int main(int argc, char** argv) {
 							statusMessage = "Hàng đợi đơn hàng đang trống!";
 						}
 					}
-				}
-
-				// TABS 3, 4, 5: MANAGEMENT UI
-				if (activeTab >= 3 && managementUi.handleClick(mouse, activeTab, *currentUser)) {
-					statusMessage = managementUi.getMessage();
-					saveMenu(products);
-					saveInventory(branchValues);
-					saveSchedules(scheduleService);
-					saveAttendance(timekeepingRecords);
+				} else if (activeTab >= 3) {
+					// TABS 3, 4, 5: MANAGEMENT UI
+					if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
+						statusMessage = managementUi.getMessage();
+						saveMenu(products);
+						saveIngredients(ingredientTypes);
+						saveInventory(branchValues, ingredientTypes);
+						saveSchedules(scheduleService);
+						saveAttendance(timekeepingRecords);
+					}
 				}
 			}
 		}
@@ -1024,9 +1142,19 @@ int main(int argc, char** argv) {
 		} else if (managementUi.isDialogOpen()) {
 			int keyChar = GetCharPressed();
 			int keyPress = GetKeyPressed();
-			managementUi.updateInput(keyPress, keyChar);
+			if (managementUi.updateInput(keyPress, keyChar)) {
+				saveMenu(products);
+				saveIngredients(ingredientTypes);
+				saveInventory(branchValues, ingredientTypes);
+				statusMessage = managementUi.getMessage();
+			}
 			while ((keyChar = GetCharPressed()) > 0) {
-				managementUi.updateInput(0, keyChar);
+				if (managementUi.updateInput(0, keyChar)) {
+					saveMenu(products);
+					saveIngredients(ingredientTypes);
+					saveInventory(branchValues, ingredientTypes);
+					statusMessage = managementUi.getMessage();
+				}
 			}
 		} else if (activeTab == 0 && discountInputFocused) {
 			if (IsKeyPressed(KEY_BACKSPACE) && !discountInputText.empty()) {
@@ -1046,10 +1174,14 @@ int main(int argc, char** argv) {
 				keyChar = GetCharPressed();
 			}
 		} else if (activeTab == 0 && searchFocused) {
-			if (IsKeyPressed(KEY_BACKSPACE) && !search.empty()) PopUtf8Char(search);
+			if (IsKeyPressed(KEY_BACKSPACE) && !search.empty()) {
+				PopUtf8Char(search);
+				posScrollRowOffset = 0;
+			}
 			int keyChar = GetCharPressed();
 			while (keyChar > 0) {
 				AppendUtf8Codepoint(search, keyChar, 30);
+				posScrollRowOffset = 0;
 				keyChar = GetCharPressed();
 			}
 		} else if (currentUser && activeTab == 4) {
@@ -1080,95 +1212,113 @@ int main(int argc, char** argv) {
 			DrawUiTextRight("CHƯA ĐĂNG NHẬP", 1252, 48, 13, {210, 92, 68, 255});
 		}
 
-		// Left Navigation Sidebar (x = 0..220)
+		// Left Navigation Sidebar (x = 0..220) — Dynamic, unnumbered, gap-free
 		DrawRectangle(0, 88, 220, 672, {224, 231, 220, 255});
-		DrawUiText("DANH MỤC CHỨC NĂNG", 22, 106, 12, {65, 84, 75, 255});
+		DrawLine(220, 88, 220, 760, Color{208, 216, 205, 255});
+		DrawUiText("DANH MỤC CHỨC NĂNG", 24, 108, 12, {85, 104, 95, 255});
 
 		if (currentUser) {
-			auto drawNavBtn = [&](Rectangle rec, const char* label, bool isActive, bool isHover) {
-				DrawRectangleRounded(rec, 0.2f, 4, isActive ? Color{35, 55, 53, 255} : (isHover ? Color{235, 240, 232, 255} : Color{224, 231, 220, 255}));
-				DrawUiTextInRect(label, rec, 13, isActive ? RAYWHITE : Color{32, 55, 47, 255}, -1, 14.0f);
-			};
+			for (std::size_t n = 0; n < navItems.size(); ++n) {
+				Rectangle navRec = {18, 136.0f + static_cast<float>(n) * 52.0f, 184, 44};
+				bool isActive = (activeTab == navItems[n].tabId);
+				bool isHover = !dialogConsumed && CheckCollisionPointRec(mouse, navRec);
+				if (isHover) hoverHint = navItems[n].hint;
 
-			drawNavBtn({20, 134, 180, 44}, "1. BÁN HÀNG", activeTab == 0, hoverOrderTab);
-			if (canAccessTab(currentUser, 1)) {
-				drawNavBtn({20, 188, 180, 44}, "2. BÁO CÁO", activeTab == 1, hoverStatsTab);
+				Color bgCol = isActive
+					? Color{35, 55, 53, 255}
+					: (isHover ? Color{208, 220, 206, 255} : Color{224, 231, 220, 255});
+				DrawRectangleRounded(navRec, 0.22f, 4, bgCol);
+
+				if (isActive) {
+					DrawRectangleRounded({navRec.x + 6, navRec.y + 10, 4, navRec.height - 20}, 0.5f, 4, {248, 218, 154, 255});
+				}
+				DrawUiTextInRect(navItems[n].label, navRec, 13,
+					isActive ? RAYWHITE : Color{32, 55, 47, 255}, -1, isActive ? 18.0f : 14.0f);
 			}
-			drawNavBtn({20, 242, 180, 44}, "3. BẢN ĐỒ GIAO HÀNG", activeTab == 2, hoverMapTab);
-			drawNavBtn({20, 296, 180, 44}, "4. KHO & THỰC ĐƠN", activeTab == 3, hoverInventoryTab);
-			drawNavBtn({20, 350, 180, 44}, "5. LỊCH LÀM VIỆC", activeTab == 4, hoverScheduleTab);
-			drawNavBtn({20, 404, 180, 44}, "6. ĐIỂM DANH", activeTab == 5, hoverAttendanceTab);
 
-			Rectangle logoutRec = {20, 470, 180, 42};
-			DrawRectangleRounded(logoutRec, 0.2f, 4, hoverLogout ? Color{255, 230, 215, 255} : Color{245, 232, 220, 255});
-			DrawUiTextInRect("ĐĂNG XUẤT", logoutRec, 13, Color{195, 65, 50, 255}, 0, 10.0f);
+			Rectangle logoutRec = {18, 618, 184, 42};
+			bool hoverLogout = !dialogConsumed && CheckCollisionPointRec(mouse, logoutRec);
+			if (hoverLogout) hoverHint = "Đăng xuất tài khoản hiện tại";
+			DrawRectangleRounded(logoutRec, 0.22f, 4, hoverLogout ? Color{250, 218, 208, 255} : Color{242, 228, 218, 255});
+			DrawRectangleRoundedLines(logoutRec, 0.22f, 4, Color{220, 175, 165, 255});
+			DrawUiTextInRect("ĐĂNG XUẤT", logoutRec, 13, Color{185, 55, 45, 255}, 0, 10.0f);
 		}
 
-		DrawRectangleRounded({16, 678, 188, 64}, 0.15f, 4, Color{215, 224, 212, 255});
-		DrawUiText("TRẠNG THÁI KẾT NỐI", 28, 690, 11, {65, 84, 75, 255});
-		DrawUiTextFitted("• Máy chủ: Hoạt động tốt", 28, 712, 165, 12, {45, 108, 76, 255});
+		DrawRectangleRounded({16, 676, 188, 66}, 0.15f, 4, Color{214, 223, 210, 255});
+		DrawUiText("TRẠNG THÁI HỆ THỐNG", 28, 688, 11, {65, 84, 75, 255});
+		DrawUiTextFitted("• Máy chủ: Đang trực tuyến", 28, 712, 165, 12, {35, 105, 78, 255});
 
 		// TAB 0: POS & ORDERING
 		if (activeTab == 0) {
 			DrawUiText("Tạo Đơn Hàng Mới (POS)", 245, 104, 24, {35, 55, 53, 255});
+			std::string posCountInfo = "Hiển thị " + std::to_string(filteredProductIndices.size()) + " món  •  Lăn chuột để cuộn danh sách";
+			DrawUiTextRight(posCountInfo.c_str(), 915, 114, 12, muted);
 
 			// Search Bar
-			Rectangle searchBox = {245, 148, 305, 36};
-			DrawRectangleRounded(searchBox, 0.2f, 4, RAYWHITE);
-			DrawRectangleRoundedLines(searchBox, 0.2f, 4, searchFocused ? Color{35, 105, 78, 255} : Color{202, 211, 201, 255});
-			DrawUiTextInRect(search.empty() ? "Tìm theo tên hoặc mã món..." : search.c_str(),
-				searchBox, 13, search.empty() ? Color{150, 158, 151, 255} : Color{45, 56, 50, 255}, -1, 12.0f);
+			Rectangle searchBox = {245, 148, 285, 36};
+			DrawUiInputBox(searchBox, search, "Tìm theo tên hoặc mã món...", searchFocused, mouse);
 
-			// Category filter pills (x = 562..916)
+			// Category filter pills (x = 540..886)
 			const char* filterCategories[] = {"Tất cả", "Món chính", "Đồ uống", "Tráng miệng"};
 			for (int c = 0; c < 4; ++c) {
-				Rectangle catBtn = {562.0f + c * 90.0f, 148.0f, 84.0f, 36.0f};
+				Rectangle catBtn = {540.0f + c * 88.0f, 148.0f, 82.0f, 36.0f};
 				bool activeCat = categoryFilter == filterCategories[c];
-				DrawRectangleRounded(catBtn, 0.25f, 4, activeCat ? Color{35, 105, 78, 255} : Color{235, 240, 234, 255});
-				DrawUiTextInRect(filterCategories[c], catBtn, 12, activeCat ? RAYWHITE : Color{35, 55, 53, 255}, 0, 4.0f);
+				bool hovCat = !dialogConsumed && CheckCollisionPointRec(mouse, catBtn);
+				DrawRectangleRounded(catBtn, 0.25f, 4, activeCat ? green : (hovCat ? Color{220, 232, 222, 255} : Color{235, 240, 234, 255}));
+				DrawUiTextInRect(filterCategories[c], catBtn, 12, activeCat ? RAYWHITE : darkGreen, 0, 4.0f);
 			}
 
-			// Products Grid (2 columns, up to 8 items visible)
-			int visibleIndex = 0;
-			for (int i = 0; i < static_cast<int>(products.size()); ++i) {
-				const Product& product = products[i];
-				if (categoryFilter != "Tất cả" && product.category != categoryFilter) continue;
-				std::string normalizedSearch = lowerText(search);
-				if (!search.empty() && lowerText(product.name).find(normalizedSearch) == std::string::npos &&
-					lowerText(product.code).find(normalizedSearch) == std::string::npos) continue;
+			// Up/Down scroll buttons if > 4 rows
+			if (totalPosRows > 4) {
+				Rectangle upBtn = {895, 148, 28, 17};
+				Rectangle dnBtn = {895, 167, 28, 17};
+				DrawRectangleRounded(upBtn, 0.2f, 2, posScrollRowOffset > 0 ? darkGreen : Color{195, 205, 196, 255});
+				DrawUiTextInRect("▲", upBtn, 10, RAYWHITE, 0, 2.0f);
+				DrawRectangleRounded(dnBtn, 0.2f, 2, posScrollRowOffset < maxPosRowScroll ? darkGreen : Color{195, 205, 196, 255});
+				DrawUiTextInRect("▼", dnBtn, 10, RAYWHITE, 0, 2.0f);
+			}
 
-				int column = visibleIndex % 2;
-				int row = visibleIndex / 2;
-				if (row >= 4) break;
+			// Products Grid (2 columns, 4 visible rows, scrollable)
+			for (int slot = 0; slot < 8; ++slot) {
+				int filteredIdx = posScrollRowOffset * 2 + slot;
+				if (filteredIdx >= static_cast<int>(filteredProductIndices.size())) break;
+				const Product& product = products[filteredProductIndices[filteredIdx]];
 
-				Rectangle card = {245.0f + column * 340.0f, 200.0f + row * 106.0f, 325, 94};
-				DrawRectangleRounded(card, 0.08f, 4, RAYWHITE);
-				DrawRectangleRoundedLines(card, 0.08f, 4, Color{225, 233, 226, 255});
+				int column = slot % 2;
+				int row = slot / 2;
+
+				Rectangle card = {245.0f + column * 336.0f, 200.0f + row * 106.0f, 322, 94};
+				bool cardHover = !dialogConsumed && CheckCollisionPointRec(mouse, card);
+				DrawRectangleRounded(card, 0.08f, 4, cardHover ? Color{252, 255, 253, 255} : RAYWHITE);
+				DrawRectangleRoundedLines(card, 0.08f, 4, cardHover ? green : Color{225, 233, 226, 255});
 
 				// Accent stripe
 				DrawRectangle(static_cast<int>(card.x), static_cast<int>(card.y + 10), 6, 74, product.color);
 
-				DrawUiTextFitted(product.name.c_str(), card.x + 16, card.y + 12, 295, 15, {42, 55, 48, 255});
+				DrawUiTextFitted(product.name.c_str(), card.x + 16, card.y + 12, 292, 15, {42, 55, 48, 255});
 				DrawUiTextFitted((product.code + "  •  " + product.category).c_str(), card.x + 16, card.y + 36, 185, 12, {126, 136, 127, 255});
-				DrawUiTextFitted(formatCurrency(product.price).c_str(), card.x + 16, card.y + 60, 185, 14, {35, 105, 78, 255});
+				DrawUiTextFitted(formatCurrency(product.price).c_str(), card.x + 16, card.y + 60, 185, 14, green);
 
 				// Add Button
-				Rectangle addBtn = {card.x + 210, card.y + 54, 100, 30};
-				DrawRectangleRounded(addBtn, 0.25f, 4, {35, 105, 78, 255});
+				Rectangle addBtn = {card.x + 208, card.y + 54, 100, 30};
+				bool addHover = !dialogConsumed && CheckCollisionPointRec(mouse, addBtn);
+				DrawRectangleRounded(addBtn, 0.25f, 4, addHover ? BrightenColor(green, 22) : green);
 				DrawUiTextInRect("+ Thêm", addBtn, 13, RAYWHITE, 0, 6.0f);
-
-				visibleIndex++;
 			}
+
+			// Scrollbar for POS product grid
+			DrawVerticalScrollbar({914, 200, 7, 412}, totalPosRows, 4, posScrollRowOffset);
 
 			// Right Cart Panel (x = 935..1255, width = 320)
 			Rectangle cartPanel = {935, 104, 320, 602};
 			DrawRectangleRounded(cartPanel, 0.04f, 4, RAYWHITE);
 			DrawRectangleRoundedLines(cartPanel, 0.04f, 4, Color{220, 228, 221, 255});
 
-			DrawUiText("ĐƠN HÀNG HIỆN TẠI", 952, 120, 15, {35, 55, 53, 255});
+			DrawUiText("ĐƠN HÀNG HIỆN TẠI", 952, 120, 15, darkGreen);
 			if (!cart.empty()) {
 				Rectangle clearBtn = {1175, 116, 66, 26};
-				DrawRectangleRounded(clearBtn, 0.2f, 4, Color{245, 230, 230, 255});
+				bool hovClear = CheckCollisionPointRec(mouse, clearBtn);
+				DrawRectangleRounded(clearBtn, 0.2f, 4, hovClear ? Color{240, 210, 210, 255} : Color{245, 230, 230, 255});
 				DrawUiTextInRect("Xoá giỏ", clearBtn, 11, Color{195, 65, 50, 255}, 0, 4.0f);
 			}
 
@@ -1178,28 +1328,29 @@ int main(int argc, char** argv) {
 				DrawUiTextCenterFitted("Giỏ hàng đang trống", 1095, 245, 280, 14, {140, 150, 142, 255});
 				DrawUiTextCenterFitted("Nhấp chọn món bên trái để thêm", 1095, 270, 280, 12, {160, 170, 162, 255});
 			} else {
-				int row = 0;
-				for (const auto& item : cart) {
-					if (row >= 8) break;
-					float rowY = 162.0f + row * 34.0f;
+				const int visCartRows = 7;
+				for (int r = 0; r < visCartRows; ++r) {
+					int idx = cartScrollOffset + r;
+					if (idx >= static_cast<int>(cart.size())) break;
+					const auto& item = cart[idx];
+					float rowY = 162.0f + r * 34.0f;
 					const Product* p = findProduct(products, item.productCode);
 					std::string lineName = std::to_string(item.quantity) + "x " + (p ? p->name : item.productCode);
 
-					DrawUiTextFitted(lineName.c_str(), 952, rowY + 3, 140, 13, {45, 56, 50, 255});
+					DrawUiTextFitted(lineName.c_str(), 952, rowY + 3, 136, 13, {45, 56, 50, 255});
 
 					int itemPrice = (p ? p->price : 0) * item.quantity;
-					DrawUiTextRight(formatCurrency(itemPrice).c_str(), 1184, rowY + 3, 12, {35, 105, 78, 255});
+					DrawUiTextRight(formatCurrency(itemPrice).c_str(), 1178, rowY + 3, 12, green);
 
-					Rectangle minusBtn = {1190, rowY, 22, 22};
-					DrawRectangleRounded(minusBtn, 0.2f, 2, Color{245, 235, 233, 255});
+					Rectangle minusBtn = {1184, rowY, 22, 22};
+					DrawRectangleRounded(minusBtn, 0.2f, 2, CheckCollisionPointRec(mouse, minusBtn) ? Color{238, 215, 212, 255} : Color{245, 235, 233, 255});
 					DrawUiTextInRect("-", minusBtn, 13, {180, 70, 50, 255}, 0, 2.0f);
 
-					Rectangle plusBtn = {1216, rowY, 22, 22};
-					DrawRectangleRounded(plusBtn, 0.2f, 2, Color{234, 244, 238, 255});
-					DrawUiTextInRect("+", plusBtn, 13, {35, 105, 78, 255}, 0, 2.0f);
-
-					row++;
+					Rectangle plusBtn = {1210, rowY, 22, 22};
+					DrawRectangleRounded(plusBtn, 0.2f, 2, CheckCollisionPointRec(mouse, plusBtn) ? Color{215, 235, 222, 255} : Color{234, 244, 238, 255});
+					DrawUiTextInRect("+", plusBtn, 13, green, 0, 2.0f);
 				}
+				DrawVerticalScrollbar({1240, 162, 6, 234}, static_cast<int>(cart.size()), visCartRows, cartScrollOffset);
 			}
 
 			// Calculation & Discounts Section
@@ -1211,42 +1362,38 @@ int main(int argc, char** argv) {
 			DrawUiText("Tạm tính:", 952, 452, 13, {80, 92, 84, 255});
 			DrawUiTextRight(formatCurrency(subtotal).c_str(), 1238, 452, 13, {80, 92, 84, 255});
 
-			// Discount percentage presets
 			int presets[] = {0, 10, 20, 30, 50};
 			for (int p = 0; p < 5; ++p) {
 				Rectangle pBtn = {952.0f + p * 58.0f, 478.0f, 52.0f, 26.0f};
 				bool active = discountPercent == presets[p];
-				DrawRectangleRounded(pBtn, 0.2f, 4, active ? Color{180, 110, 40, 255} : Color{238, 242, 238, 255});
+				bool hovP = CheckCollisionPointRec(mouse, pBtn);
+				DrawRectangleRounded(pBtn, 0.2f, 4, active ? amber : (hovP ? Color{225, 232, 225, 255} : Color{238, 242, 238, 255}));
 				DrawUiTextInRect((std::to_string(presets[p]) + "%").c_str(), pBtn, 12,
 					active ? RAYWHITE : Color{45, 56, 50, 255}, 0, 2.0f);
 			}
 
-			// Custom % input box
 			DrawUiText("Giảm giá tuỳ chỉnh (%):", 952, 514, 12, {80, 92, 84, 255});
 			Rectangle discBox = {1158, 510, 80, 26};
-			DrawRectangleRec(discBox, Color{248, 250, 248, 255});
-			DrawRectangleLinesEx(discBox, 1.5f, discountInputFocused ? Color{35, 105, 78, 255} : Color{210, 218, 212, 255});
-			DrawUiTextInRect((discountInputText + " %").c_str(), discBox, 12, {35, 55, 53, 255}, 0, 4.0f);
+			DrawUiInputBox(discBox, discountInputText + " %", "0 %", discountInputFocused, mouse);
 
-			// Combo promotion toggle button
 			Rectangle comboBtn = {952, 544, 286, 28};
-			DrawRectangleRounded(comboBtn, 0.2f, 4, comboPromotion ? Color{180, 110, 40, 255} : Color{245, 240, 230, 255});
+			bool hovCombo = CheckCollisionPointRec(mouse, comboBtn);
+			DrawRectangleRounded(comboBtn, 0.2f, 4, comboPromotion ? amber : (hovCombo ? Color{238, 230, 215, 255} : Color{245, 240, 230, 255}));
 			DrawUiTextInRect(comboPromotion ? "✓ Ưu đãi Combo (-15.000 đ)" : "Bật ưu đãi Combo (-15.000 đ)",
 				comboBtn, 12, comboPromotion ? RAYWHITE : Color{140, 95, 45, 255}, 0, 6.0f);
 
 			DrawUiText("Đã giảm:", 952, 580, 12, amber);
 			DrawUiTextRight(("- " + formatCurrency(discountAmount)).c_str(), 1238, 580, 12, amber);
 
-			// Final summary
-			DrawUiText("Tổng thanh toán:", 952, 604, 14, {35, 55, 53, 255});
-			DrawUiTextRight(formatCurrency(finalTotal).c_str(), 1238, 601, 17, {35, 105, 78, 255});
+			DrawUiText("Tổng thanh toán:", 952, 604, 14, darkGreen);
+			DrawUiTextRight(formatCurrency(finalTotal).c_str(), 1238, 601, 17, green);
 
-			// Pay Button
 			Rectangle payBtn = {952, 634, 286, 42};
-			DrawRectangleRounded(payBtn, 0.2f, 4, subtotal > 0 ? Color{35, 105, 78, 255} : Color{180, 192, 182, 255});
+			bool hovPay = subtotal > 0 && CheckCollisionPointRec(mouse, payBtn);
+			DrawRectangleRounded(payBtn, 0.2f, 4, subtotal > 0 ? (hovPay ? BrightenColor(green, 20) : green) : Color{180, 192, 182, 255});
 			DrawUiTextInRect("THANH TOÁN ĐƠN HÀNG", payBtn, 14, RAYWHITE, 0, 8.0f);
 			if (orderPlaced) {
-				DrawUiTextCenterFitted("Đã tạo đơn hàng thành công!", payBtn.x + payBtn.width / 2.0f, payBtn.y + 46, 280, 12, Color{35, 105, 78, 255});
+				DrawUiTextCenterFitted("Đã tạo đơn hàng thành công!", payBtn.x + payBtn.width / 2.0f, payBtn.y + 46, 280, 12, green);
 			}
 
 		} else if (activeTab == 1) {
@@ -1255,27 +1402,45 @@ int main(int argc, char** argv) {
 			const ReportStats report = buildReportStats(orders, *currentUser, branchValues, selectedReportBranch);
 			const int averageOrder = report.orderCount == 0 ? 0 : report.revenue / report.orderCount;
 
-			DrawUiText("Báo cáo Doanh thu & Bán hàng", 245, 104, 24, {35, 55, 53, 255});
+			DrawUiText("Báo cáo Doanh thu & Bán hàng", 245, 104, 24, darkGreen);
 
 			if (isBranchManager) {
 				DrawUiText("Bộ lọc:", 245, 144, 13, {90, 100, 94, 255});
-				Rectangle allBtn = {310, 138, 115, 28};
+				Rectangle allBtn = {310, 138, 110, 28};
 				bool allActive = selectedReportBranch == -1;
-				DrawRectangleRounded(allBtn, 0.2f, 4, allActive ? Color{35, 105, 78, 255} : Color{235, 240, 235, 255});
+				DrawRectangleRounded(allBtn, 0.2f, 4, allActive ? green : Color{235, 240, 235, 255});
 				DrawUiTextInRect("Tất cả CN", allBtn, 12, allActive ? RAYWHITE : darkGreen, 0, 4.0f);
 
-				for (int b = 0; b < static_cast<int>(branchValues.size()); ++b) {
-					Rectangle bBtn = {433.0f + b * 204.0f, 138.0f, 196.0f, 28.0f};
-					bool bActive = selectedReportBranch == b;
-					DrawRectangleRounded(bBtn, 0.2f, 4, bActive ? Color{35, 105, 78, 255} : Color{235, 240, 235, 255});
-					DrawUiTextInRect(branchValues[b].getName().c_str(), bBtn, 12, bActive ? RAYWHITE : darkGreen, 0, 6.0f);
+				int totalBr = static_cast<int>(branchValues.size());
+				const int visBrPills = 3;
+				int maxBrFilter = std::max(0, totalBr - visBrPills);
+				reportBranchFilterScroll = std::clamp(reportBranchFilterScroll, 0, maxBrFilter);
+
+				// Left scroll button `<`
+				Rectangle leftBrBtn = {428, 138, 30, 28};
+				DrawRectangleRounded(leftBrBtn, 0.2f, 4, reportBranchFilterScroll > 0 ? darkGreen : Color{210, 218, 212, 255});
+				DrawUiTextInRect("<", leftBrBtn, 13, RAYWHITE, 0, 2.0f);
+
+				int shown = std::min(totalBr - reportBranchFilterScroll, visBrPills);
+				for (int b = 0; b < shown; ++b) {
+					int brIdx = reportBranchFilterScroll + b;
+					Rectangle bBtn = {466.0f + b * 244.0f, 138.0f, 236.0f, 28.0f};
+					bool bActive = selectedReportBranch == brIdx;
+					bool bHover = CheckCollisionPointRec(mouse, bBtn);
+					DrawRectangleRounded(bBtn, 0.2f, 4, bActive ? green : (bHover ? Color{220, 232, 222, 255} : Color{235, 240, 235, 255}));
+					DrawUiTextInRect(branchValues[brIdx].getName().c_str(), bBtn, 12, bActive ? RAYWHITE : darkGreen, 0, 6.0f);
 				}
+
+				// Right scroll button `>`
+				Rectangle rightBrBtn = {1202, 138, 30, 28};
+				DrawRectangleRounded(rightBrBtn, 0.2f, 4, reportBranchFilterScroll < maxBrFilter ? darkGreen : Color{210, 218, 212, 255});
+				DrawUiTextInRect(">", rightBrBtn, 13, RAYWHITE, 0, 2.0f);
 			} else {
 				std::string subTitle = "Phạm vi: " + currentUser->getBranchId() + " (Chi nhánh hiện tại của bạn)";
-				DrawUiTextFitted(subTitle.c_str(), 245, 142, 980, 13, {104, 115, 108, 255});
+				DrawUiTextFitted(subTitle.c_str(), 245, 142, 980, 13, muted);
 			}
 
-			// 4 Summary Metric Cards (x = 245..1245)
+			// 4 Summary Metric Cards
 			const std::array<Rectangle, 4> cards{{
 				{245, 176, 238, 84}, {499, 176, 238, 84}, {753, 176, 238, 84}, {1007, 176, 238, 84}
 			}};
@@ -1297,10 +1462,10 @@ int main(int argc, char** argv) {
 			}
 
 			if (isBranchManager) {
-				DrawUiText("DOANH THU CHI TIẾT THEO TỪNG CHI NHÁNH", 245, 276, 14, darkGreen);
+				DrawUiText("DOANH THU CHI TIẾT THEO TỪNG CHI NHÁNH", 245, 274, 14, darkGreen);
 
-				int tableY = 300;
-				DrawRectangle(245, tableY, 1000, 32, Color{232, 238, 233, 255});
+				int tableY = 298;
+				DrawRectangle(245, tableY, 985, 32, Color{232, 238, 233, 255});
 				DrawUiText("CHI NHÁNH", 265, tableY + 8, 12, darkGreen);
 				DrawUiText("MÃ CN", 525, tableY + 8, 12, darkGreen);
 				DrawUiText("TỔNG ĐƠN", 635, tableY + 8, 12, darkGreen);
@@ -1312,10 +1477,16 @@ int main(int argc, char** argv) {
 				int totalChainRevenue = 0;
 				for (const auto& bs : report.branchBreakdown) totalChainRevenue += bs.revenue;
 
-				for (size_t b = 0; b < report.branchBreakdown.size(); ++b) {
+				const int visBrRows = 4;
+				int totalBrRows = static_cast<int>(report.branchBreakdown.size());
+				reportBranchTableScroll = std::clamp(reportBranchTableScroll, 0, std::max(0, totalBrRows - visBrRows));
+
+				for (int r = 0; r < visBrRows; ++r) {
+					int b = reportBranchTableScroll + r;
+					if (b >= totalBrRows) break;
 					const auto& bs = report.branchBreakdown[b];
-					DrawRectangle(245, rowY, 1000, 36, (b % 2 == 0) ? panel : panelAlt);
-					DrawRectangleLines(245, rowY, 1000, 36, Color{230, 235, 230, 255});
+					DrawRectangle(245, rowY, 985, 36, (b % 2 == 0) ? panel : panelAlt);
+					DrawRectangleLines(245, rowY, 985, 36, Color{230, 235, 230, 255});
 
 					DrawUiTextFitted(bs.branchName.c_str(), 265, rowY + 10, 245, 13, darkGreen);
 					DrawUiTextFitted(bs.branchId.c_str(), 525, rowY + 10, 95, 12, muted);
@@ -1328,51 +1499,65 @@ int main(int argc, char** argv) {
 
 					rowY += 38;
 				}
+				DrawVerticalScrollbar({1236, static_cast<float>(tableY + 34), 8, static_cast<float>(visBrRows * 38 - 2)},
+					totalBrRows, visBrRows, reportBranchTableScroll);
 
-				DrawUiText("TOP MÓN ĂN BÁN CHẠY NHẤT", 245, 496, 14, darkGreen);
-				int pY = 522;
-				int pRow = 0;
-				for (const auto& prod : products) {
-					if (pRow >= 4) break;
+				DrawUiText("DANH SÁCH MÓN ĂN ĐÃ BÁN (Lăn chuột để cuộn)", 245, 494, 14, darkGreen);
+				int pY = 520;
+				const int visProdRows = 4;
+				int totalProds = static_cast<int>(products.size());
+				reportProductScroll = std::clamp(reportProductScroll, 0, std::max(0, totalProds - visProdRows));
+
+				for (int r = 0; r < visProdRows; ++r) {
+					int idx = reportProductScroll + r;
+					if (idx >= totalProds) break;
+					const auto& prod = products[idx];
 					int qty = report.productQuantities.count(prod.code) ? report.productQuantities.at(prod.code) : 0;
-					DrawRectangleRounded({245, static_cast<float>(pY), 1000, 36}, 0.1f, 4, panel);
-					DrawRectangleRoundedLines({245, static_cast<float>(pY), 1000, 36}, 0.1f, 4, Color{230, 235, 230, 255});
+					DrawRectangleRounded({245, static_cast<float>(pY), 985, 36}, 0.1f, 4, panel);
+					DrawRectangleRoundedLines({245, static_cast<float>(pY), 985, 36}, 0.1f, 4, Color{230, 235, 230, 255});
 
-					DrawUiTextFitted((std::to_string(pRow + 1) + ". " + prod.name + " (" + prod.code + ")").c_str(), 265, pY + 10, 460, 13, darkGreen);
+					DrawUiTextFitted((std::to_string(idx + 1) + ". " + prod.name + " (" + prod.code + ")").c_str(), 265, pY + 10, 460, 13, darkGreen);
 					DrawUiTextFitted((std::to_string(qty) + " phần đã bán").c_str(), 755, pY + 10, 200, 13, muted);
-					DrawUiTextFitted(formatCurrency(qty * prod.price).c_str(), 1015, pY + 10, 210, 13, green);
+					DrawUiTextFitted(formatCurrency(qty * prod.price).c_str(), 1015, pY + 10, 200, 13, green);
 
 					pY += 42;
-					pRow++;
 				}
+				DrawVerticalScrollbar({1236, 520, 8, static_cast<float>(visProdRows * 42 - 6)},
+					totalProds, visProdRows, reportProductScroll);
 			} else {
-				DrawUiText("SẢN PHẨM BÁN CHẠY TẠI CHI NHÁNH", 245, 286, 14, darkGreen);
+				DrawUiText("SẢN PHẨM BÁN CHẠY TẠI CHI NHÁNH (Lăn chuột để cuộn)", 245, 286, 14, darkGreen);
 				int pY = 316;
-				int pRow = 0;
-				for (const auto& prod : products) {
-					if (pRow >= 7) break;
-					int qty = report.productQuantities.count(prod.code) ? report.productQuantities.at(prod.code) : 0;
-					DrawRectangleRounded({245, static_cast<float>(pY), 1000, 42}, 0.1f, 4, panel);
-					DrawRectangleRoundedLines({245, static_cast<float>(pY), 1000, 42}, 0.1f, 4, Color{230, 235, 230, 255});
+				const int visProdRows = 7;
+				int totalProds = static_cast<int>(products.size());
+				reportProductScroll = std::clamp(reportProductScroll, 0, std::max(0, totalProds - visProdRows));
 
-					DrawUiTextFitted((std::to_string(pRow + 1) + ". " + prod.name + " (" + prod.code + ")").c_str(), 265, pY + 12, 340, 14, darkGreen);
+				for (int r = 0; r < visProdRows; ++r) {
+					int idx = reportProductScroll + r;
+					if (idx >= totalProds) break;
+					const auto& prod = products[idx];
+					int qty = report.productQuantities.count(prod.code) ? report.productQuantities.at(prod.code) : 0;
+					DrawRectangleRounded({245, static_cast<float>(pY), 985, 42}, 0.1f, 4, panel);
+					DrawRectangleRoundedLines({245, static_cast<float>(pY), 985, 42}, 0.1f, 4, Color{230, 235, 230, 255});
+
+					DrawUiTextFitted((std::to_string(idx + 1) + ". " + prod.name + " (" + prod.code + ")").c_str(), 265, pY + 12, 340, 14, darkGreen);
 					DrawUiTextFitted(prod.category.c_str(), 625, pY + 12, 160, 13, muted);
 					DrawUiTextFitted((std::to_string(qty) + " phần").c_str(), 810, pY + 12, 150, 13, darkGreen);
-					DrawUiTextFitted(formatCurrency(qty * prod.price).c_str(), 990, pY + 12, 230, 14, green);
+					DrawUiTextFitted(formatCurrency(qty * prod.price).c_str(), 990, pY + 12, 220, 14, green);
 
 					pY += 48;
-					pRow++;
 				}
+				DrawVerticalScrollbar({1236, 316, 8, static_cast<float>(visProdRows * 48 - 6)},
+					totalProds, visProdRows, reportProductScroll);
 			}
 
 		} else if (activeTab == 2) {
 			// TAB 2: DELIVERY MAP & ORDER QUEUE
-			DrawUiText("Bản Đồ Giao Hàng & Tìm Đường", 245, 104, 24, {35, 55, 53, 255});
+			DrawUiText("Bản Đồ Giao Hàng & Tìm Đường", 245, 104, 24, darkGreen);
 			DrawUiTextFitted("Lưới toạ độ 30 x 20  •  Nhấp vào chi nhánh hoặc ô trống bất kỳ để tìm lộ trình ngắn nhất",
-				245, 136, 1000, 13, {104, 115, 108, 255});
+				245, 136, 1000, 13, muted);
 
-			const float mapW = mapGraph.width() * mapCellSize;  // 720
-			const float mapH = mapGraph.height() * mapCellSize; // 480
+			const float mapW = mapGraph.width() * mapCellSize;
+			const float mapH = mapGraph.height() * mapCellSize;
 			DrawRectangle(static_cast<int>(mapOriginX), static_cast<int>(mapOriginY), static_cast<int>(mapW), static_cast<int>(mapH), {235, 231, 218, 255});
 
 			for (int y = 0; y < mapGraph.height(); ++y) {
@@ -1400,13 +1585,13 @@ int main(int argc, char** argv) {
 				int node = selectedRoute.nodes[i];
 				int nodeX = node % mapGraph.width();
 				int nodeY = node / mapGraph.width();
-				DrawRectangle(static_cast<int>(mapOriginX + nodeX * mapCellSize + 4), static_cast<int>(mapOriginY + nodeY * mapCellSize + 4), 16, 16, useAStar ? Color{235, 142, 72, 255} : Color{35, 105, 78, 255});
+				DrawRectangle(static_cast<int>(mapOriginX + nodeX * mapCellSize + 4), static_cast<int>(mapOriginY + nodeY * mapCellSize + 4), 16, 16, useAStar ? Color{235, 142, 72, 255} : green);
 			}
 
 			for (int i = 0; i < static_cast<int>(branchValues.size()); ++i) {
 				float branchX = mapOriginX + branchCells[i].x * mapCellSize + mapCellSize / 2.0f;
 				float branchY = mapOriginY + branchCells[i].y * mapCellSize + mapCellSize / 2.0f;
-				DrawCircle(static_cast<int>(branchX), static_cast<int>(branchY), 10, i == targetBranch ? Color{210, 92, 68, 255} : Color{35, 55, 53, 255});
+				DrawCircle(static_cast<int>(branchX), static_cast<int>(branchY), 10, i == targetBranch ? Color{210, 92, 68, 255} : darkGreen);
 
 				const std::string& bName = branchValues[i].getName();
 				float tagW = MeasureUiText(bName.c_str(), 11) + 12.0f;
@@ -1414,30 +1599,29 @@ int main(int argc, char** argv) {
 				float tagY = std::clamp(branchY + 12.0f, mapOriginY + 4.0f, mapOriginY + mapH - 22.0f);
 				Rectangle tagRec = {tagX, tagY, tagW, 18};
 				DrawRectangleRounded(tagRec, 0.3f, 4, Color{255, 255, 255, 225});
-				DrawUiTextInRect(bName.c_str(), tagRec, 11, {35, 55, 53, 255}, 0, 4.0f);
+				DrawUiTextInRect(bName.c_str(), tagRec, 11, darkGreen, 0, 4.0f);
 			}
 
-			// Right Control Card Panel (x = 980..1255, width = 275, height = 480)
 			Rectangle mapPanel = {980, 168, 275, 480};
 			DrawRectangleRounded(mapPanel, 0.05f, 4, RAYWHITE);
 			DrawRectangleRoundedLines(mapPanel, 0.05f, 4, Color{220, 228, 221, 255});
 
 			float px = mapPanel.x + 15.0f;
-			float pw = mapPanel.width - 30.0f; // 245px max width
+			float pw = mapPanel.width - 30.0f;
 
 			DrawUiTextFitted(useAStar ? "THUẬT TOÁN A* (TỐI ƯU)" : "THUẬT TOÁN DIJKSTRA", px, 186, pw, 12, {93, 112, 103, 255});
 
 			std::string routeText = targetBranch >= 0
 				? "Trung Tâm -> " + branchValues[targetBranch].getName()
 				: "Trung Tâm -> Điểm tuỳ chọn";
-			DrawUiTextFitted(routeText.c_str(), px, 210, pw, 14, {35, 105, 78, 255});
+			DrawUiTextFitted(routeText.c_str(), px, 210, pw, 14, green);
 
 			char distanceText[100];
 			std::snprintf(distanceText, sizeof(distanceText), "Quãng đường: %.0f ô  |  Duyệt: %d ô",
 				selectedRoute.distance, static_cast<int>(selectedRoute.explored.size()));
 			DrawUiTextFitted(distanceText, px, 238, pw, 13, {54, 66, 58, 255});
 
-			DrawUiTextFitted(deliveryMode ? "Khuyến nghị: Giao tận nơi" : "Khuyến nghị: Dùng tại bàn", px, 266, pw, 13, {180, 110, 40, 255});
+			DrawUiTextFitted(deliveryMode ? "Khuyến nghị: Giao tận nơi" : "Khuyến nghị: Dùng tại bàn", px, 266, pw, 13, amber);
 
 			std::string destStr = "Đích đến: " + (targetBranch >= 0 ? branchValues[targetBranch].getName() : "Toạ độ tuỳ chọn");
 			DrawUiTextFitted(destStr.c_str(), px, 294, pw, 13, {54, 66, 58, 255});
@@ -1446,63 +1630,55 @@ int main(int argc, char** argv) {
 
 			char queueText[64];
 			std::snprintf(queueText, sizeof(queueText), "Hàng đợi đơn hàng: %d đơn", orderQueue.size());
-			DrawUiTextFitted(queueText, px, 334, pw, 14, {35, 105, 78, 255});
+			DrawUiTextFitted(queueText, px, 334, pw, 14, green);
 
 			DrawUiTextWrapped("Nhấn phím P hoặc bấm nút bên dưới để xử lý đơn hàng tiếp theo.",
-				{px, 362, pw, 48}, 12, {104, 115, 108, 255});
+				{px, 362, pw, 48}, 12, muted);
 
-			// Control Buttons inside mapPanel
 			Rectangle serviceBtn = {px, 425, pw, 36};
-			DrawRectangleRounded(serviceBtn, 0.2f, 4, {247, 239, 214, 255});
+			DrawRectangleRounded(serviceBtn, 0.2f, 4, CheckCollisionPointRec(mouse, serviceBtn) ? Color{240, 228, 195, 255} : Color{247, 239, 214, 255});
 			DrawUiTextInRect(deliveryMode ? "Chế độ: Giao hàng" : "Chế độ: Dùng tại bàn", serviceBtn, 13, {130, 91, 48, 255}, 0, 8.0f);
 
 			Rectangle algoBtn = {px, 470, pw, 36};
-			DrawRectangleRounded(algoBtn, 0.2f, 4, {224, 231, 220, 255});
+			DrawRectangleRounded(algoBtn, 0.2f, 4, CheckCollisionPointRec(mouse, algoBtn) ? Color{210, 222, 208, 255} : Color{224, 231, 220, 255});
 			DrawUiTextInRect(useAStar ? "Đổi sang: Thuật toán Dijkstra" : "Đổi sang: Thuật toán A*", algoBtn, 12, {54, 66, 58, 255}, 0, 8.0f);
 
 			Rectangle processBtn = {px, 515, pw, 40};
-			DrawRectangleRounded(processBtn, 0.2f, 4, orderQueue.empty() ? Color{180, 192, 182, 255} : Color{35, 105, 78, 255});
+			bool hovProc = !orderQueue.empty() && CheckCollisionPointRec(mouse, processBtn);
+			DrawRectangleRounded(processBtn, 0.2f, 4, orderQueue.empty() ? Color{180, 192, 182, 255} : (hovProc ? BrightenColor(green, 20) : green));
 			DrawUiTextInRect("XỬ LÝ ĐƠN TIẾP THEO (Phím P)", processBtn, 13, RAYWHITE, 0, 8.0f);
 
-		} else {
-			// TABS 3, 4, 5: MANAGED BY ManagementUI
+		} else if (currentUser) {
 			managementUi.draw(mouse, activeTab, *currentUser);
 		}
 
-		// Bottom Status Bar (always on top of tab content at y = 722..760)
+		// Bottom Status Bar
 		DrawRectangle(220, 722, 1060, 38, Color{236, 232, 222, 255});
 		DrawLine(220, 722, 1280, 722, Color{218, 214, 204, 255});
-		DrawUiTextFitted(statusMessage.c_str(), 245, 733, 1010, 13, {35, 105, 78, 255});
+		DrawUiTextFitted(statusMessage.c_str(), 245, 733, 1010, 13, green);
 
 		// LOGIN MODAL
 		if (loginDialog) {
 			DrawRectangle(0, 0, 1280, 760, {20, 30, 28, 165});
 
 			DrawRectangleRounded(loginBoxRec, 0.05f, 8, {250, 247, 238, 255});
-			DrawRectangleRoundedLines(loginBoxRec, 0.05f, 8, Color{35, 105, 78, 255});
+			DrawRectangleRoundedLines(loginBoxRec, 0.05f, 8, green);
 
-			DrawUiTextFitted("HỆ THỐNG QUẢN LÝ BẾP NHỎ", 415, 182, 450, 21, {35, 55, 53, 255});
-			DrawUiTextFitted("Đăng nhập tài khoản theo quyền hạn được cấp", 415, 214, 450, 13, {104, 115, 108, 255});
+			DrawUiTextFitted("HỆ THỐNG QUẢN LÝ BẾP NHỎ", 415, 182, 450, 21, darkGreen);
+			DrawUiTextFitted("Đăng nhập tài khoản theo quyền hạn được cấp", 415, 214, 450, 13, muted);
 
 			DrawUiText("Tên đăng nhập:", 415, 252, 13, {54, 66, 58, 255});
-			DrawRectangleRec(loginUserBoxRec, RAYWHITE);
-			DrawRectangleLinesEx(loginUserBoxRec, 1.5f, loginField == 0 ? Color{35, 105, 78, 255} : Color{202, 211, 201, 255});
-			DrawUiTextInRect(usernameInput.empty() ? "Nhập tài khoản (employee1, manager1, branchmanager)..." : usernameInput.c_str(),
-				loginUserBoxRec, 13, usernameInput.empty() ? Color{150, 158, 151, 255} : Color{42, 55, 48, 255}, -1, 12.0f);
+			DrawUiInputBox(loginUserBoxRec, usernameInput, "Nhập tài khoản (employee1, manager1, branchmanager)...", loginField == 0, mouse);
 
 			DrawUiText("Mật khẩu:", 415, 332, 13, {54, 66, 58, 255});
-			DrawRectangleRec(loginPassBoxRec, RAYWHITE);
-			DrawRectangleLinesEx(loginPassBoxRec, 1.5f, loginField == 1 ? Color{35, 105, 78, 255} : Color{202, 211, 201, 255});
-			std::string masked(passwordInput.size(), '*');
-			DrawUiTextInRect(masked.empty() ? "Nhập mật khẩu..." : masked.c_str(),
-				loginPassBoxRec, 14, masked.empty() ? Color{150, 158, 151, 255} : Color{42, 55, 48, 255}, -1, 12.0f);
+			DrawUiInputBox(loginPassBoxRec, passwordInput, "Nhập mật khẩu...", loginField == 1, mouse, true);
 
-			DrawUiTextFitted("Phím Tab để chuyển ô  •  Phím Enter để đăng nhập", 415, 412, 450, 12, {104, 115, 108, 255});
+			DrawUiTextFitted("Phím Tab để chuyển ô  •  Phím Enter để đăng nhập", 415, 412, 450, 12, muted);
 
-			DrawRectangleRounded(loginBtnRec, 0.2f, 4, Color{35, 105, 78, 255});
+			bool hovLogin = CheckCollisionPointRec(mouse, loginBtnRec);
+			DrawRectangleRounded(loginBtnRec, 0.2f, 4, hovLogin ? BrightenColor(green, 20) : green);
 			DrawUiTextInRect("ĐĂNG NHẬP HỆ THỐNG", loginBtnRec, 14, RAYWHITE, 0, 12.0f);
 
-			// Quick account reference box inside modal
 			Rectangle hintBox = {415, 502, 450, 68};
 			DrawRectangleRounded(hintBox, 0.12f, 4, Color{238, 242, 236, 255});
 			DrawUiTextFitted("Tài khoản mẫu:  NV: employee1 / emp1pass", 427, 512, 426, 12, {65, 84, 75, 255});
