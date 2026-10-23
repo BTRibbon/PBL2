@@ -5,6 +5,7 @@
 #include "../models/RestaurantChain.h"
 #include "../models/User.h"
 #include "../datastructures/OrderQueue.h"
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <memory>
@@ -137,4 +138,3 @@ public:
 		std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
 		std::string& statusMessage, int& statusVersion);
 };
-
