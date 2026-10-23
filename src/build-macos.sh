@@ -63,11 +63,17 @@ else
     exit 1
 fi
 
+source_list="$script_folder/sources.txt"
+(
+    cd "$script_folder"
+    find . -type f -name '*.cpp' -not -path './Utils/raylib-*/*' | sed 's|^\./||' | LC_ALL=C sort
+) > "$source_list"
+
 sources=()
-while IFS= read -r -d '' source_file; do
-    sources+=("$source_file")
-done < <(find "$script_folder" -type f -name '*.cpp' \
-    -not -path "$script_folder/Utils/raylib-*/*" -print0)
+while IFS= read -r rel_file || [[ -n "$rel_file" ]]; do
+    [[ -z "$rel_file" ]] && continue
+    sources+=("$script_folder/$rel_file")
+done < "$source_list"
 
 if [[ ${#sources[@]} -eq 0 ]]; then
     printf 'No C++ source files were found.\n' >&2

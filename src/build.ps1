@@ -80,13 +80,21 @@ Write-Host "Generated encrypted account database: $accountDatabase"
 
 $sources = @(Get-ChildItem -Path $scriptFolder -Recurse -Filter *.cpp -File |
     Where-Object { $_.FullName -notmatch "[\\/]Utils[\\/]raylib-" } |
-    Select-Object -ExpandProperty FullName)
+    ForEach-Object {
+        $prefix = $scriptFolder.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar
+        if ($_.FullName.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $rel = $_.FullName.Substring($prefix.Length)
+        } else {
+            $rel = $_.Name
+        }
+        $rel -replace '\\', '/'
+    } | Sort-Object)
 
 if ($sources.Count -eq 0) {
     throw "No C++ source files were found."
 }
 
-$sources | ForEach-Object { $_ -replace '\\', '/' } | Out-File -FilePath $sourceList -Encoding ascii
+$sources | Out-File -FilePath $sourceList -Encoding ascii
 
 $compileArgs = @(
     "-std=c++20",
