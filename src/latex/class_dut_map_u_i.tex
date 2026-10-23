@@ -1,0 +1,322 @@
+\doxysection{Dut\+Map\+UI Class Reference}
+\hypertarget{class_dut_map_u_i}{}\label{class_dut_map_u_i}\index{DutMapUI@{DutMapUI}}
+
+
+{\ttfamily \+\#include $<$Dut\+Map\+UI.\+h$>$}
+
+
+
+Collaboration diagram for Dut\+Map\+UI:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_dut_map_u_i__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_dut_map_u_i_afd98729a0a62044ab21587e7abd9ace7}{Dut\+Map\+UI}} ()
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_aa00c3645b1c8150236c3451c480ef273}{update\+Route}} ()
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_ac474651df94d8350ef2e0075b4104e2c}{handle\+Click}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, \doxymbox{\hyperlink{class_user}{User}} \texorpdfstring{$\ast$}{*}current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_a30ebe8b2cdea6f2c6afecad115f6f6e9}{handle\+Scroll}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, float wheel\+Move)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_u_i_a04595bfdb90a6d78fbdfdd1c0a479139}{handle\+Input}} (int key, int char\+Pressed, std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, \doxymbox{\hyperlink{class_user}{User}} \texorpdfstring{$\ast$}{*}current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_a151ad4bb3c38358925cb612a9d6c42aa}{draw}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, \doxymbox{\hyperlink{class_order_queue}{Order\+Queue}} \&order\+Queue, \doxymbox{\hyperlink{class_user}{User}} \texorpdfstring{$\ast$}{*}current\+User)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_u_i_a8282d479d1e45a4b77a5ed1903e03548}{is\+Modal\+Open}} () const
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_a129be394f1a9a1eaaacd10e04449fda7}{open\+Add\+Branch\+Modal}} (const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches)
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_acf6ad15631f29d46730a07c10e9c4235}{open\+Edit\+Branch\+Modal}} (int branch\+Idx, const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_u_i_aba238902ef795039f1b29df13b7933bf}{submit\+Branch\+Modal}} (std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+void \doxymbox{\hyperlink{class_dut_map_u_i_adb18780084fcaa3827fd2c73da90d519}{delete\+Branch}} (int branch\+Idx, std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, std::\+string \&status\+Message, int \&status\+Version)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_dut_map}{Dut\+Map}} \doxymbox{\hyperlink{class_dut_map_u_i_a6ad688c5bdf017534186197e414bcf78}{map}}
+\item 
+float \doxymbox{\hyperlink{class_dut_map_u_i_a4befa571686f29a2964d0a4609e8cc99}{map\+OriginX}} = 245.\+0f
+\item 
+float \doxymbox{\hyperlink{class_dut_map_u_i_a17d7193aaf72d449bd9bdb2545fcce2f}{map\+OriginY}} = 168.\+0f
+\item 
+float \doxymbox{\hyperlink{class_dut_map_u_i_a3f4d1329ff4f413b85408baf9830e04e}{map\+Cell\+Size}} = 24.\+0f
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_aaa4cc1c997b239613b934ce1ac161ffe}{selection\+Step}} = 1
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a85989ca36fb6362cee62dd2564f2a71d}{start\+Branch\+Idx}} = 0
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a414767811c41eaa43ec84ef862b0a03b}{target\+Branch\+Idx}} = 1
+\item 
+\doxymbox{\hyperlink{struct_map_grid_point}{Map\+Grid\+Point}} \doxymbox{\hyperlink{class_dut_map_u_i_a7991148422866304511e9fb1918fda36}{target\+Point}} \{12, 13\}
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_u_i_ab5ce138707445c68c4634a52dcf80481}{is\+Target\+Custom}} = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\item 
+\doxymbox{\hyperlink{struct_dut_route}{Dut\+Route}} \doxymbox{\hyperlink{class_dut_map_u_i_a6ca64669c27a716f56ab0dc197ceac2a}{current\+Route}}
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_u_i_a596f5658ca78ae8b20ff91c050144b00}{use\+AStar}} = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}
+\item 
+float \doxymbox{\hyperlink{class_dut_map_u_i_a9a8f65ddc74f8944b396c9c7e18795bf}{path\+Progress}} = 0.\+0f
+\item 
+float \doxymbox{\hyperlink{class_dut_map_u_i_aa99b2dfc72bb44d8c315144589bfc4f2}{shipper\+Progress}} = 0.\+0f
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_u_i_a57591a6806b71f0dfffbd1576b7e1208}{is\+Branch\+Modal\+Open}} = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a05d329007740466e8c829d245d819941}{branch\+Modal\+Mode}} = 0
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a977c8b41ac842f265cefdc62dda14853}{editing\+Branch\+Idx}} = -\/1
+\item 
+std::\+string \doxymbox{\hyperlink{class_dut_map_u_i_aa0d1914bcf5d8577806559b7a10f9c16}{input\+Branch\+Id}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_dut_map_u_i_ae6ca37caca2db639b51b5b5d9d0a0ce7}{input\+Branch\+Name}}
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a57ef1a238f6d38bb772a3fdb5c87f744}{input\+Branch\+GridX}} = 12
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_aeeb9e1e77935eed52adb18bc9ce9c23f}{input\+Branch\+GridY}} = 3
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a573bc041dbc5ab4fd526a8a913101a3d}{branch\+Modal\+Field}} = 0
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_ae918e25c6f8c344c3a938022abdb336f}{branch\+List\+Scroll}} = 0
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a35d51d16365d179b07d6208593028be3}{hovered\+CellX}} = -\/1
+\item 
+int \doxymbox{\hyperlink{class_dut_map_u_i_a3322f18c3c9b8549c353f2695a324a6e}{hovered\+CellY}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\label{class_dut_map_u_i_doc-constructors}
+\Hypertarget{class_dut_map_u_i_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_dut_map_u_i_afd98729a0a62044ab21587e7abd9ace7}\index{DutMapUI@{DutMapUI}!DutMapUI@{DutMapUI}}
+\index{DutMapUI@{DutMapUI}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{DutMapUI()}{DutMapUI()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_afd98729a0a62044ab21587e7abd9ace7} 
+Dut\+Map\+UI::\+\+Dut\+Map\+UI (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_dut_map_u_i_doc-func-members}
+\Hypertarget{class_dut_map_u_i_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_dut_map_u_i_adb18780084fcaa3827fd2c73da90d519}\index{DutMapUI@{DutMapUI}!deleteBranch@{deleteBranch}}
+\index{deleteBranch@{deleteBranch}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{deleteBranch()}{deleteBranch()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_adb18780084fcaa3827fd2c73da90d519} 
+void Dut\+Map\+UI::\+delete\+Branch (\begin{DoxyParamCaption}\item[{int}]{branch\+Idx}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_a151ad4bb3c38358925cb612a9d6c42aa}\index{DutMapUI@{DutMapUI}!draw@{draw}}
+\index{draw@{draw}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a151ad4bb3c38358925cb612a9d6c42aa} 
+void Dut\+Map\+UI::\+draw (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{\doxymbox{\hyperlink{class_order_queue}{Order\+Queue}} \&}]{order\+Queue}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \texorpdfstring{$\ast$}{*}}]{current\+User}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_ac474651df94d8350ef2e0075b4104e2c}\index{DutMapUI@{DutMapUI}!handleClick@{handleClick}}
+\index{handleClick@{handleClick}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{handleClick()}{handleClick()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_ac474651df94d8350ef2e0075b4104e2c} 
+void Dut\+Map\+UI::\+handle\+Click (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \texorpdfstring{$\ast$}{*}}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_a04595bfdb90a6d78fbdfdd1c0a479139}\index{DutMapUI@{DutMapUI}!handleInput@{handleInput}}
+\index{handleInput@{handleInput}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{handleInput()}{handleInput()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a04595bfdb90a6d78fbdfdd1c0a479139} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map\+UI::\+handle\+Input (\begin{DoxyParamCaption}\item[{int}]{key}{, }\item[{int}]{char\+Pressed}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \texorpdfstring{$\ast$}{*}}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_a30ebe8b2cdea6f2c6afecad115f6f6e9}\index{DutMapUI@{DutMapUI}!handleScroll@{handleScroll}}
+\index{handleScroll@{handleScroll}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{handleScroll()}{handleScroll()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a30ebe8b2cdea6f2c6afecad115f6f6e9} 
+void Dut\+Map\+UI::\+handle\+Scroll (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{float}]{wheel\+Move}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_a8282d479d1e45a4b77a5ed1903e03548}\index{DutMapUI@{DutMapUI}!isModalOpen@{isModalOpen}}
+\index{isModalOpen@{isModalOpen}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{isModalOpen()}{isModalOpen()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a8282d479d1e45a4b77a5ed1903e03548} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map\+UI::\+is\+Modal\+Open (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_u_i_a129be394f1a9a1eaaacd10e04449fda7}\index{DutMapUI@{DutMapUI}!openAddBranchModal@{openAddBranchModal}}
+\index{openAddBranchModal@{openAddBranchModal}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{openAddBranchModal()}{openAddBranchModal()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a129be394f1a9a1eaaacd10e04449fda7} 
+void Dut\+Map\+UI::\+open\+Add\+Branch\+Modal (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_acf6ad15631f29d46730a07c10e9c4235}\index{DutMapUI@{DutMapUI}!openEditBranchModal@{openEditBranchModal}}
+\index{openEditBranchModal@{openEditBranchModal}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{openEditBranchModal()}{openEditBranchModal()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_acf6ad15631f29d46730a07c10e9c4235} 
+void Dut\+Map\+UI::\+open\+Edit\+Branch\+Modal (\begin{DoxyParamCaption}\item[{int}]{branch\+Idx}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_aba238902ef795039f1b29df13b7933bf}\index{DutMapUI@{DutMapUI}!submitBranchModal@{submitBranchModal}}
+\index{submitBranchModal@{submitBranchModal}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{submitBranchModal()}{submitBranchModal()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_aba238902ef795039f1b29df13b7933bf} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map\+UI::\+submit\+Branch\+Modal (\begin{DoxyParamCaption}\item[{std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_dut_map_u_i_aa00c3645b1c8150236c3451c480ef273}\index{DutMapUI@{DutMapUI}!updateRoute@{updateRoute}}
+\index{updateRoute@{updateRoute}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{updateRoute()}{updateRoute()}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_aa00c3645b1c8150236c3451c480ef273} 
+void Dut\+Map\+UI::\+update\+Route (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_dut_map_u_i_doc-variable-members}
+\Hypertarget{class_dut_map_u_i_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_dut_map_u_i_ae918e25c6f8c344c3a938022abdb336f}\index{DutMapUI@{DutMapUI}!branchListScroll@{branchListScroll}}
+\index{branchListScroll@{branchListScroll}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{branchListScroll}{branchListScroll}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_ae918e25c6f8c344c3a938022abdb336f} 
+int Dut\+Map\+UI::\+branch\+List\+Scroll = 0}
+
+\Hypertarget{class_dut_map_u_i_a573bc041dbc5ab4fd526a8a913101a3d}\index{DutMapUI@{DutMapUI}!branchModalField@{branchModalField}}
+\index{branchModalField@{branchModalField}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{branchModalField}{branchModalField}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a573bc041dbc5ab4fd526a8a913101a3d} 
+int Dut\+Map\+UI::\+branch\+Modal\+Field = 0}
+
+\Hypertarget{class_dut_map_u_i_a05d329007740466e8c829d245d819941}\index{DutMapUI@{DutMapUI}!branchModalMode@{branchModalMode}}
+\index{branchModalMode@{branchModalMode}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{branchModalMode}{branchModalMode}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a05d329007740466e8c829d245d819941} 
+int Dut\+Map\+UI::\+branch\+Modal\+Mode = 0}
+
+\Hypertarget{class_dut_map_u_i_a6ca64669c27a716f56ab0dc197ceac2a}\index{DutMapUI@{DutMapUI}!currentRoute@{currentRoute}}
+\index{currentRoute@{currentRoute}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{currentRoute}{currentRoute}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a6ca64669c27a716f56ab0dc197ceac2a} 
+\doxymbox{\hyperlink{struct_dut_route}{Dut\+Route}} Dut\+Map\+UI::\+current\+Route}
+
+\Hypertarget{class_dut_map_u_i_a977c8b41ac842f265cefdc62dda14853}\index{DutMapUI@{DutMapUI}!editingBranchIdx@{editingBranchIdx}}
+\index{editingBranchIdx@{editingBranchIdx}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{editingBranchIdx}{editingBranchIdx}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a977c8b41ac842f265cefdc62dda14853} 
+int Dut\+Map\+UI::\+editing\+Branch\+Idx = -\/1}
+
+\Hypertarget{class_dut_map_u_i_a35d51d16365d179b07d6208593028be3}\index{DutMapUI@{DutMapUI}!hoveredCellX@{hoveredCellX}}
+\index{hoveredCellX@{hoveredCellX}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{hoveredCellX}{hoveredCellX}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a35d51d16365d179b07d6208593028be3} 
+int Dut\+Map\+UI::\+hovered\+CellX = -\/1}
+
+\Hypertarget{class_dut_map_u_i_a3322f18c3c9b8549c353f2695a324a6e}\index{DutMapUI@{DutMapUI}!hoveredCellY@{hoveredCellY}}
+\index{hoveredCellY@{hoveredCellY}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{hoveredCellY}{hoveredCellY}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a3322f18c3c9b8549c353f2695a324a6e} 
+int Dut\+Map\+UI::\+hovered\+CellY = -\/1}
+
+\Hypertarget{class_dut_map_u_i_a57ef1a238f6d38bb772a3fdb5c87f744}\index{DutMapUI@{DutMapUI}!inputBranchGridX@{inputBranchGridX}}
+\index{inputBranchGridX@{inputBranchGridX}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{inputBranchGridX}{inputBranchGridX}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a57ef1a238f6d38bb772a3fdb5c87f744} 
+int Dut\+Map\+UI::\+input\+Branch\+GridX = 12}
+
+\Hypertarget{class_dut_map_u_i_aeeb9e1e77935eed52adb18bc9ce9c23f}\index{DutMapUI@{DutMapUI}!inputBranchGridY@{inputBranchGridY}}
+\index{inputBranchGridY@{inputBranchGridY}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{inputBranchGridY}{inputBranchGridY}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_aeeb9e1e77935eed52adb18bc9ce9c23f} 
+int Dut\+Map\+UI::\+input\+Branch\+GridY = 3}
+
+\Hypertarget{class_dut_map_u_i_aa0d1914bcf5d8577806559b7a10f9c16}\index{DutMapUI@{DutMapUI}!inputBranchId@{inputBranchId}}
+\index{inputBranchId@{inputBranchId}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{inputBranchId}{inputBranchId}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_aa0d1914bcf5d8577806559b7a10f9c16} 
+std::\+string Dut\+Map\+UI::\+input\+Branch\+Id}
+
+\Hypertarget{class_dut_map_u_i_ae6ca37caca2db639b51b5b5d9d0a0ce7}\index{DutMapUI@{DutMapUI}!inputBranchName@{inputBranchName}}
+\index{inputBranchName@{inputBranchName}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{inputBranchName}{inputBranchName}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_ae6ca37caca2db639b51b5b5d9d0a0ce7} 
+std::\+string Dut\+Map\+UI::\+input\+Branch\+Name}
+
+\Hypertarget{class_dut_map_u_i_a57591a6806b71f0dfffbd1576b7e1208}\index{DutMapUI@{DutMapUI}!isBranchModalOpen@{isBranchModalOpen}}
+\index{isBranchModalOpen@{isBranchModalOpen}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{isBranchModalOpen}{isBranchModalOpen}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a57591a6806b71f0dfffbd1576b7e1208} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map\+UI::\+is\+Branch\+Modal\+Open = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+\Hypertarget{class_dut_map_u_i_ab5ce138707445c68c4634a52dcf80481}\index{DutMapUI@{DutMapUI}!isTargetCustom@{isTargetCustom}}
+\index{isTargetCustom@{isTargetCustom}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{isTargetCustom}{isTargetCustom}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_ab5ce138707445c68c4634a52dcf80481} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map\+UI::\+is\+Target\+Custom = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+\Hypertarget{class_dut_map_u_i_a6ad688c5bdf017534186197e414bcf78}\index{DutMapUI@{DutMapUI}!map@{map}}
+\index{map@{map}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{map}{map}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a6ad688c5bdf017534186197e414bcf78} 
+\doxymbox{\hyperlink{class_dut_map}{Dut\+Map}} Dut\+Map\+UI::\+map}
+
+\Hypertarget{class_dut_map_u_i_a3f4d1329ff4f413b85408baf9830e04e}\index{DutMapUI@{DutMapUI}!mapCellSize@{mapCellSize}}
+\index{mapCellSize@{mapCellSize}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{mapCellSize}{mapCellSize}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a3f4d1329ff4f413b85408baf9830e04e} 
+float Dut\+Map\+UI::\+map\+Cell\+Size = 24.\+0f}
+
+\Hypertarget{class_dut_map_u_i_a4befa571686f29a2964d0a4609e8cc99}\index{DutMapUI@{DutMapUI}!mapOriginX@{mapOriginX}}
+\index{mapOriginX@{mapOriginX}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{mapOriginX}{mapOriginX}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a4befa571686f29a2964d0a4609e8cc99} 
+float Dut\+Map\+UI::\+map\+OriginX = 245.\+0f}
+
+\Hypertarget{class_dut_map_u_i_a17d7193aaf72d449bd9bdb2545fcce2f}\index{DutMapUI@{DutMapUI}!mapOriginY@{mapOriginY}}
+\index{mapOriginY@{mapOriginY}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{mapOriginY}{mapOriginY}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a17d7193aaf72d449bd9bdb2545fcce2f} 
+float Dut\+Map\+UI::\+map\+OriginY = 168.\+0f}
+
+\Hypertarget{class_dut_map_u_i_a9a8f65ddc74f8944b396c9c7e18795bf}\index{DutMapUI@{DutMapUI}!pathProgress@{pathProgress}}
+\index{pathProgress@{pathProgress}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{pathProgress}{pathProgress}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a9a8f65ddc74f8944b396c9c7e18795bf} 
+float Dut\+Map\+UI::\+path\+Progress = 0.\+0f}
+
+\Hypertarget{class_dut_map_u_i_aaa4cc1c997b239613b934ce1ac161ffe}\index{DutMapUI@{DutMapUI}!selectionStep@{selectionStep}}
+\index{selectionStep@{selectionStep}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{selectionStep}{selectionStep}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_aaa4cc1c997b239613b934ce1ac161ffe} 
+int Dut\+Map\+UI::\+selection\+Step = 1}
+
+\Hypertarget{class_dut_map_u_i_aa99b2dfc72bb44d8c315144589bfc4f2}\index{DutMapUI@{DutMapUI}!shipperProgress@{shipperProgress}}
+\index{shipperProgress@{shipperProgress}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{shipperProgress}{shipperProgress}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_aa99b2dfc72bb44d8c315144589bfc4f2} 
+float Dut\+Map\+UI::\+shipper\+Progress = 0.\+0f}
+
+\Hypertarget{class_dut_map_u_i_a85989ca36fb6362cee62dd2564f2a71d}\index{DutMapUI@{DutMapUI}!startBranchIdx@{startBranchIdx}}
+\index{startBranchIdx@{startBranchIdx}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{startBranchIdx}{startBranchIdx}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a85989ca36fb6362cee62dd2564f2a71d} 
+int Dut\+Map\+UI::\+start\+Branch\+Idx = 0}
+
+\Hypertarget{class_dut_map_u_i_a414767811c41eaa43ec84ef862b0a03b}\index{DutMapUI@{DutMapUI}!targetBranchIdx@{targetBranchIdx}}
+\index{targetBranchIdx@{targetBranchIdx}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{targetBranchIdx}{targetBranchIdx}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a414767811c41eaa43ec84ef862b0a03b} 
+int Dut\+Map\+UI::\+target\+Branch\+Idx = 1}
+
+\Hypertarget{class_dut_map_u_i_a7991148422866304511e9fb1918fda36}\index{DutMapUI@{DutMapUI}!targetPoint@{targetPoint}}
+\index{targetPoint@{targetPoint}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{targetPoint}{targetPoint}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a7991148422866304511e9fb1918fda36} 
+\doxymbox{\hyperlink{struct_map_grid_point}{Map\+Grid\+Point}} Dut\+Map\+UI::\+target\+Point \{12, 13\}}
+
+\Hypertarget{class_dut_map_u_i_a596f5658ca78ae8b20ff91c050144b00}\index{DutMapUI@{DutMapUI}!useAStar@{useAStar}}
+\index{useAStar@{useAStar}!DutMapUI@{DutMapUI}}
+\doxysubsubsection{\texorpdfstring{useAStar}{useAStar}}
+{\footnotesize\ttfamily \label{class_dut_map_u_i_a596f5658ca78ae8b20ff91c050144b00} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map\+UI::\+use\+AStar = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+UI/\doxymbox{\hyperlink{_dut_map_u_i_8h}{Dut\+Map\+UI.\+h}}\item 
+UI/\doxymbox{\hyperlink{_dut_map_u_i_8cpp}{Dut\+Map\+UI.\+cpp}}\end{DoxyCompactItemize}

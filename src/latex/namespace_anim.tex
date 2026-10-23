@@ -1,0 +1,239 @@
+\doxysection{Anim Namespace Reference}
+\hypertarget{namespace_anim}{}\label{namespace_anim}\index{Anim@{Anim}}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}} \{ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320a505a83f220c02df2f85c3810cd9ceb38}{Success}}
+, \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320a902b0d55fddef6f8d651fe1035b7d4bd}{Error}}
+, \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320a4059b0251f66a18cb56f544728796875}{Info}}
+ \}
+\item 
+enum class \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{Arrow\+Dir}} \{ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea258f49887ef8d14ac268c92b02503aaa}{Up}}
+, \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea08a38277b0309070706f6652eeae9a53}{Down}}
+, \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea945d5e233cf7d6240f6b783b36a374ff}{Left}}
+, \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea92b09c7c48c520c3c55e497875da437c}{Right}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{namespace_anim_a7ed6ab0b7a185169b05178dc228d2d01}{Begin\+Frame}} ()
+\item 
+float \doxymbox{\hyperlink{namespace_anim_a400242c50f24f027ce027269d73725b6}{Dt}} ()
+\item 
+float \doxymbox{\hyperlink{namespace_anim_a347420179e4170476e24fbfc442fbc79}{Ease\+Out\+Cubic}} (float t)
+\item 
+float \doxymbox{\hyperlink{namespace_anim_a33ac1e7f097b0f985a6c0baedb0af1bd}{Ease\+Out\+Back}} (float t)
+\item 
+float \doxymbox{\hyperlink{namespace_anim_a506e1650a0f06831f4f3e5a8656b235e}{Smooth}} (float current, float target, float speed)
+\item 
+\doxymbox{\hyperlink{struct_color}{Color}} \doxymbox{\hyperlink{namespace_anim_a3af7c0617e4fea3519d9b81b7934c768}{Lerp\+Color}} (\doxymbox{\hyperlink{struct_color}{Color}} a, \doxymbox{\hyperlink{struct_color}{Color}} b, float t)
+\item 
+\doxymbox{\hyperlink{struct_color}{Color}} \doxymbox{\hyperlink{namespace_anim_a363e588aa4620b3a756ecf63bcf36a4c}{With\+Alpha}} (\doxymbox{\hyperlink{struct_color}{Color}} c, float alpha01)
+\item 
+\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} \doxymbox{\hyperlink{namespace_anim_abeec30e4bead74ad0caf357b01b077ba}{Button}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, \doxymbox{\hyperlink{struct_color}{Color}} base, \doxymbox{\hyperlink{struct_color}{Color}} hover, \doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} enabled, float roundness, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} draw\+Shadow)
+\item 
+\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} \doxymbox{\hyperlink{namespace_anim_a9375380cf0a9a30da943705f8214ed11}{Button}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, \doxymbox{\hyperlink{struct_color}{Color}} base, \doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} enabled, float roundness)
+\item 
+float \doxymbox{\hyperlink{namespace_anim_a72d12128eed88169e2ea8b0d5600b9b2}{Hover\+Amount}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds)
+\item 
+void \doxymbox{\hyperlink{namespace_anim_a78d739e5abf569200ace39caf32f9bd7}{Draw\+Arrow}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} b, \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{Arrow\+Dir}} dir, \doxymbox{\hyperlink{struct_color}{Color}} color, float size)
+\item 
+\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} \doxymbox{\hyperlink{namespace_anim_a46ed9f3ca43b603ca334e4acf092b8f8}{Arrow\+Button}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{Arrow\+Dir}} dir, \doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} enabled, \doxymbox{\hyperlink{struct_color}{Color}} base)
+\item 
+void \doxymbox{\hyperlink{namespace_anim_a13f40c48343f0f6b363d1e0e2bfeed56}{Input\+Focus\+Glow}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} focused)
+\item 
+float \doxymbox{\hyperlink{namespace_anim_aa6921212ff98abc5822e9e567ac59796}{Smooth\+Scroll}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} track, float target)
+\item 
+\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}} \doxymbox{\hyperlink{namespace_anim_a0271b46d0be49615cf3fc84c32c0c039}{Classify}} (const std::\+string \&m)
+\item 
+\doxymbox{\hyperlink{struct_color}{Color}} \doxymbox{\hyperlink{namespace_anim_acb8a2c3c6680bd21152bf4faa4eacc8d}{Toast\+Color}} (\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}} type)
+\item 
+void \doxymbox{\hyperlink{namespace_anim_a198964b65f4f34a8fad0d0bb7b6140a2}{Push\+Toast}} (const std::\+string \&message, \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}} type)
+\item 
+void \doxymbox{\hyperlink{namespace_anim_abc1454640fb5fb07dbe4641370a29748}{Draw\+Status\+Icon}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} c, float r, \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}} type, float progress)
+\item 
+void \doxymbox{\hyperlink{namespace_anim_a3504dd672b22852f56c4d43fc4ac0aef}{Draw\+Toasts}} ()
+\end{DoxyCompactItemize}
+
+
+\label{namespace_anim_doc-enum-members}
+\Hypertarget{namespace_anim_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}\index{Anim@{Anim}!ArrowDir@{ArrowDir}}
+\index{ArrowDir@{ArrowDir}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{ArrowDir}{ArrowDir}}
+{\footnotesize\ttfamily \label{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e} 
+enum class \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{Anim::\+\+Arrow\+Dir}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Up@{Up}!Anim@{Anim}}
+\index{Anim@{Anim}!Up@{Up}}
+}\Hypertarget{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea258f49887ef8d14ac268c92b02503aaa}\label{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea258f49887ef8d14ac268c92b02503aaa} 
+Up&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Down@{Down}!Anim@{Anim}}
+\index{Anim@{Anim}!Down@{Down}}
+}\Hypertarget{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea08a38277b0309070706f6652eeae9a53}\label{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea08a38277b0309070706f6652eeae9a53} 
+Down&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Left@{Left}!Anim@{Anim}}
+\index{Anim@{Anim}!Left@{Left}}
+}\Hypertarget{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea945d5e233cf7d6240f6b783b36a374ff}\label{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea945d5e233cf7d6240f6b783b36a374ff} 
+Left&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Right@{Right}!Anim@{Anim}}
+\index{Anim@{Anim}!Right@{Right}}
+}\Hypertarget{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea92b09c7c48c520c3c55e497875da437c}\label{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea92b09c7c48c520c3c55e497875da437c} 
+Right&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{namespace_anim_a9045ffde3455f575422b5e37404c0320}\index{Anim@{Anim}!ToastType@{ToastType}}
+\index{ToastType@{ToastType}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{ToastType}{ToastType}}
+{\footnotesize\ttfamily \label{namespace_anim_a9045ffde3455f575422b5e37404c0320} 
+enum class \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Anim::\+\+Toast\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Success@{Success}!Anim@{Anim}}
+\index{Anim@{Anim}!Success@{Success}}
+}\Hypertarget{namespace_anim_a9045ffde3455f575422b5e37404c0320a505a83f220c02df2f85c3810cd9ceb38}\label{namespace_anim_a9045ffde3455f575422b5e37404c0320a505a83f220c02df2f85c3810cd9ceb38} 
+Success&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Error@{Error}!Anim@{Anim}}
+\index{Anim@{Anim}!Error@{Error}}
+}\Hypertarget{namespace_anim_a9045ffde3455f575422b5e37404c0320a902b0d55fddef6f8d651fe1035b7d4bd}\label{namespace_anim_a9045ffde3455f575422b5e37404c0320a902b0d55fddef6f8d651fe1035b7d4bd} 
+Error&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Info@{Info}!Anim@{Anim}}
+\index{Anim@{Anim}!Info@{Info}}
+}\Hypertarget{namespace_anim_a9045ffde3455f575422b5e37404c0320a4059b0251f66a18cb56f544728796875}\label{namespace_anim_a9045ffde3455f575422b5e37404c0320a4059b0251f66a18cb56f544728796875} 
+Info&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{namespace_anim_doc-func-members}
+\Hypertarget{namespace_anim_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespace_anim_a46ed9f3ca43b603ca334e4acf092b8f8}\index{Anim@{Anim}!ArrowButton@{ArrowButton}}
+\index{ArrowButton@{ArrowButton}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{ArrowButton()}{ArrowButton()}}
+{\footnotesize\ttfamily \label{namespace_anim_a46ed9f3ca43b603ca334e4acf092b8f8} 
+\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} Anim::\+\+Arrow\+Button (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{\doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{Arrow\+Dir}}}]{dir}{, }\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{enabled}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{base}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a7ed6ab0b7a185169b05178dc228d2d01}\index{Anim@{Anim}!BeginFrame@{BeginFrame}}
+\index{BeginFrame@{BeginFrame}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{BeginFrame()}{BeginFrame()}}
+{\footnotesize\ttfamily \label{namespace_anim_a7ed6ab0b7a185169b05178dc228d2d01} 
+void Anim::\+\+Begin\+Frame (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_abeec30e4bead74ad0caf357b01b077ba}\index{Anim@{Anim}!Button@{Button}}
+\index{Button@{Button}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{Button()}{Button()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{namespace_anim_abeec30e4bead74ad0caf357b01b077ba} 
+\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} Anim::\+\+Button (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{base}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{hover}{, }\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{enabled}{, }\item[{float}]{roundness}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{draw\+Shadow}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a9375380cf0a9a30da943705f8214ed11}\index{Anim@{Anim}!Button@{Button}}
+\index{Button@{Button}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{Button()}{Button()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{namespace_anim_a9375380cf0a9a30da943705f8214ed11} 
+\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} Anim::\+\+Button (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{base}{, }\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{enabled}{, }\item[{float}]{roundness}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a0271b46d0be49615cf3fc84c32c0c039}\index{Anim@{Anim}!Classify@{Classify}}
+\index{Classify@{Classify}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{Classify()}{Classify()}}
+{\footnotesize\ttfamily \label{namespace_anim_a0271b46d0be49615cf3fc84c32c0c039} 
+\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}} Anim::\+\+Classify (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{m}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a78d739e5abf569200ace39caf32f9bd7}\index{Anim@{Anim}!DrawArrow@{DrawArrow}}
+\index{DrawArrow@{DrawArrow}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{DrawArrow()}{DrawArrow()}}
+{\footnotesize\ttfamily \label{namespace_anim_a78d739e5abf569200ace39caf32f9bd7} 
+void Anim::\+\+Draw\+Arrow (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{b}{, }\item[{\doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{Arrow\+Dir}}}]{dir}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{, }\item[{float}]{size}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_abc1454640fb5fb07dbe4641370a29748}\index{Anim@{Anim}!DrawStatusIcon@{DrawStatusIcon}}
+\index{DrawStatusIcon@{DrawStatusIcon}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{DrawStatusIcon()}{DrawStatusIcon()}}
+{\footnotesize\ttfamily \label{namespace_anim_abc1454640fb5fb07dbe4641370a29748} 
+void Anim::\+\+Draw\+Status\+Icon (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{c}{, }\item[{float}]{r}{, }\item[{\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}}}]{type}{, }\item[{float}]{progress}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a3504dd672b22852f56c4d43fc4ac0aef}\index{Anim@{Anim}!DrawToasts@{DrawToasts}}
+\index{DrawToasts@{DrawToasts}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{DrawToasts()}{DrawToasts()}}
+{\footnotesize\ttfamily \label{namespace_anim_a3504dd672b22852f56c4d43fc4ac0aef} 
+void Anim::\+\+Draw\+Toasts (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a400242c50f24f027ce027269d73725b6}\index{Anim@{Anim}!Dt@{Dt}}
+\index{Dt@{Dt}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{Dt()}{Dt()}}
+{\footnotesize\ttfamily \label{namespace_anim_a400242c50f24f027ce027269d73725b6} 
+float Anim::\+\+Dt (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a33ac1e7f097b0f985a6c0baedb0af1bd}\index{Anim@{Anim}!EaseOutBack@{EaseOutBack}}
+\index{EaseOutBack@{EaseOutBack}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{EaseOutBack()}{EaseOutBack()}}
+{\footnotesize\ttfamily \label{namespace_anim_a33ac1e7f097b0f985a6c0baedb0af1bd} 
+float Anim::\+\+Ease\+Out\+Back (\begin{DoxyParamCaption}\item[{float}]{t}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a347420179e4170476e24fbfc442fbc79}\index{Anim@{Anim}!EaseOutCubic@{EaseOutCubic}}
+\index{EaseOutCubic@{EaseOutCubic}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{EaseOutCubic()}{EaseOutCubic()}}
+{\footnotesize\ttfamily \label{namespace_anim_a347420179e4170476e24fbfc442fbc79} 
+float Anim::\+\+Ease\+Out\+Cubic (\begin{DoxyParamCaption}\item[{float}]{t}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a72d12128eed88169e2ea8b0d5600b9b2}\index{Anim@{Anim}!HoverAmount@{HoverAmount}}
+\index{HoverAmount@{HoverAmount}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{HoverAmount()}{HoverAmount()}}
+{\footnotesize\ttfamily \label{namespace_anim_a72d12128eed88169e2ea8b0d5600b9b2} 
+float Anim::\+\+Hover\+Amount (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a13f40c48343f0f6b363d1e0e2bfeed56}\index{Anim@{Anim}!InputFocusGlow@{InputFocusGlow}}
+\index{InputFocusGlow@{InputFocusGlow}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{InputFocusGlow()}{InputFocusGlow()}}
+{\footnotesize\ttfamily \label{namespace_anim_a13f40c48343f0f6b363d1e0e2bfeed56} 
+void Anim::\+\+Input\+Focus\+Glow (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{focused}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a3af7c0617e4fea3519d9b81b7934c768}\index{Anim@{Anim}!LerpColor@{LerpColor}}
+\index{LerpColor@{LerpColor}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{LerpColor()}{LerpColor()}}
+{\footnotesize\ttfamily \label{namespace_anim_a3af7c0617e4fea3519d9b81b7934c768} 
+\doxymbox{\hyperlink{struct_color}{Color}} Anim::\+\+Lerp\+Color (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{a}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{b}{, }\item[{float}]{t}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a198964b65f4f34a8fad0d0bb7b6140a2}\index{Anim@{Anim}!PushToast@{PushToast}}
+\index{PushToast@{PushToast}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{PushToast()}{PushToast()}}
+{\footnotesize\ttfamily \label{namespace_anim_a198964b65f4f34a8fad0d0bb7b6140a2} 
+void Anim::\+\+Push\+Toast (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{message}{, }\item[{\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}}}]{type}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a506e1650a0f06831f4f3e5a8656b235e}\index{Anim@{Anim}!Smooth@{Smooth}}
+\index{Smooth@{Smooth}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{Smooth()}{Smooth()}}
+{\footnotesize\ttfamily \label{namespace_anim_a506e1650a0f06831f4f3e5a8656b235e} 
+float Anim::\+\+Smooth (\begin{DoxyParamCaption}\item[{float}]{current}{, }\item[{float}]{target}{, }\item[{float}]{speed}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_aa6921212ff98abc5822e9e567ac59796}\index{Anim@{Anim}!SmoothScroll@{SmoothScroll}}
+\index{SmoothScroll@{SmoothScroll}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{SmoothScroll()}{SmoothScroll()}}
+{\footnotesize\ttfamily \label{namespace_anim_aa6921212ff98abc5822e9e567ac59796} 
+float Anim::\+\+Smooth\+Scroll (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{track}{, }\item[{float}]{target}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_acb8a2c3c6680bd21152bf4faa4eacc8d}\index{Anim@{Anim}!ToastColor@{ToastColor}}
+\index{ToastColor@{ToastColor}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{ToastColor()}{ToastColor()}}
+{\footnotesize\ttfamily \label{namespace_anim_acb8a2c3c6680bd21152bf4faa4eacc8d} 
+\doxymbox{\hyperlink{struct_color}{Color}} Anim::\+\+Toast\+Color (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{Toast\+Type}}}]{type}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespace_anim_a363e588aa4620b3a756ecf63bcf36a4c}\index{Anim@{Anim}!WithAlpha@{WithAlpha}}
+\index{WithAlpha@{WithAlpha}!Anim@{Anim}}
+\doxysubsubsection{\texorpdfstring{WithAlpha()}{WithAlpha()}}
+{\footnotesize\ttfamily \label{namespace_anim_a363e588aa4620b3a756ecf63bcf36a4c} 
+\doxymbox{\hyperlink{struct_color}{Color}} Anim::\+\+With\+Alpha (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{c}{, }\item[{float}]{alpha01}{}\end{DoxyParamCaption})}
+

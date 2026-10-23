@@ -9,5 +9,7 @@ var searchData=
   ['playsound_6',['PlaySound',['../raylib_8h.html#a5e29aafa1e07c196f93fc1cf089d154c',1,'raylib.h']]],
   ['pollinputevents_7',['PollInputEvents',['../raylib_8h.html#a7ebb8190236fb28c53dc1b6075641117',1,'raylib.h']]],
   ['popnext_8',['popNext',['../class_order_queue.html#ac10d9a9f4cb7b4b638bc2fcf6fd84806',1,'OrderQueue']]],
-  ['push_9',['push',['../class_order_queue.html#a223233de820dc7458c7625ae11c55586',1,'OrderQueue']]]
+  ['poputf8char_9',['PopUtf8Char',['../_u_i_font_8cpp.html#a3ea45f928b546cd5103c059f9d677472',1,'PopUtf8Char(std::string &amp;text):&#160;UIFont.cpp'],['../_u_i_font_8h.html#a3ea45f928b546cd5103c059f9d677472',1,'PopUtf8Char(std::string &amp;text):&#160;UIFont.cpp']]],
+  ['push_10',['push',['../class_order_queue.html#a223233de820dc7458c7625ae11c55586',1,'OrderQueue']]],
+  ['pushtoast_11',['PushToast',['../namespace_anim.html#a198964b65f4f34a8fad0d0bb7b6140a2',1,'Anim']]]
 ];

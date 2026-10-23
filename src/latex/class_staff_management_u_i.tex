@@ -1,0 +1,290 @@
+\doxysection{Staff\+Management\+UI Class Reference}
+\hypertarget{class_staff_management_u_i}{}\label{class_staff_management_u_i}\index{StaffManagementUI@{StaffManagementUI}}
+
+
+{\ttfamily \+\#include $<$Staff\+Management\+UI.\+h$>$}
+
+
+
+Collaboration diagram for Staff\+Management\+UI:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{class_staff_management_u_i__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_staff_management_u_i_a643ae300b7b873bc0ed3d8d974c4e9bc}{Staff\+Management\+UI}} ()
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_a7500efc54364b563a967a3ad45a62b6b}{open\+Add\+Staff\+Modal}} (const \doxymbox{\hyperlink{class_user}{User}} \&current\+User, const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, const std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts)
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_ac4fc178f8d8b13b6cbdb389040a21be1}{open\+Edit\+Staff\+Modal}} (int account\+Idx, const std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts)
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_ad8a0d1ac5cf77ee40e648ce33556506a}{open\+Change\+Pass\+Modal}} ()
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_aa081f39d5a93f180ad55965b8d35d8cd}{submit\+Staff\+Modal}} (std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, const \doxymbox{\hyperlink{class_user}{User}} \&current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_a2bda487bbacece401af1a6f98040f180}{submit\+Change\+Pass\+Modal}} (std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, \doxymbox{\hyperlink{class_user}{User}} \&current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_a8a622726de893815a6c760cc8ec5ca6f}{delete\+Staff}} (int account\+Idx, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, const \doxymbox{\hyperlink{class_user}{User}} \&current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_a7b9a5ea54cd8781823f0377bf21cc36b}{handle\+Click}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, \doxymbox{\hyperlink{class_user}{User}} \&current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_acfd5420f374ea18b99c710558b421fbb}{handle\+Scroll}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, float wheel\+Move)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_ab35e27980c1738240512e103fe067605}{handle\+Input}} (int key, int char\+Pressed, std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&user\+Pool, \doxymbox{\hyperlink{class_user}{User}} \&current\+User, std::\+string \&status\+Message, int \&status\+Version)
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_a43f9864d6756c60ae121ca902368df59}{draw}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, const std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&accounts, const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&branches, \doxymbox{\hyperlink{class_user}{User}} \&current\+User)
+\item 
+void \doxymbox{\hyperlink{class_staff_management_u_i_aa58d394adfc2871fea127e5674ea6c32}{draw\+Change\+Pass\+Modal}} (\doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, const \doxymbox{\hyperlink{class_user}{User}} \&current\+User)
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_aec8cec24674ebdd08317cf40afcdd0dd}{is\+Modal\+Open}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_a4b33b7653cef8f4301dcf68a63696977}{selected\+Branch\+Filter}} = -\/1
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_ad7d2196e6bc140144666cab33c41a2c3}{selected\+Role\+Filter}} = -\/1
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_a7c321669a20f22dcedb74575b625ed4b}{table\+Scroll\+Offset}} = 0
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_ae2f6739ea522979fe055ba5319d056ff}{is\+Staff\+Modal\+Open}} = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_a4420f40e6c7b38725fb6adf38644d3c0}{staff\+Modal\+Mode}} = 0
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_a57acb37558bccef973416ff73605d79a}{editing\+Account\+Idx}} = -\/1
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a53da31f12971605667c0e63cceed6f07}{input\+Staff\+Id}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a942eca3e85e5f8f72e0979310313ee25}{input\+Staff\+Name}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a2c4634f5e5578ef87436c2ba66e0a86e}{input\+Staff\+Username}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a334ef48c1e1bfde0b9903cac0d73c12e}{input\+Staff\+Password}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a7e77836771faf318775c447ca77243d1}{input\+Staff\+Branch\+Id}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a76d9b41db232d86c87f3a87b41bf46d7}{input\+Staff\+Role}}
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_a46a8190a50ed6913a94217302da5a44e}{staff\+Modal\+Field}} = 0
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_staff_management_u_i_a8a641460b73ff184de39f36ce3860dff}{is\+Change\+Pass\+Modal\+Open}} = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a589f2ff4665c30565b4e28cb02c2f5c1}{input\+Old\+Password}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_aff7487dc00651b3f436f63d201450f32}{input\+New\+Password}}
+\item 
+std::\+string \doxymbox{\hyperlink{class_staff_management_u_i_a117148e256c10f6703c05468f41c3574}{input\+Confirm\+Password}}
+\item 
+int \doxymbox{\hyperlink{class_staff_management_u_i_a07a69447cefd87a1d3ea6cb5b48fce5e}{change\+Pass\+Field}} = 0
+\end{DoxyCompactItemize}
+
+
+\label{class_staff_management_u_i_doc-constructors}
+\Hypertarget{class_staff_management_u_i_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_staff_management_u_i_a643ae300b7b873bc0ed3d8d974c4e9bc}\index{StaffManagementUI@{StaffManagementUI}!StaffManagementUI@{StaffManagementUI}}
+\index{StaffManagementUI@{StaffManagementUI}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{StaffManagementUI()}{StaffManagementUI()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a643ae300b7b873bc0ed3d8d974c4e9bc} 
+Staff\+Management\+UI::\+\+Staff\+Management\+UI (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_staff_management_u_i_doc-func-members}
+\Hypertarget{class_staff_management_u_i_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_staff_management_u_i_a8a622726de893815a6c760cc8ec5ca6f}\index{StaffManagementUI@{StaffManagementUI}!deleteStaff@{deleteStaff}}
+\index{deleteStaff@{deleteStaff}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{deleteStaff()}{deleteStaff()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a8a622726de893815a6c760cc8ec5ca6f} 
+void Staff\+Management\+UI::\+delete\+Staff (\begin{DoxyParamCaption}\item[{int}]{account\+Idx}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{const \doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_a43f9864d6756c60ae121ca902368df59}\index{StaffManagementUI@{StaffManagementUI}!draw@{draw}}
+\index{draw@{draw}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a43f9864d6756c60ae121ca902368df59} 
+void Staff\+Management\+UI::\+draw (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_aa58d394adfc2871fea127e5674ea6c32}\index{StaffManagementUI@{StaffManagementUI}!drawChangePassModal@{drawChangePassModal}}
+\index{drawChangePassModal@{drawChangePassModal}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{drawChangePassModal()}{drawChangePassModal()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_aa58d394adfc2871fea127e5674ea6c32} 
+void Staff\+Management\+UI::\+draw\+Change\+Pass\+Modal (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{const \doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_a7b9a5ea54cd8781823f0377bf21cc36b}\index{StaffManagementUI@{StaffManagementUI}!handleClick@{handleClick}}
+\index{handleClick@{handleClick}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{handleClick()}{handleClick()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a7b9a5ea54cd8781823f0377bf21cc36b} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+handle\+Click (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_ab35e27980c1738240512e103fe067605}\index{StaffManagementUI@{StaffManagementUI}!handleInput@{handleInput}}
+\index{handleInput@{handleInput}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{handleInput()}{handleInput()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_ab35e27980c1738240512e103fe067605} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+handle\+Input (\begin{DoxyParamCaption}\item[{int}]{key}{, }\item[{int}]{char\+Pressed}{, }\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_acfd5420f374ea18b99c710558b421fbb}\index{StaffManagementUI@{StaffManagementUI}!handleScroll@{handleScroll}}
+\index{handleScroll@{handleScroll}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{handleScroll()}{handleScroll()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_acfd5420f374ea18b99c710558b421fbb} 
+void Staff\+Management\+UI::\+handle\+Scroll (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{float}]{wheel\+Move}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_aec8cec24674ebdd08317cf40afcdd0dd}\index{StaffManagementUI@{StaffManagementUI}!isModalOpen@{isModalOpen}}
+\index{isModalOpen@{isModalOpen}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{isModalOpen()}{isModalOpen()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_aec8cec24674ebdd08317cf40afcdd0dd} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+is\+Modal\+Open (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_staff_management_u_i_a7500efc54364b563a967a3ad45a62b6b}\index{StaffManagementUI@{StaffManagementUI}!openAddStaffModal@{openAddStaffModal}}
+\index{openAddStaffModal@{openAddStaffModal}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{openAddStaffModal()}{openAddStaffModal()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a7500efc54364b563a967a3ad45a62b6b} 
+void Staff\+Management\+UI::\+open\+Add\+Staff\+Modal (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{class_branch}{Branch}} $>$ \&}]{branches}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_ad8a0d1ac5cf77ee40e648ce33556506a}\index{StaffManagementUI@{StaffManagementUI}!openChangePassModal@{openChangePassModal}}
+\index{openChangePassModal@{openChangePassModal}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{openChangePassModal()}{openChangePassModal()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_ad8a0d1ac5cf77ee40e648ce33556506a} 
+void Staff\+Management\+UI::\+open\+Change\+Pass\+Modal (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_ac4fc178f8d8b13b6cbdb389040a21be1}\index{StaffManagementUI@{StaffManagementUI}!openEditStaffModal@{openEditStaffModal}}
+\index{openEditStaffModal@{openEditStaffModal}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{openEditStaffModal()}{openEditStaffModal()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_ac4fc178f8d8b13b6cbdb389040a21be1} 
+void Staff\+Management\+UI::\+open\+Edit\+Staff\+Modal (\begin{DoxyParamCaption}\item[{int}]{account\+Idx}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_a2bda487bbacece401af1a6f98040f180}\index{StaffManagementUI@{StaffManagementUI}!submitChangePassModal@{submitChangePassModal}}
+\index{submitChangePassModal@{submitChangePassModal}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{submitChangePassModal()}{submitChangePassModal()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a2bda487bbacece401af1a6f98040f180} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+submit\+Change\+Pass\+Modal (\begin{DoxyParamCaption}\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{\doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_staff_management_u_i_aa081f39d5a93f180ad55965b8d35d8cd}\index{StaffManagementUI@{StaffManagementUI}!submitStaffModal@{submitStaffModal}}
+\index{submitStaffModal@{submitStaffModal}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{submitStaffModal()}{submitStaffModal()}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_aa081f39d5a93f180ad55965b8d35d8cd} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+submit\+Staff\+Modal (\begin{DoxyParamCaption}\item[{std::\+vector$<$ \doxymbox{\hyperlink{struct_account_record}{Account\+Record}} $>$ \&}]{accounts}{, }\item[{std::\+vector$<$ std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_user}{User}} $>$ $>$ \&}]{user\+Pool}{, }\item[{const \doxymbox{\hyperlink{class_user}{User}} \&}]{current\+User}{, }\item[{std::\+string \&}]{status\+Message}{, }\item[{int \&}]{status\+Version}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_staff_management_u_i_doc-variable-members}
+\Hypertarget{class_staff_management_u_i_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_staff_management_u_i_a07a69447cefd87a1d3ea6cb5b48fce5e}\index{StaffManagementUI@{StaffManagementUI}!changePassField@{changePassField}}
+\index{changePassField@{changePassField}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{changePassField}{changePassField}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a07a69447cefd87a1d3ea6cb5b48fce5e} 
+int Staff\+Management\+UI::\+change\+Pass\+Field = 0}
+
+\Hypertarget{class_staff_management_u_i_a57acb37558bccef973416ff73605d79a}\index{StaffManagementUI@{StaffManagementUI}!editingAccountIdx@{editingAccountIdx}}
+\index{editingAccountIdx@{editingAccountIdx}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{editingAccountIdx}{editingAccountIdx}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a57acb37558bccef973416ff73605d79a} 
+int Staff\+Management\+UI::\+editing\+Account\+Idx = -\/1}
+
+\Hypertarget{class_staff_management_u_i_a117148e256c10f6703c05468f41c3574}\index{StaffManagementUI@{StaffManagementUI}!inputConfirmPassword@{inputConfirmPassword}}
+\index{inputConfirmPassword@{inputConfirmPassword}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputConfirmPassword}{inputConfirmPassword}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a117148e256c10f6703c05468f41c3574} 
+std::\+string Staff\+Management\+UI::\+input\+Confirm\+Password}
+
+\Hypertarget{class_staff_management_u_i_aff7487dc00651b3f436f63d201450f32}\index{StaffManagementUI@{StaffManagementUI}!inputNewPassword@{inputNewPassword}}
+\index{inputNewPassword@{inputNewPassword}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputNewPassword}{inputNewPassword}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_aff7487dc00651b3f436f63d201450f32} 
+std::\+string Staff\+Management\+UI::\+input\+New\+Password}
+
+\Hypertarget{class_staff_management_u_i_a589f2ff4665c30565b4e28cb02c2f5c1}\index{StaffManagementUI@{StaffManagementUI}!inputOldPassword@{inputOldPassword}}
+\index{inputOldPassword@{inputOldPassword}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputOldPassword}{inputOldPassword}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a589f2ff4665c30565b4e28cb02c2f5c1} 
+std::\+string Staff\+Management\+UI::\+input\+Old\+Password}
+
+\Hypertarget{class_staff_management_u_i_a7e77836771faf318775c447ca77243d1}\index{StaffManagementUI@{StaffManagementUI}!inputStaffBranchId@{inputStaffBranchId}}
+\index{inputStaffBranchId@{inputStaffBranchId}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputStaffBranchId}{inputStaffBranchId}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a7e77836771faf318775c447ca77243d1} 
+std::\+string Staff\+Management\+UI::\+input\+Staff\+Branch\+Id}
+
+\Hypertarget{class_staff_management_u_i_a53da31f12971605667c0e63cceed6f07}\index{StaffManagementUI@{StaffManagementUI}!inputStaffId@{inputStaffId}}
+\index{inputStaffId@{inputStaffId}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputStaffId}{inputStaffId}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a53da31f12971605667c0e63cceed6f07} 
+std::\+string Staff\+Management\+UI::\+input\+Staff\+Id}
+
+\Hypertarget{class_staff_management_u_i_a942eca3e85e5f8f72e0979310313ee25}\index{StaffManagementUI@{StaffManagementUI}!inputStaffName@{inputStaffName}}
+\index{inputStaffName@{inputStaffName}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputStaffName}{inputStaffName}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a942eca3e85e5f8f72e0979310313ee25} 
+std::\+string Staff\+Management\+UI::\+input\+Staff\+Name}
+
+\Hypertarget{class_staff_management_u_i_a334ef48c1e1bfde0b9903cac0d73c12e}\index{StaffManagementUI@{StaffManagementUI}!inputStaffPassword@{inputStaffPassword}}
+\index{inputStaffPassword@{inputStaffPassword}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputStaffPassword}{inputStaffPassword}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a334ef48c1e1bfde0b9903cac0d73c12e} 
+std::\+string Staff\+Management\+UI::\+input\+Staff\+Password}
+
+\Hypertarget{class_staff_management_u_i_a76d9b41db232d86c87f3a87b41bf46d7}\index{StaffManagementUI@{StaffManagementUI}!inputStaffRole@{inputStaffRole}}
+\index{inputStaffRole@{inputStaffRole}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputStaffRole}{inputStaffRole}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a76d9b41db232d86c87f3a87b41bf46d7} 
+std::\+string Staff\+Management\+UI::\+input\+Staff\+Role}
+
+\Hypertarget{class_staff_management_u_i_a2c4634f5e5578ef87436c2ba66e0a86e}\index{StaffManagementUI@{StaffManagementUI}!inputStaffUsername@{inputStaffUsername}}
+\index{inputStaffUsername@{inputStaffUsername}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{inputStaffUsername}{inputStaffUsername}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a2c4634f5e5578ef87436c2ba66e0a86e} 
+std::\+string Staff\+Management\+UI::\+input\+Staff\+Username}
+
+\Hypertarget{class_staff_management_u_i_a8a641460b73ff184de39f36ce3860dff}\index{StaffManagementUI@{StaffManagementUI}!isChangePassModalOpen@{isChangePassModalOpen}}
+\index{isChangePassModalOpen@{isChangePassModalOpen}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{isChangePassModalOpen}{isChangePassModalOpen}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a8a641460b73ff184de39f36ce3860dff} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+is\+Change\+Pass\+Modal\+Open = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+\Hypertarget{class_staff_management_u_i_ae2f6739ea522979fe055ba5319d056ff}\index{StaffManagementUI@{StaffManagementUI}!isStaffModalOpen@{isStaffModalOpen}}
+\index{isStaffModalOpen@{isStaffModalOpen}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{isStaffModalOpen}{isStaffModalOpen}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_ae2f6739ea522979fe055ba5319d056ff} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Staff\+Management\+UI::\+is\+Staff\+Modal\+Open = \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+\Hypertarget{class_staff_management_u_i_a4b33b7653cef8f4301dcf68a63696977}\index{StaffManagementUI@{StaffManagementUI}!selectedBranchFilter@{selectedBranchFilter}}
+\index{selectedBranchFilter@{selectedBranchFilter}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{selectedBranchFilter}{selectedBranchFilter}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a4b33b7653cef8f4301dcf68a63696977} 
+int Staff\+Management\+UI::\+selected\+Branch\+Filter = -\/1}
+
+\Hypertarget{class_staff_management_u_i_ad7d2196e6bc140144666cab33c41a2c3}\index{StaffManagementUI@{StaffManagementUI}!selectedRoleFilter@{selectedRoleFilter}}
+\index{selectedRoleFilter@{selectedRoleFilter}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{selectedRoleFilter}{selectedRoleFilter}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_ad7d2196e6bc140144666cab33c41a2c3} 
+int Staff\+Management\+UI::\+selected\+Role\+Filter = -\/1}
+
+\Hypertarget{class_staff_management_u_i_a46a8190a50ed6913a94217302da5a44e}\index{StaffManagementUI@{StaffManagementUI}!staffModalField@{staffModalField}}
+\index{staffModalField@{staffModalField}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{staffModalField}{staffModalField}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a46a8190a50ed6913a94217302da5a44e} 
+int Staff\+Management\+UI::\+staff\+Modal\+Field = 0}
+
+\Hypertarget{class_staff_management_u_i_a4420f40e6c7b38725fb6adf38644d3c0}\index{StaffManagementUI@{StaffManagementUI}!staffModalMode@{staffModalMode}}
+\index{staffModalMode@{staffModalMode}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{staffModalMode}{staffModalMode}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a4420f40e6c7b38725fb6adf38644d3c0} 
+int Staff\+Management\+UI::\+staff\+Modal\+Mode = 0}
+
+\Hypertarget{class_staff_management_u_i_a7c321669a20f22dcedb74575b625ed4b}\index{StaffManagementUI@{StaffManagementUI}!tableScrollOffset@{tableScrollOffset}}
+\index{tableScrollOffset@{tableScrollOffset}!StaffManagementUI@{StaffManagementUI}}
+\doxysubsubsection{\texorpdfstring{tableScrollOffset}{tableScrollOffset}}
+{\footnotesize\ttfamily \label{class_staff_management_u_i_a7c321669a20f22dcedb74575b625ed4b} 
+int Staff\+Management\+UI::\+table\+Scroll\+Offset = 0}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+UI/\doxymbox{\hyperlink{_staff_management_u_i_8h}{Staff\+Management\+UI.\+h}}\item 
+UI/\doxymbox{\hyperlink{_staff_management_u_i_8cpp}{Staff\+Management\+UI.\+cpp}}\end{DoxyCompactItemize}

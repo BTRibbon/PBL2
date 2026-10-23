@@ -3,10 +3,11 @@ var searchData=
   ['r_0',['r',['../struct_color.html#ab9a9c7134511f9b116a6fcc81a303ba6',1,'Color']]],
   ['recs_1',['recs',['../struct_font.html#a8eccd53dfea190bd68dc1891f23be21c',1,'Font']]],
   ['requiredemployees_2',['requiredEmployees',['../class_schedule.html#a18fb569bf4842d31e3ee4a0c00bda973',1,'Schedule']]],
-  ['revenue_3',['revenue',['../struct_report_stats.html#a0496e58edc63120801775573998440c3',1,'ReportStats']]],
+  ['revenue_3',['revenue',['../struct_branch_stat.html#ac2eb7c617dc0e8326947186f0b4e7c12',1,'BranchStat::revenue'],['../struct_report_stats.html#a0496e58edc63120801775573998440c3',1,'ReportStats::revenue']]],
   ['right_4',['right',['../struct_n_patch_info.html#a16a52bef8094abbb3684b5c3f4af1932',1,'NPatchInfo']]],
   ['rightlenscenter_5',['rightLensCenter',['../struct_vr_stereo_config.html#a476d7074caa870b4b5c129cdf8ecfcd1',1,'VrStereoConfig']]],
   ['rightscreencenter_6',['rightScreenCenter',['../struct_vr_stereo_config.html#ac16b6f77a27e4e3e289a64ebd6cc2c81',1,'VrStereoConfig']]],
   ['role_7',['role',['../struct_account_record.html#abac679ec8a68939ac141025b8f2908f5',1,'AccountRecord::role'],['../class_user.html#af969eefd9642fee961f35493965e274c',1,'User::role']]],
-  ['rotation_8',['rotation',['../struct_camera2_d.html#a11f1c8b09361d21be25cdfe26bb9343f',1,'Camera2D::rotation'],['../struct_transform.html#a273d0597bb304555eda279c0348a5045',1,'Transform::rotation']]]
+  ['rotation_8',['rotation',['../struct_camera2_d.html#a11f1c8b09361d21be25cdfe26bb9343f',1,'Camera2D::rotation'],['../struct_transform.html#a273d0597bb304555eda279c0348a5045',1,'Transform::rotation']]],
+  ['rows_9',['ROWS',['../class_dut_map.html#a1441d049386f2f1f78c49bf2fdadddee',1,'DutMap']]]
 ];

@@ -1,0 +1,58 @@
+\doxysection{UIAnim.\+h}
+\hypertarget{_u_i_anim_8h_source}{}\label{_u_i_anim_8h_source}\index{UI/UIAnim.h@{UI/UIAnim.h}}
+\doxymbox{\hyperlink{_u_i_anim_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{raylib_8h}{raylib.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ Lightweight\ immediate-\/mode\ animation\ helpers\ for\ the\ raylib\ UI.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Every\ interactive\ element\ is\ identified\ by\ its\ bounds,\ so\ callers\ only\ need\ to}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ replace\ DrawRectangleRounded(...)\ with\ Anim::Button(...)\ to\ get\ hover,\ press,}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ click-\/ripple\ and\ "{}deny"{}\ (shake)\ feedback\ with\ smooth\ colour\ transitions.}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_anim}{Anim}}\ \{}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{enum\ class}\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{ToastType}}\ \{\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320a505a83f220c02df2f85c3810cd9ceb38}{Success}},\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320a902b0d55fddef6f8d651fe1035b7d4bd}{Error}},\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320a4059b0251f66a18cb56f544728796875}{Info}}\ \};}
+\DoxyCodeLine{00013\ \textcolor{keyword}{enum\ class}\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{ArrowDir}}\ \{\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea258f49887ef8d14ac268c92b02503aaa}{Up}},\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea08a38277b0309070706f6652eeae9a53}{Down}},\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea945d5e233cf7d6240f6b783b36a374ff}{Left}},\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078ea92b09c7c48c520c3c55e497875da437c}{Right}}\ \};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Call\ once\ per\ frame\ before\ drawing.}}
+\DoxyCodeLine{00016\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{namespace_anim_a7ed6ab0b7a185169b05178dc228d2d01}{BeginFrame}}();}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{namespace_anim_a400242c50f24f027ce027269d73725b6}{Dt}}();}
+\DoxyCodeLine{00019\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{namespace_anim_a347420179e4170476e24fbfc442fbc79}{EaseOutCubic}}(\textcolor{keywordtype}{float}\ t);}
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{namespace_anim_a33ac1e7f097b0f985a6c0baedb0af1bd}{EaseOutBack}}(\textcolor{keywordtype}{float}\ t);}
+\DoxyCodeLine{00021\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{namespace_anim_a506e1650a0f06831f4f3e5a8656b235e}{Smooth}}(\textcolor{keywordtype}{float}\ current,\ \textcolor{keywordtype}{float}\ target,\ \textcolor{keywordtype}{float}\ speed);}
+\DoxyCodeLine{00022\ \doxymbox{\hyperlink{struct_color}{Color}}\ \doxymbox{\hyperlink{namespace_anim_a3af7c0617e4fea3519d9b81b7934c768}{LerpColor}}(\doxymbox{\hyperlink{struct_color}{Color}}\ a,\ \doxymbox{\hyperlink{struct_color}{Color}}\ b,\ \textcolor{keywordtype}{float}\ t);}
+\DoxyCodeLine{00023\ \doxymbox{\hyperlink{struct_color}{Color}}\ \doxymbox{\hyperlink{namespace_anim_a363e588aa4620b3a756ecf63bcf36a4c}{WithAlpha}}(\doxymbox{\hyperlink{struct_color}{Color}}\ c,\ \textcolor{keywordtype}{float}\ alpha01);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ Animated\ button\ background.\ Returns\ the\ visual\ rectangle\ (after\ lift\ /\ press}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ scale\ /\ shake)\ so\ the\ caller\ can\ draw\ its\ label\ inside\ it.}}
+\DoxyCodeLine{00027\ \doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ \doxymbox{\hyperlink{namespace_anim_abeec30e4bead74ad0caf357b01b077ba}{Button}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \doxymbox{\hyperlink{struct_color}{Color}}\ base,\ \doxymbox{\hyperlink{struct_color}{Color}}\ hover,\ \doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \textcolor{keywordtype}{bool}\ enabled\ =\ \textcolor{keyword}{true},}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{float}\ roundness\ =\ 0.25f,\ \textcolor{keywordtype}{bool}\ drawShadow\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00029\ \doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ \doxymbox{\hyperlink{namespace_anim_abeec30e4bead74ad0caf357b01b077ba}{Button}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \doxymbox{\hyperlink{struct_color}{Color}}\ base,\ \doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \textcolor{keywordtype}{bool}\ enabled\ =\ \textcolor{keyword}{true},\ \textcolor{keywordtype}{float}\ roundness\ =\ 0.25f);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ Hover\ progress\ (0..1)\ of\ the\ element\ with\ these\ bounds\ (valid\ after\ Button()).}}
+\DoxyCodeLine{00032\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{namespace_anim_a72d12128eed88169e2ea8b0d5600b9b2}{HoverAmount}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ Vector\ arrow\ glyph\ (fonts\ do\ not\ contain\ triangle\ glyphs).}}
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{namespace_anim_a78d739e5abf569200ace39caf32f9bd7}{DrawArrow}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{ArrowDir}}\ dir,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color,\ \textcolor{keywordtype}{float}\ size\ =\ 5.0f);}
+\DoxyCodeLine{00036\ \doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ \doxymbox{\hyperlink{namespace_anim_a46ed9f3ca43b603ca334e4acf092b8f8}{ArrowButton}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \doxymbox{\hyperlink{namespace_anim_a27c1ef76fd8df02dcf574b9d3eda078e}{ArrowDir}}\ dir,\ \doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \textcolor{keywordtype}{bool}\ enabled,\ \doxymbox{\hyperlink{struct_color}{Color}}\ base);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ Focus\ glow\ for\ text\ inputs.}}
+\DoxyCodeLine{00039\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{namespace_anim_a13f40c48343f0f6b363d1e0e2bfeed56}{InputFocusGlow}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \textcolor{keywordtype}{bool}\ focused);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ Animated\ scrollbar\ thumb\ position\ (smoothly\ follows\ the\ scroll\ offset).}}
+\DoxyCodeLine{00042\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{namespace_anim_aa6921212ff98abc5822e9e567ac59796}{SmoothScroll}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ track,\ \textcolor{keywordtype}{float}\ target);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{comment}{//\ Toast\ notifications\ (slide\ in\ from\ the\ right,\ auto\ dismiss).}}
+\DoxyCodeLine{00045\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{ToastType}}\ \doxymbox{\hyperlink{namespace_anim_a0271b46d0be49615cf3fc84c32c0c039}{Classify}}(\textcolor{keyword}{const}\ std::string\&\ message);}
+\DoxyCodeLine{00046\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{namespace_anim_a198964b65f4f34a8fad0d0bb7b6140a2}{PushToast}}(\textcolor{keyword}{const}\ std::string\&\ message,\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{ToastType}}\ type);}
+\DoxyCodeLine{00047\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{namespace_anim_a3504dd672b22852f56c4d43fc4ac0aef}{DrawToasts}}();}
+\DoxyCodeLine{00048\ \doxymbox{\hyperlink{struct_color}{Color}}\ \doxymbox{\hyperlink{namespace_anim_acb8a2c3c6680bd21152bf4faa4eacc8d}{ToastColor}}(\doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{ToastType}}\ type);}
+\DoxyCodeLine{00049\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{namespace_anim_abc1454640fb5fb07dbe4641370a29748}{DrawStatusIcon}}(\doxymbox{\hyperlink{struct_vector2}{Vector2}}\ center,\ \textcolor{keywordtype}{float}\ radius,\ \doxymbox{\hyperlink{namespace_anim_a9045ffde3455f575422b5e37404c0320}{ToastType}}\ type,\ \textcolor{keywordtype}{float}\ progress\ =\ 1.0f);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \}}
+\DoxyCodeLine{00052\ }
+
+\end{DoxyCode}

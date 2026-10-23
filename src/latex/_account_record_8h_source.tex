@@ -1,0 +1,72 @@
+\doxysection{Account\+Record.\+h}
+\hypertarget{_account_record_8h_source}{}\label{_account_record_8h_source}\index{models/AccountRecord.h@{models/AccountRecord.h}}
+\doxymbox{\hyperlink{_account_record_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_user_8h}{User.h}}"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_account_record}{AccountRecord}}\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_a69d229dde05252b3aa321b250c4453f6}{id}};}
+\DoxyCodeLine{00014\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_a46d66e33de45d16c5f97bb749c6bdbbe}{username}};}
+\DoxyCodeLine{00015\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_ac89e3500e5a5dfa1732b188572d05fb8}{name}};}
+\DoxyCodeLine{00016\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_abac679ec8a68939ac141025b8f2908f5}{role}};}
+\DoxyCodeLine{00017\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_a178a356dab36e24ad0eb31596fb9f4ce}{branchId}};}
+\DoxyCodeLine{00018\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_a8ea91ae38a34865133aff1f78625dfd9}{salt}};}
+\DoxyCodeLine{00019\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_account_record_a5fbbd24f91356a84304d61aeabb445d0}{passwordHash}};}
+\DoxyCodeLine{00020\ \ \ \ \ \doxymbox{\hyperlink{class_user}{User}}*\ \doxymbox{\hyperlink{struct_account_record_a2bad7113b58ebf76e65c0be1af128f74}{user}}\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{inline}\ std::string\ \doxymbox{\hyperlink{_account_record_8h_ae34773dfd878f5d163921c02237f1975}{HashPassword}}(\textcolor{keyword}{const}\ std::string\&\ password,\ \textcolor{keyword}{const}\ std::string\&\ salt)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ input\ =\ salt\ +\ \textcolor{stringliteral}{"{}:"{}}\ +\ password;}
+\DoxyCodeLine{00025\ \ \ \ \ std::uint64\_t\ hash\ =\ 14695981039346656037ULL;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ character\ :\ input)\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ hash\ \string^=\ character;}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ hash\ *=\ 1099511628211ULL;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ \ \ \ \ std::ostringstream\ result;}
+\DoxyCodeLine{00031\ \ \ \ \ result\ <<\ std::hex;}
+\DoxyCodeLine{00032\ \ \ \ \ result.width(16);}
+\DoxyCodeLine{00033\ \ \ \ \ result.fill(\textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00034\ \ \ \ \ result\ <<\ hash;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{return}\ result.str();}
+\DoxyCodeLine{00036\ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{inline}\ std::string\ \doxymbox{\hyperlink{_account_record_8h_a4704dd9c40ee059055fc5eb3c95104e9}{GenerateSalt}}()\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ hexChars[]\ =\ \textcolor{stringliteral}{"{}0123456789abcdef"{}};}
+\DoxyCodeLine{00040\ \ \ \ \ std::string\ salt;}
+\DoxyCodeLine{00041\ \ \ \ \ salt.reserve(32);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 32;\ ++i)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ salt\ +=\ hexChars[std::rand()\ \%\ 16];}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ salt;}
+\DoxyCodeLine{00046\ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{_account_record_8h_ad680b97e31461a932da2d5749e5ce6da}{SaveAccountsToFile}}(\textcolor{keyword}{const}\ std::vector<AccountRecord>\&\ accounts)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ std::ostringstream\ plain;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ acc\ :\ accounts)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ plain\ <<\ acc.id\ <<\ \textcolor{stringliteral}{"{}|"{}}\ <<\ acc.username\ <<\ \textcolor{stringliteral}{"{}|"{}}\ <<\ acc.name\ <<\ \textcolor{stringliteral}{"{}|"{}}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ acc.role\ <<\ \textcolor{stringliteral}{"{}|"{}}\ <<\ acc.branchId\ <<\ \textcolor{stringliteral}{"{}|"{}}\ <<\ acc.salt\ <<\ \textcolor{stringliteral}{"{}|"{}}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <<\ acc.passwordHash\ <<\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \ \ std::string\ plainStr\ =\ plain.str();}
+\DoxyCodeLine{00056\ \ \ \ \ std::string\ encrypted;}
+\DoxyCodeLine{00057\ \ \ \ \ encrypted.reserve(plainStr.size());}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{char}\ c\ :\ plainStr)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ encrypted.push\_back(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\textcolor{keyword}{>}(c)\ \string^\ 0x5A));}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ std::ofstream\ binFile(\textcolor{stringliteral}{"{}data/accounts.dat"{}},\ std::ios::binary);}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (!binFile)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00063\ \ \ \ \ binFile.write(encrypted.data(),\ encrypted.size());}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00065\ \}}
+\DoxyCodeLine{00066\ }
+
+\end{DoxyCode}

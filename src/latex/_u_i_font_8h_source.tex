@@ -1,0 +1,36 @@
+\doxysection{UIFont.\+h}
+\hypertarget{_u_i_font_8h_source}{}\label{_u_i_font_8h_source}\index{UI/UIFont.h@{UI/UIFont.h}}
+\doxymbox{\hyperlink{_u_i_font_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{raylib_8h}{raylib.h}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_aab03c3f7905d52636ab269534139d454}{InitUiFont}}();}
+\DoxyCodeLine{00008\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a07380c0469fd1a5ba52a13d1fc248e02}{UnloadUiFont}}();}
+\DoxyCodeLine{00009\ \doxymbox{\hyperlink{struct_font}{Font}}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a546b082f49f8c99b64080bf149bd025b}{GetUiFont}}();}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a37220909382ffdc0e289fa5d69fa60f0}{DrawUiText}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color);}
+\DoxyCodeLine{00012\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a8f004383fbb55b1adbb238ac0d0fc9bc}{DrawUiTextRight}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ rightX,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color);}
+\DoxyCodeLine{00013\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_ab496854f496c7ef5db34a6f7c3e696a1}{DrawUiTextCenter}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ centerX,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color);}
+\DoxyCodeLine{00014\ \textcolor{keywordtype}{float}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a20ef541794b46ababbfbed1a16b2d94e}{MeasureUiText}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ size);}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ Bounded\ text\ helpers\ to\ prevent\ UI\ text\ overflow}}
+\DoxyCodeLine{00017\ std::string\ \doxymbox{\hyperlink{_u_i_font_8cpp_a33645a4b49f30693328847b41e1017f7}{FitTextToWidth}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ maxWidth,\ \textcolor{keywordtype}{float}\ size);}
+\DoxyCodeLine{00018\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a14821458e6ae4fa4d79620a62631be31}{DrawUiTextFitted}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ maxWidth,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color);}
+\DoxyCodeLine{00019\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_addb5dcde6b62ded22e041754f90fdd93}{DrawUiTextCenterFitted}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \textcolor{keywordtype}{float}\ centerX,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ maxWidth,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color);}
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_ab95b44c66854642eeabcd42ce923eed8}{DrawUiTextInRect}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color,\ \textcolor{keywordtype}{int}\ align\ =\ -\/1,\ \textcolor{keywordtype}{float}\ paddingX\ =\ 10.0f);}
+\DoxyCodeLine{00021\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a73dec7a2c1a0f818ab534b3f0763e860}{DrawUiTextWrapped}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ text,\ \doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \textcolor{keywordtype}{float}\ size,\ \doxymbox{\hyperlink{struct_color}{Color}}\ color,\ \textcolor{keywordtype}{float}\ lineSpacing\ =\ 4.0f);}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ UTF-\/8\ string\ manipulation\ helpers}}
+\DoxyCodeLine{00024\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a3ea45f928b546cd5103c059f9d677472}{PopUtf8Char}}(std::string\&\ text);}
+\DoxyCodeLine{00025\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a6dcda02399480e17990fc3056a5ccfeb}{AppendUtf8Codepoint}}(std::string\&\ text,\ \textcolor{keywordtype}{int}\ codepoint,\ std::size\_t\ maxChars\ =\ 64);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ Reactive\ UI\ Widgets}}
+\DoxyCodeLine{00028\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a1891b16d5c40447124f095bbdc565b57}{DrawVerticalScrollbar}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ trackBounds,\ \textcolor{keywordtype}{int}\ totalItems,\ \textcolor{keywordtype}{int}\ visibleItems,\ \textcolor{keywordtype}{int}\ scrollOffset);}
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{_u_i_font_8cpp_aae3d990bef7dfaff447b2e16b2e94c59}{DrawUiInputBox}}(\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}\ bounds,\ \textcolor{keyword}{const}\ std::string\&\ value,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ placeholder,\ \textcolor{keywordtype}{bool}\ isFocused,\ \doxymbox{\hyperlink{struct_vector2}{Vector2}}\ mouse,\ \textcolor{keywordtype}{bool}\ isPassword\ =\ \textcolor{keyword}{false});}
+\DoxyCodeLine{00030\ \doxymbox{\hyperlink{struct_color}{Color}}\ \doxymbox{\hyperlink{_u_i_font_8cpp_a0c1abbae2b7a52c437090afb7f3bda82}{BrightenColor}}(\doxymbox{\hyperlink{struct_color}{Color}}\ c,\ \textcolor{keywordtype}{int}\ delta\ =\ 18);}
+
+\end{DoxyCode}

@@ -25,6 +25,14 @@
 var NAVTREE =
 [
   [ "My Project", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -51,15 +59,16 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_branch_8cpp.html",
-"functions_vars_r.html",
-"raylib_8h.html#a29abcf238b156bde95cf23f3195d2dd5",
-"raylib_8h.html#a6a3ac7bbcae938b4c57bc8b609cfcac0",
-"raylib_8h.html#a94b4a5e76ed30c0af90a1bbbdc214b2bafa1c237398bdfc48e5c1a55ce4a977fe",
-"raylib_8h.html#ade78453778eeb19fe060af2628c547f8",
-"raymath_8h.html#ac5a945020d3528355cda82d383676736",
-"rlgl_8h.html#a93c5ef00ad99e88a63ac888f95cf0af7",
-"struct_glyph_info.html#aa9993ed2de20fa655f0afcc1e70d4ed9"
+"_account_record_8h.html",
+"class_schedule.html#a1ef63dcebefed2142904a04b0eaa1850",
+"namespace_anim.html#a9375380cf0a9a30da943705f8214ed11",
+"raylib_8h.html#a3a3bdcf627264bc008b18f5373a7d5eb",
+"raylib_8h.html#a7ae798d71d90bde3f7daeaf92da8efe2",
+"raylib_8h.html#ab311ec205fc82f03f02a56e7a1829fc9",
+"raylib_8h.html#af3f092d95a88cd8ec05f38c89ed11217",
+"rlgl_8h.html#a1b602e37872f572df9c00e41e84155a7",
+"rlgl_8h.html#ac6a8c5ac592a9306d56ec6b087ddf5ea",
+"struct_mesh.html#ae49723e035e74b224862576558b9701f"
 ];
 
 const SYNCONMSG = 'click to disable panel synchronization';

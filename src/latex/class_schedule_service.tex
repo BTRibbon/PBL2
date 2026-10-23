@@ -28,9 +28,9 @@ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_self_registered_schedule}{S
 \item 
 \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_schedule_service_a283e2d32ebba5403d13319696399aa15}{validate\+Minimum\+Shifts}} (const \doxymbox{\hyperlink{class_employee}{Employee}} \&employee, const std::\+string \&from\+Date, const std::\+string \&to\+Date) const
 \item 
-std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \doxymbox{\hyperlink{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147}{check\+Shift\+Coverage}} () const
+std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \doxymbox{\hyperlink{class_schedule_service_a16af22ffc2e5bbcce3fa857d10585b66}{check\+Shift\+Coverage}} (const std::\+string \&branch\+Id="{}"{}) const
 \item 
-void \doxymbox{\hyperlink{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b}{notify\+Shift\+Manager}} ()
+void \doxymbox{\hyperlink{class_schedule_service_a548e6b6f7dcf7b1d58fae89bac92d517}{notify\+Shift\+Manager}} (const std::\+string \&branch\+Id="{}"{})
 \item 
 const std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \& \doxymbox{\hyperlink{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446}{get\+Schedules}} () const
 \end{DoxyCompactItemize}
@@ -56,11 +56,11 @@ Schedule\+Service::\+\+Schedule\+Service (\begin{DoxyParamCaption}\item[{\doxymb
 {\footnotesize\ttfamily \label{class_schedule_service_afad3b5d3ad737f061ad16b97cf7bd9a7} 
 void Schedule\+Service::\+add\+Schedule (\begin{DoxyParamCaption}\item[{const std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ \&}]{schedule}{}\end{DoxyParamCaption})}
 
-\Hypertarget{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147}\index{ScheduleService@{ScheduleService}!checkShiftCoverage@{checkShiftCoverage}}
+\Hypertarget{class_schedule_service_a16af22ffc2e5bbcce3fa857d10585b66}\index{ScheduleService@{ScheduleService}!checkShiftCoverage@{checkShiftCoverage}}
 \index{checkShiftCoverage@{checkShiftCoverage}!ScheduleService@{ScheduleService}}
 \doxysubsubsection{\texorpdfstring{checkShiftCoverage()}{checkShiftCoverage()}}
-{\footnotesize\ttfamily \label{class_schedule_service_a9602b452f6ff7d6071883fb4aa15d147} 
-std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ Schedule\+Service::\+check\+Shift\+Coverage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily \label{class_schedule_service_a16af22ffc2e5bbcce3fa857d10585b66} 
+std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ Schedule\+Service::\+check\+Shift\+Coverage (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{branch\+Id}{ = {\ttfamily "{}"{}}}\end{DoxyParamCaption}) const}
 
 \Hypertarget{class_schedule_service_a58c39638b9e588241090b2d9986c890b}\index{ScheduleService@{ScheduleService}!deleteSchedule@{deleteSchedule}}
 \index{deleteSchedule@{deleteSchedule}!ScheduleService@{ScheduleService}}
@@ -74,11 +74,11 @@ std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{
 {\footnotesize\ttfamily \label{class_schedule_service_ae6ae6297f998d780ca40c9f69a153446} 
 const std::\+vector$<$ std::\+shared\+\_\+ptr$<$ \doxymbox{\hyperlink{class_schedule}{Schedule}} $>$ $>$ \& Schedule\+Service::\+get\+Schedules (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
 
-\Hypertarget{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b}\index{ScheduleService@{ScheduleService}!notifyShiftManager@{notifyShiftManager}}
+\Hypertarget{class_schedule_service_a548e6b6f7dcf7b1d58fae89bac92d517}\index{ScheduleService@{ScheduleService}!notifyShiftManager@{notifyShiftManager}}
 \index{notifyShiftManager@{notifyShiftManager}!ScheduleService@{ScheduleService}}
 \doxysubsubsection{\texorpdfstring{notifyShiftManager()}{notifyShiftManager()}}
-{\footnotesize\ttfamily \label{class_schedule_service_a8dcbd64cc0c1d9f931f0c1c062f1630b} 
-void Schedule\+Service::\+notify\+Shift\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{class_schedule_service_a548e6b6f7dcf7b1d58fae89bac92d517} 
+void Schedule\+Service::\+notify\+Shift\+Manager (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{branch\+Id}{ = {\ttfamily "{}"{}}}\end{DoxyParamCaption})}
 
 \Hypertarget{class_schedule_service_a9b339222084e58e9cdf3bd117f59a30e}\index{ScheduleService@{ScheduleService}!openOpenShift@{openOpenShift}}
 \index{openOpenShift@{openOpenShift}!ScheduleService@{ScheduleService}}

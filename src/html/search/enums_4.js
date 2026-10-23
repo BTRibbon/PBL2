@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keyboardkey_0',['KeyboardKey',['../raylib_8h.html#a94b4a5e76ed30c0af90a1bbbdc214b2b',1,'raylib.h']]]
+  ['fonttype_0',['FontType',['../raylib_8h.html#a72082b59a51886b2606c8c0be2f84684',1,'raylib.h']]]
 ];

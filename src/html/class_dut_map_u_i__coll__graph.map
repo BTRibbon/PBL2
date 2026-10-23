@@ -1,0 +1,9 @@
+<map id="DutMapUI" name="DutMapUI">
+<area shape="rect" id="Node000001" title=" " alt="" coords="108,346,267,819"/>
+<area shape="rect" id="Node000002" href="$class_dut_map.html" title=" " alt="" coords="5,5,118,275"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,272,118,329,113,330,100,277"/>
+<area shape="rect" id="Node000003" href="$struct_map_grid_point.html" title=" " alt="" coords="142,97,232,184"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="188,181,190,329,185,329,187,186"/>
+<area shape="rect" id="Node000004" href="$struct_dut_route.html" title=" " alt="" coords="260,87,333,194"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="291,191,270,323,268,330,263,329,265,321,289,196"/>
+</map>

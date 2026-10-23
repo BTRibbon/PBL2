@@ -130,8 +130,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b339222084e58e9cdf3bd117f59a30e" id="r_a9b339222084e58e9cdf3bd117f59a30e"><td class="memItemLeft">std::shared_ptr&lt; <a class="el" href="class_self_registered_schedule.html">SelfRegisteredSchedule</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a9b339222084e58e9cdf3bd117f59a30e">openOpenShift</a> (std::string scheduleId, std::string date, std::string start, std::string end, int breakTime, std::string branch, int required=1)</td></tr>
 <tr class="memitem:a4dc923e1678ca94d469cda4f3d38347f" id="r_a4dc923e1678ca94d469cda4f3d38347f"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4dc923e1678ca94d469cda4f3d38347f">registerForEmptyShift</a> (<a class="el" href="class_employee.html">Employee</a> &amp;employee, const std::string &amp;scheduleId)</td></tr>
 <tr class="memitem:a283e2d32ebba5403d13319696399aa15" id="r_a283e2d32ebba5403d13319696399aa15"><td class="memItemLeft"><a class="el" href="raylib_8h.html#af6a258d8f3ee5206d682d799316314b1">bool</a>&#160;</td><td class="memItemRight"><a class="el" href="#a283e2d32ebba5403d13319696399aa15">validateMinimumShifts</a> (const <a class="el" href="class_employee.html">Employee</a> &amp;employee, const std::string &amp;fromDate, const std::string &amp;toDate) const</td></tr>
-<tr class="memitem:a9602b452f6ff7d6071883fb4aa15d147" id="r_a9602b452f6ff7d6071883fb4aa15d147"><td class="memItemLeft">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_schedule.html">Schedule</a> &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a9602b452f6ff7d6071883fb4aa15d147">checkShiftCoverage</a> () const</td></tr>
-<tr class="memitem:a8dcbd64cc0c1d9f931f0c1c062f1630b" id="r_a8dcbd64cc0c1d9f931f0c1c062f1630b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8dcbd64cc0c1d9f931f0c1c062f1630b">notifyShiftManager</a> ()</td></tr>
+<tr class="memitem:a16af22ffc2e5bbcce3fa857d10585b66" id="r_a16af22ffc2e5bbcce3fa857d10585b66"><td class="memItemLeft">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_schedule.html">Schedule</a> &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a16af22ffc2e5bbcce3fa857d10585b66">checkShiftCoverage</a> (const std::string &amp;branchId=&quot;&quot;) const</td></tr>
+<tr class="memitem:a548e6b6f7dcf7b1d58fae89bac92d517" id="r_a548e6b6f7dcf7b1d58fae89bac92d517"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a548e6b6f7dcf7b1d58fae89bac92d517">notifyShiftManager</a> (const std::string &amp;branchId=&quot;&quot;)</td></tr>
 <tr class="memitem:ae6ae6297f998d780ca40c9f69a153446" id="r_ae6ae6297f998d780ca40c9f69a153446"><td class="memItemLeft">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_schedule.html">Schedule</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ae6ae6297f998d780ca40c9f69a153446">getSchedules</a> () const</td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -178,8 +178,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9602b452f6ff7d6071883fb4aa15d147" name="a9602b452f6ff7d6071883fb4aa15d147"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9602b452f6ff7d6071883fb4aa15d147">&#9670;&#160;</a></span>checkShiftCoverage()</h2>
+<a id="a16af22ffc2e5bbcce3fa857d10585b66" name="a16af22ffc2e5bbcce3fa857d10585b66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16af22ffc2e5bbcce3fa857d10585b66">&#9670;&#160;</a></span>checkShiftCoverage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,7 +187,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">std::vector&lt; std::shared_ptr&lt; <a class="el" href="class_schedule.html">Schedule</a> &gt; &gt; ScheduleService::checkShiftCoverage </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>branchId</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -229,8 +229,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8dcbd64cc0c1d9f931f0c1c062f1630b" name="a8dcbd64cc0c1d9f931f0c1c062f1630b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dcbd64cc0c1d9f931f0c1c062f1630b">&#9670;&#160;</a></span>notifyShiftManager()</h2>
+<a id="a548e6b6f7dcf7b1d58fae89bac92d517" name="a548e6b6f7dcf7b1d58fae89bac92d517"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a548e6b6f7dcf7b1d58fae89bac92d517">&#9670;&#160;</a></span>notifyShiftManager()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +238,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void ScheduleService::notifyShiftManager </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>branchId</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span></td><td>)</td>
           <td></td>
         </tr>
       </table>

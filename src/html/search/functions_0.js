@@ -8,8 +8,10 @@ var searchData=
   ['addrevenue_5',['addRevenue',['../class_branch.html#a767d40b8534ffa103345e7a86d7bcdaa',1,'Branch']]],
   ['addschedule_6',['addSchedule',['../class_schedule_service.html#afad3b5d3ad737f061ad16b97cf7bd9a7',1,'ScheduleService']]],
   ['addstock_7',['addStock',['../class_branch.html#aa5271a74792288e3084c4bda09b015be',1,'Branch::addStock()'],['../class_warehouse.html#a81ac61eb7e742e402de348467006800c',1,'Warehouse::addStock()']]],
-  ['assignemployee_8',['assignEmployee',['../class_schedule.html#a59e78d780f0712659bb07737dd3ff731',1,'Schedule']]],
-  ['astar_9',['aStar',['../class_map_graph.html#a1330a94e84731d6a0f53c5c724b9be95',1,'MapGraph']]],
-  ['attachaudiomixedprocessor_10',['AttachAudioMixedProcessor',['../raylib_8h.html#a5b3e5ce267937bc30c698ce67047bae7',1,'raylib.h']]],
-  ['attachaudiostreamprocessor_11',['AttachAudioStreamProcessor',['../raylib_8h.html#ac3abc24155bb95f6187f9787a1377b47',1,'raylib.h']]]
+  ['appendutf8codepoint_8',['AppendUtf8Codepoint',['../_u_i_font_8cpp.html#a6dcda02399480e17990fc3056a5ccfeb',1,'AppendUtf8Codepoint(std::string &amp;text, int codepoint, std::size_t maxChars):&#160;UIFont.cpp'],['../_u_i_font_8h.html#a870e8e24c0bc374dfda8d8603d271239',1,'AppendUtf8Codepoint(std::string &amp;text, int codepoint, std::size_t maxChars=64):&#160;UIFont.cpp']]],
+  ['arrowbutton_9',['ArrowButton',['../namespace_anim.html#a46ed9f3ca43b603ca334e4acf092b8f8',1,'Anim']]],
+  ['assignemployee_10',['assignEmployee',['../class_schedule.html#a59e78d780f0712659bb07737dd3ff731',1,'Schedule']]],
+  ['astar_11',['aStar',['../class_map_graph.html#a1330a94e84731d6a0f53c5c724b9be95',1,'MapGraph']]],
+  ['attachaudiomixedprocessor_12',['AttachAudioMixedProcessor',['../raylib_8h.html#a5b3e5ce267937bc30c698ce67047bae7',1,'raylib.h']]],
+  ['attachaudiostreamprocessor_13',['AttachAudioStreamProcessor',['../raylib_8h.html#ac3abc24155bb95f6187f9787a1377b47',1,'raylib.h']]]
 ];

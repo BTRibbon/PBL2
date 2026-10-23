@@ -2,7 +2,7 @@ var searchData=
 [
   ['main_0',['main',['../main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main.cpp']]],
   ['makedirectory_1',['MakeDirectory',['../raylib_8h.html#af3b5645ba5965070ac5099280d10c921',1,'raylib.h']]],
-  ['managementui_2',['ManagementUI',['../class_management_u_i.html#a7fdf9cc499b381b1e798c549d5b5a615',1,'ManagementUI']]],
+  ['managementui_2',['ManagementUI',['../class_management_u_i.html#adc45db747323d5b93c2191a1f12e31a7',1,'ManagementUI']]],
   ['manager_3',['Manager',['../class_manager.html#a759fee9d5f43dd604e5fd1cf5b071296',1,'Manager']]],
   ['mapgraph_4',['MapGraph',['../class_map_graph.html#ae9ce49edf43536337b17a83ac7de512f',1,'MapGraph']]],
   ['matrixadd_5',['MatrixAdd',['../raymath_8h.html#ac75e0c944d4a790babd770c0a736885d',1,'raymath.h']]],
@@ -33,8 +33,9 @@ var searchData=
   ['measuretext_30',['MeasureText',['../raylib_8h.html#ab8790400f6338ae7340132dc91049d61',1,'raylib.h']]],
   ['measuretextcodepoints_31',['MeasureTextCodepoints',['../raylib_8h.html#a429f1c79446aab25d9cd8790dfb7f01e',1,'raylib.h']]],
   ['measuretextex_32',['MeasureTextEx',['../raylib_8h.html#a219800753027d94d3071d7e7b837fdcf',1,'raylib.h']]],
-  ['memalloc_33',['MemAlloc',['../raylib_8h.html#a8cee11978e51aaece974b27971627762',1,'raylib.h']]],
-  ['memfree_34',['MemFree',['../raylib_8h.html#a006970a29ef674a5371ff726f8ecde12',1,'raylib.h']]],
-  ['memrealloc_35',['MemRealloc',['../raylib_8h.html#af09b940e5ea054bed52398d260896f18',1,'raylib.h']]],
-  ['minimizewindow_36',['MinimizeWindow',['../raylib_8h.html#aded1068501bbeff6d2ba97bfdb80e7e9',1,'raylib.h']]]
+  ['measureuitext_33',['MeasureUiText',['../_u_i_font_8cpp.html#a20ef541794b46ababbfbed1a16b2d94e',1,'MeasureUiText(const char *text, float size):&#160;UIFont.cpp'],['../_u_i_font_8h.html#a20ef541794b46ababbfbed1a16b2d94e',1,'MeasureUiText(const char *text, float size):&#160;UIFont.cpp']]],
+  ['memalloc_34',['MemAlloc',['../raylib_8h.html#a8cee11978e51aaece974b27971627762',1,'raylib.h']]],
+  ['memfree_35',['MemFree',['../raylib_8h.html#a006970a29ef674a5371ff726f8ecde12',1,'raylib.h']]],
+  ['memrealloc_36',['MemRealloc',['../raylib_8h.html#af09b940e5ea054bed52398d260896f18',1,'raylib.h']]],
+  ['minimizewindow_37',['MinimizeWindow',['../raylib_8h.html#aded1068501bbeff6d2ba97bfdb80e7e9',1,'raylib.h']]]
 ];

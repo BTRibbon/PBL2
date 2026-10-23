@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['npatchlayout_0',['NPatchLayout',['../raylib_8h.html#abfcc85d1626e997d4990ca13760f7ec4',1,'raylib.h']]]
+  ['keyboardkey_0',['KeyboardKey',['../raylib_8h.html#a94b4a5e76ed30c0af90a1bbbdc214b2b',1,'raylib.h']]]
 ];

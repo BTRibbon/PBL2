@@ -125,9 +125,24 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a0496e58edc63120801775573998440c3" id="r_a0496e58edc63120801775573998440c3"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a0496e58edc63120801775573998440c3">revenue</a> = 0</td></tr>
 <tr class="memitem:aa36ef174be2f0f8f9ede8cd934992027" id="r_aa36ef174be2f0f8f9ede8cd934992027"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#aa36ef174be2f0f8f9ede8cd934992027">orderCount</a> = 0</td></tr>
 <tr class="memitem:a3a713aefa9960631ca17358007caad5f" id="r_a3a713aefa9960631ca17358007caad5f"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a3a713aefa9960631ca17358007caad5f">pendingCount</a> = 0</td></tr>
-<tr class="memitem:a1f420ca2c9c6f1dbc7baaba189e3a945" id="r_a1f420ca2c9c6f1dbc7baaba189e3a945"><td class="memItemLeft">std::array&lt; int, products.size()&gt;&#160;</td><td class="memItemRight"><a class="el" href="#a1f420ca2c9c6f1dbc7baaba189e3a945">productQuantities</a> {}</td></tr>
+<tr class="memitem:a55c0a1b7c8aaa832bcb58a1ec57c84b6" id="r_a55c0a1b7c8aaa832bcb58a1ec57c84b6"><td class="memItemLeft">std::unordered_map&lt; std::string, int &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a55c0a1b7c8aaa832bcb58a1ec57c84b6">productQuantities</a></td></tr>
+<tr class="memitem:a65fb87bc9952bc7ccb25ad491a30cd8f" id="r_a65fb87bc9952bc7ccb25ad491a30cd8f"><td class="memItemLeft">std::vector&lt; <a class="el" href="struct_branch_stat.html">BranchStat</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a65fb87bc9952bc7ccb25ad491a30cd8f">branchBreakdown</a></td></tr>
 </table>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a65fb87bc9952bc7ccb25ad491a30cd8f" name="a65fb87bc9952bc7ccb25ad491a30cd8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65fb87bc9952bc7ccb25ad491a30cd8f">&#9670;&#160;</a></span>branchBreakdown</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="struct_branch_stat.html">BranchStat</a>&gt; ReportStats::branchBreakdown</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa36ef174be2f0f8f9ede8cd934992027" name="aa36ef174be2f0f8f9ede8cd934992027"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa36ef174be2f0f8f9ede8cd934992027">&#9670;&#160;</a></span>orderCount</h2>
 
@@ -156,14 +171,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1f420ca2c9c6f1dbc7baaba189e3a945" name="a1f420ca2c9c6f1dbc7baaba189e3a945"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f420ca2c9c6f1dbc7baaba189e3a945">&#9670;&#160;</a></span>productQuantities</h2>
+<a id="a55c0a1b7c8aaa832bcb58a1ec57c84b6" name="a55c0a1b7c8aaa832bcb58a1ec57c84b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55c0a1b7c8aaa832bcb58a1ec57c84b6">&#9670;&#160;</a></span>productQuantities</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;int, products.size()&gt; ReportStats::productQuantities {}</td>
+          <td class="memname">std::unordered_map&lt;std::string, int&gt; ReportStats::productQuantities</td>
         </tr>
       </table>
 </div><div class="memdoc">

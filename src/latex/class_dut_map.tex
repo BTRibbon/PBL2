@@ -1,0 +1,138 @@
+\doxysection{Dut\+Map Class Reference}
+\hypertarget{class_dut_map}{}\label{class_dut_map}\index{DutMap@{DutMap}}
+
+
+{\ttfamily \+\#include $<$Dut\+Map\+UI.\+h$>$}
+
+
+
+Collaboration diagram for Dut\+Map:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=165pt]{class_dut_map__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_dut_map_afea08802552659eff065d2e4e4418e70}{Dut\+Map}} ()
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_a5ca922a81a361e5e493a8aef2c82a77e}{is\+Inside}} (int x, int y) const
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_ad9f1e29d2673043e5f21db43ce539f5f}{is\+Blocked}} (int x, int y) const
+\item 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} \doxymbox{\hyperlink{class_dut_map_a237cb4fa98ba9a584a4fa9c652dd6bd2}{inside\+Blocked}} (int x, int y) const
+\item 
+\doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462}{Dut\+Cell\+Type}} \doxymbox{\hyperlink{class_dut_map_aa1766aee48f4f72ad23236cee4b746ce}{get\+Cell\+Type}} (int x, int y) const
+\item 
+int \doxymbox{\hyperlink{class_dut_map_ac888e1038ed9b80445e3ec2a6904e2d9}{node\+At}} (int x, int y) const
+\item 
+int \doxymbox{\hyperlink{class_dut_map_accbb0764a2bfefa4ce2ccaaff16588d4}{get\+NodeX}} (int node) const
+\item 
+int \doxymbox{\hyperlink{class_dut_map_ab4c964636d1bff8da551b03f52d20617}{get\+NodeY}} (int node) const
+\item 
+std::\+vector$<$ int $>$ \doxymbox{\hyperlink{class_dut_map_a763611f4a89da8b31581919151ceb543}{neighbours}} (int node) const
+\item 
+\doxymbox{\hyperlink{struct_dut_route}{Dut\+Route}} \doxymbox{\hyperlink{class_dut_map_a1891e228b4f4bb464d75f01113a0cb72}{find\+Route}} (int start, int target, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} a\+Star) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int \doxymbox{\hyperlink{class_dut_map_abf0c810290ea01af810263e098b12683}{COLS}} = 30
+\item 
+static constexpr int \doxymbox{\hyperlink{class_dut_map_a1441d049386f2f1f78c49bf2fdadddee}{ROWS}} = 20
+\end{DoxyCompactItemize}
+
+
+\label{class_dut_map_doc-constructors}
+\Hypertarget{class_dut_map_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_dut_map_afea08802552659eff065d2e4e4418e70}\index{DutMap@{DutMap}!DutMap@{DutMap}}
+\index{DutMap@{DutMap}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{DutMap()}{DutMap()}}
+{\footnotesize\ttfamily \label{class_dut_map_afea08802552659eff065d2e4e4418e70} 
+Dut\+Map::\+\+Dut\+Map (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_dut_map_doc-func-members}
+\Hypertarget{class_dut_map_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_dut_map_a1891e228b4f4bb464d75f01113a0cb72}\index{DutMap@{DutMap}!findRoute@{findRoute}}
+\index{findRoute@{findRoute}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{findRoute()}{findRoute()}}
+{\footnotesize\ttfamily \label{class_dut_map_a1891e228b4f4bb464d75f01113a0cb72} 
+\doxymbox{\hyperlink{struct_dut_route}{Dut\+Route}} Dut\+Map::\+find\+Route (\begin{DoxyParamCaption}\item[{int}]{start}{, }\item[{int}]{target}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{a\+Star}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_dut_map_aa1766aee48f4f72ad23236cee4b746ce}\index{DutMap@{DutMap}!getCellType@{getCellType}}
+\index{getCellType@{getCellType}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{getCellType()}{getCellType()}}
+{\footnotesize\ttfamily \label{class_dut_map_aa1766aee48f4f72ad23236cee4b746ce} 
+\doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462}{Dut\+Cell\+Type}} Dut\+Map::\+get\+Cell\+Type (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_accbb0764a2bfefa4ce2ccaaff16588d4}\index{DutMap@{DutMap}!getNodeX@{getNodeX}}
+\index{getNodeX@{getNodeX}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{getNodeX()}{getNodeX()}}
+{\footnotesize\ttfamily \label{class_dut_map_accbb0764a2bfefa4ce2ccaaff16588d4} 
+int Dut\+Map::\+get\+NodeX (\begin{DoxyParamCaption}\item[{int}]{node}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_ab4c964636d1bff8da551b03f52d20617}\index{DutMap@{DutMap}!getNodeY@{getNodeY}}
+\index{getNodeY@{getNodeY}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{getNodeY()}{getNodeY()}}
+{\footnotesize\ttfamily \label{class_dut_map_ab4c964636d1bff8da551b03f52d20617} 
+int Dut\+Map::\+get\+NodeY (\begin{DoxyParamCaption}\item[{int}]{node}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_a237cb4fa98ba9a584a4fa9c652dd6bd2}\index{DutMap@{DutMap}!insideBlocked@{insideBlocked}}
+\index{insideBlocked@{insideBlocked}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{insideBlocked()}{insideBlocked()}}
+{\footnotesize\ttfamily \label{class_dut_map_a237cb4fa98ba9a584a4fa9c652dd6bd2} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map::\+inside\+Blocked (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_ad9f1e29d2673043e5f21db43ce539f5f}\index{DutMap@{DutMap}!isBlocked@{isBlocked}}
+\index{isBlocked@{isBlocked}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{isBlocked()}{isBlocked()}}
+{\footnotesize\ttfamily \label{class_dut_map_ad9f1e29d2673043e5f21db43ce539f5f} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map::\+is\+Blocked (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_a5ca922a81a361e5e493a8aef2c82a77e}\index{DutMap@{DutMap}!isInside@{isInside}}
+\index{isInside@{isInside}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{isInside()}{isInside()}}
+{\footnotesize\ttfamily \label{class_dut_map_a5ca922a81a361e5e493a8aef2c82a77e} 
+\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} Dut\+Map::\+is\+Inside (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{class_dut_map_a763611f4a89da8b31581919151ceb543}\index{DutMap@{DutMap}!neighbours@{neighbours}}
+\index{neighbours@{neighbours}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{neighbours()}{neighbours()}}
+{\footnotesize\ttfamily \label{class_dut_map_a763611f4a89da8b31581919151ceb543} 
+std::\+vector$<$ int $>$ Dut\+Map::\+neighbours (\begin{DoxyParamCaption}\item[{int}]{node}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_dut_map_ac888e1038ed9b80445e3ec2a6904e2d9}\index{DutMap@{DutMap}!nodeAt@{nodeAt}}
+\index{nodeAt@{nodeAt}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{nodeAt()}{nodeAt()}}
+{\footnotesize\ttfamily \label{class_dut_map_ac888e1038ed9b80445e3ec2a6904e2d9} 
+int Dut\+Map::\+node\+At (\begin{DoxyParamCaption}\item[{int}]{x}{, }\item[{int}]{y}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{class_dut_map_doc-variable-members}
+\Hypertarget{class_dut_map_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_dut_map_abf0c810290ea01af810263e098b12683}\index{DutMap@{DutMap}!COLS@{COLS}}
+\index{COLS@{COLS}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{COLS}{COLS}}
+{\footnotesize\ttfamily \label{class_dut_map_abf0c810290ea01af810263e098b12683} 
+int Dut\+Map::\+\+COLS = 30\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+\Hypertarget{class_dut_map_a1441d049386f2f1f78c49bf2fdadddee}\index{DutMap@{DutMap}!ROWS@{ROWS}}
+\index{ROWS@{ROWS}!DutMap@{DutMap}}
+\doxysubsubsection{\texorpdfstring{ROWS}{ROWS}}
+{\footnotesize\ttfamily \label{class_dut_map_a1441d049386f2f1f78c49bf2fdadddee} 
+int Dut\+Map::\+\+ROWS = 20\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+UI/\doxymbox{\hyperlink{_dut_map_u_i_8h}{Dut\+Map\+UI.\+h}}\item 
+UI/\doxymbox{\hyperlink{_dut_map_u_i_8cpp}{Dut\+Map\+UI.\+cpp}}\end{DoxyCompactItemize}

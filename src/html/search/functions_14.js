@@ -6,5 +6,6 @@ var searchData=
   ['waveformat_3',['WaveFormat',['../raylib_8h.html#ab54edbb74d0b414c47cba9bebd106387',1,'raylib.h']]],
   ['width_4',['width',['../class_map_graph.html#ab9684551fd8ac0d96a4624f89000a5bb',1,'MapGraph']]],
   ['windowshouldclose_5',['WindowShouldClose',['../raylib_8h.html#a14dab2feeb947c7810c3b8830ffee233',1,'raylib.h']]],
-  ['wrap_6',['Wrap',['../raymath_8h.html#a860599a4d89fb83090024811f068f114',1,'raymath.h']]]
+  ['withalpha_6',['WithAlpha',['../namespace_anim.html#a363e588aa4620b3a756ecf63bcf36a4c',1,'Anim']]],
+  ['wrap_7',['Wrap',['../raymath_8h.html#a860599a4d89fb83090024811f068f114',1,'raymath.h']]]
 ];

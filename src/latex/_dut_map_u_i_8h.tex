@@ -1,0 +1,112 @@
+\doxysection{UI/\+\+Dut\+Map\+UI.h File Reference}
+\hypertarget{_dut_map_u_i_8h}{}\label{_dut_map_u_i_8h}\index{UI/DutMapUI.h@{UI/DutMapUI.h}}
+{\ttfamily \+\#include "{}raylib.\+h"{}}\newline
+{\ttfamily \+\#include "{}../\+models/\+\+Branch.\+h"{}}\newline
+{\ttfamily \+\#include "{}../\+models/\+\+Restaurant\+Chain.\+h"{}}\newline
+{\ttfamily \+\#include "{}../\+models/\+\+User.\+h"{}}\newline
+{\ttfamily \+\#include "{}../\+datastructures/\+\+Order\+Queue.\+h"{}}\newline
+{\ttfamily \+\#include $<$string$>$}\newline
+{\ttfamily \+\#include $<$vector$>$}\newline
+{\ttfamily \+\#include $<$memory$>$}\newline
+{\ttfamily \+\#include $<$queue$>$}\newline
+Include dependency graph for Dut\+Map\+UI.\+h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_dut_map_u_i_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{_dut_map_u_i_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{struct_map_grid_point}{Map\+Grid\+Point}}
+\item 
+struct \doxymbox{\hyperlink{struct_dut_route}{Dut\+Route}}
+\item 
+class \doxymbox{\hyperlink{class_dut_map}{Dut\+Map}}
+\item 
+class \doxymbox{\hyperlink{class_dut_map_u_i}{Dut\+Map\+UI}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462}{Dut\+Cell\+Type}} \{ \newline
+\doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462ad11aed2ff81f20a2e2b7e0cf06ee1a37}{Road}}
+, \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a675e9e1e0711e3f10b1b678a21f8dac4}{Main\+Highway}}
+, \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462aa0f50d0ee8554abea96c1afd03ea0eee}{Campus}}
+, \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a330935ae12bb4cdcae51cc6675656c28}{Campus\+Building}}
+, \newline
+\doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a31840a66a8d6d223e5b0540138768838}{Market}}
+, \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a27634ff8002b12e75d98e07ccd005d18}{Water}}
+, \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462ac39b56d4489fb2507289e7ae19567b80}{Building}}
+, \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a910101318275914a9f141d4e255bf8c8}{Park}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\label{_dut_map_u_i_8h_doc-enum-members}
+\Hypertarget{_dut_map_u_i_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462}\index{DutMapUI.h@{DutMapUI.h}!DutCellType@{DutCellType}}
+\index{DutCellType@{DutCellType}!DutMapUI.h@{DutMapUI.h}}
+\doxysubsubsection{\texorpdfstring{DutCellType}{DutCellType}}
+{\footnotesize\ttfamily \label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462} 
+enum class \doxymbox{\hyperlink{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462}{Dut\+Cell\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Road@{Road}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!Road@{Road}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462ad11aed2ff81f20a2e2b7e0cf06ee1a37}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462ad11aed2ff81f20a2e2b7e0cf06ee1a37} 
+Road&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MainHighway@{MainHighway}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!MainHighway@{MainHighway}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a675e9e1e0711e3f10b1b678a21f8dac4}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a675e9e1e0711e3f10b1b678a21f8dac4} 
+Main\+Highway&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Campus@{Campus}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!Campus@{Campus}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462aa0f50d0ee8554abea96c1afd03ea0eee}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462aa0f50d0ee8554abea96c1afd03ea0eee} 
+Campus&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CampusBuilding@{CampusBuilding}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!CampusBuilding@{CampusBuilding}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a330935ae12bb4cdcae51cc6675656c28}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a330935ae12bb4cdcae51cc6675656c28} 
+Campus\+Building&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Market@{Market}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!Market@{Market}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a31840a66a8d6d223e5b0540138768838}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a31840a66a8d6d223e5b0540138768838} 
+Market&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Water@{Water}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!Water@{Water}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a27634ff8002b12e75d98e07ccd005d18}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a27634ff8002b12e75d98e07ccd005d18} 
+Water&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Building@{Building}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!Building@{Building}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462ac39b56d4489fb2507289e7ae19567b80}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462ac39b56d4489fb2507289e7ae19567b80} 
+Building&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Park@{Park}!DutMapUI.h@{DutMapUI.h}}
+\index{DutMapUI.h@{DutMapUI.h}!Park@{Park}}
+}\Hypertarget{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a910101318275914a9f141d4e255bf8c8}\label{_dut_map_u_i_8h_a974163822d6d5b8adb691cd825342462a910101318275914a9f141d4e255bf8c8} 
+Park&\\
+\hline
+
+\end{DoxyEnumFields}

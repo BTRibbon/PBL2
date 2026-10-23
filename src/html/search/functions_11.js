@@ -26,7 +26,8 @@ var searchData=
   ['texttosnake_23',['TextToSnake',['../raylib_8h.html#af235ba5104e1da0b93aa009df5ce9df1',1,'raylib.h']]],
   ['texttoupper_24',['TextToUpper',['../raylib_8h.html#ad32f2431e9fa149b1092a7a3c77ec13d',1,'raylib.h']]],
   ['timekeeping_25',['Timekeeping',['../class_timekeeping.html#a624bc15d421856bb52335b2994607008',1,'Timekeeping']]],
-  ['toggleborderlesswindowed_26',['ToggleBorderlessWindowed',['../raylib_8h.html#ad6f84ea7e00d92013745e7cd0477c230',1,'raylib.h']]],
-  ['togglefullscreen_27',['ToggleFullscreen',['../raylib_8h.html#a93e6fe98a216087fb8226e6361b545bf',1,'raylib.h']]],
-  ['tracelog_28',['TraceLog',['../raylib_8h.html#a7c00212b28a73fc28770e22cef8283ff',1,'raylib.h']]]
+  ['toastcolor_26',['ToastColor',['../namespace_anim.html#acb8a2c3c6680bd21152bf4faa4eacc8d',1,'Anim']]],
+  ['toggleborderlesswindowed_27',['ToggleBorderlessWindowed',['../raylib_8h.html#ad6f84ea7e00d92013745e7cd0477c230',1,'raylib.h']]],
+  ['togglefullscreen_28',['ToggleFullscreen',['../raylib_8h.html#a93e6fe98a216087fb8226e6361b545bf',1,'raylib.h']]],
+  ['tracelog_29',['TraceLog',['../raylib_8h.html#a7c00212b28a73fc28770e22cef8283ff',1,'raylib.h']]]
 ];

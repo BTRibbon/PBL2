@@ -124,10 +124,28 @@ Collaboration diagram for ShiftManager:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4cf3010db28f5ba765c6e1940b45bfd5" id="r_a4cf3010db28f5ba765c6e1940b45bfd5"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a4cf3010db28f5ba765c6e1940b45bfd5">notifyMissingCoverage</a> (const std::string &amp;scheduleId, int missingEmployees)</td></tr>
+<tr class="memitem:aa68c1de13baa121437a82c46a5086099" id="r_aa68c1de13baa121437a82c46a5086099"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa68c1de13baa121437a82c46a5086099">clearAlerts</a> ()</td></tr>
+<tr class="memitem:a79b35ffa489047928fcb809df333a26d" id="r_a79b35ffa489047928fcb809df333a26d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a79b35ffa489047928fcb809df333a26d">notifyMissingCoverage</a> (const std::string &amp;scheduleId, int missingEmployees, const std::string &amp;branchId=&quot;&quot;)</td></tr>
 <tr class="memitem:a938b3139731c9152d36d7f8ce0fc04ef" id="r_a938b3139731c9152d36d7f8ce0fc04ef"><td class="memItemLeft">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a938b3139731c9152d36d7f8ce0fc04ef">getAlerts</a> () const</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="aa68c1de13baa121437a82c46a5086099" name="aa68c1de13baa121437a82c46a5086099"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa68c1de13baa121437a82c46a5086099">&#9670;&#160;</a></span>clearAlerts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ShiftManager::clearAlerts </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a938b3139731c9152d36d7f8ce0fc04ef" name="a938b3139731c9152d36d7f8ce0fc04ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a938b3139731c9152d36d7f8ce0fc04ef">&#9670;&#160;</a></span>getAlerts()</h2>
 
@@ -145,8 +163,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a4cf3010db28f5ba765c6e1940b45bfd5" name="a4cf3010db28f5ba765c6e1940b45bfd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cf3010db28f5ba765c6e1940b45bfd5">&#9670;&#160;</a></span>notifyMissingCoverage()</h2>
+<a id="a79b35ffa489047928fcb809df333a26d" name="a79b35ffa489047928fcb809df333a26d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79b35ffa489047928fcb809df333a26d">&#9670;&#160;</a></span>notifyMissingCoverage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +177,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>missingEmployees</em></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>missingEmployees</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>branchId</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

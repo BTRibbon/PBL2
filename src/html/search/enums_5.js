@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['materialmapindex_0',['MaterialMapIndex',['../raylib_8h.html#a4161f7a12efce73263ae0c106454ceb4',1,'raylib.h']]],
-  ['mousebutton_1',['MouseButton',['../raylib_8h.html#ac1ec3647c005eacad401b06e7e18f711',1,'raylib.h']]],
-  ['mousecursor_2',['MouseCursor',['../raylib_8h.html#a1d321f70023d9a5dbd2a2add15ac6e6b',1,'raylib.h']]]
+  ['gamepadaxis_0',['GamepadAxis',['../raylib_8h.html#a2f6dea2b13a0a246a2c7fbed4cf05c8e',1,'raylib.h']]],
+  ['gamepadbutton_1',['GamepadButton',['../raylib_8h.html#a7a2d71f78acae0c6efa38d7f1fea596f',1,'raylib.h']]],
+  ['gesture_2',['Gesture',['../raylib_8h.html#a4c115a495b9dd6dfa20244e79f4fdc12',1,'raylib.h']]]
 ];

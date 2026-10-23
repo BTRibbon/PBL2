@@ -1,0 +1,163 @@
+\doxysection{UI/\+\+UIFont.h File Reference}
+\hypertarget{_u_i_font_8h}{}\label{_u_i_font_8h}\index{UI/UIFont.h@{UI/UIFont.h}}
+{\ttfamily \+\#include "{}raylib.\+h"{}}\newline
+{\ttfamily \+\#include $<$string$>$}\newline
+{\ttfamily \+\#include $<$vector$>$}\newline
+Include dependency graph for UIFont.\+h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{_u_i_font_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_u_i_font_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_aab03c3f7905d52636ab269534139d454}{Init\+Ui\+Font}} ()
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a07380c0469fd1a5ba52a13d1fc248e02}{Unload\+Ui\+Font}} ()
+\item 
+\doxymbox{\hyperlink{struct_font}{Font}} \doxymbox{\hyperlink{_u_i_font_8h_a546b082f49f8c99b64080bf149bd025b}{Get\+Ui\+Font}} ()
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a37220909382ffdc0e289fa5d69fa60f0}{Draw\+Ui\+Text}} (const char \texorpdfstring{$\ast$}{*}text, float x, float y, float size, \doxymbox{\hyperlink{struct_color}{Color}} color)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a8f004383fbb55b1adbb238ac0d0fc9bc}{Draw\+Ui\+Text\+Right}} (const char \texorpdfstring{$\ast$}{*}text, float rightX, float y, float size, \doxymbox{\hyperlink{struct_color}{Color}} color)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_ab496854f496c7ef5db34a6f7c3e696a1}{Draw\+Ui\+Text\+Center}} (const char \texorpdfstring{$\ast$}{*}text, float centerX, float y, float size, \doxymbox{\hyperlink{struct_color}{Color}} color)
+\item 
+float \doxymbox{\hyperlink{_u_i_font_8h_a20ef541794b46ababbfbed1a16b2d94e}{Measure\+Ui\+Text}} (const char \texorpdfstring{$\ast$}{*}text, float size)
+\item 
+std::\+string \doxymbox{\hyperlink{_u_i_font_8h_a33645a4b49f30693328847b41e1017f7}{Fit\+Text\+To\+Width}} (const char \texorpdfstring{$\ast$}{*}text, float max\+Width, float size)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a14821458e6ae4fa4d79620a62631be31}{Draw\+Ui\+Text\+Fitted}} (const char \texorpdfstring{$\ast$}{*}text, float x, float y, float max\+Width, float size, \doxymbox{\hyperlink{struct_color}{Color}} color)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_addb5dcde6b62ded22e041754f90fdd93}{Draw\+Ui\+Text\+Center\+Fitted}} (const char \texorpdfstring{$\ast$}{*}text, float centerX, float y, float max\+Width, float size, \doxymbox{\hyperlink{struct_color}{Color}} color)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a8c1e4ac80098359a9016565812d4dee1}{Draw\+Ui\+Text\+In\+Rect}} (const char \texorpdfstring{$\ast$}{*}text, \doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, float size, \doxymbox{\hyperlink{struct_color}{Color}} color, int align=-\/1, float paddingX=10.\+0f)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a6897336f04190b31416744da67f2d191}{Draw\+Ui\+Text\+Wrapped}} (const char \texorpdfstring{$\ast$}{*}text, \doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, float size, \doxymbox{\hyperlink{struct_color}{Color}} color, float line\+Spacing=4.\+0f)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a3ea45f928b546cd5103c059f9d677472}{Pop\+Utf8\+Char}} (std::\+string \&text)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a870e8e24c0bc374dfda8d8603d271239}{Append\+Utf8\+Codepoint}} (std::\+string \&text, int codepoint, std::\+size\+\_\+t max\+Chars=64)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a1891b16d5c40447124f095bbdc565b57}{Draw\+Vertical\+Scrollbar}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} track\+Bounds, int total\+Items, int visible\+Items, int scroll\+Offset)
+\item 
+void \doxymbox{\hyperlink{_u_i_font_8h_a72e7c2d035d18c72f0c29574171f1229}{Draw\+Ui\+Input\+Box}} (\doxymbox{\hyperlink{struct_rectangle}{Rectangle}} bounds, const std::\+string \&value, const char \texorpdfstring{$\ast$}{*}placeholder, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} is\+Focused, \doxymbox{\hyperlink{struct_vector2}{Vector2}} mouse, \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}} is\+Password=\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}})
+\item 
+\doxymbox{\hyperlink{struct_color}{Color}} \doxymbox{\hyperlink{_u_i_font_8h_a225d9b3f3254824a6fcee08b9ce36fd3}{Brighten\+Color}} (\doxymbox{\hyperlink{struct_color}{Color}} c, int delta=18)
+\end{DoxyCompactItemize}
+
+
+\label{_u_i_font_8h_doc-func-members}
+\Hypertarget{_u_i_font_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_u_i_font_8h_a870e8e24c0bc374dfda8d8603d271239}\index{UIFont.h@{UIFont.h}!AppendUtf8Codepoint@{AppendUtf8Codepoint}}
+\index{AppendUtf8Codepoint@{AppendUtf8Codepoint}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{AppendUtf8Codepoint()}{AppendUtf8Codepoint()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a870e8e24c0bc374dfda8d8603d271239} 
+void Append\+Utf8\+Codepoint (\begin{DoxyParamCaption}\item[{std::\+string \&}]{text}{, }\item[{int}]{codepoint}{, }\item[{std::\+size\+\_\+t}]{max\+Chars}{ = {\ttfamily 64}}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a225d9b3f3254824a6fcee08b9ce36fd3}\index{UIFont.h@{UIFont.h}!BrightenColor@{BrightenColor}}
+\index{BrightenColor@{BrightenColor}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{BrightenColor()}{BrightenColor()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a225d9b3f3254824a6fcee08b9ce36fd3} 
+\doxymbox{\hyperlink{struct_color}{Color}} Brighten\+Color (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{c}{, }\item[{int}]{delta}{ = {\ttfamily 18}}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a72e7c2d035d18c72f0c29574171f1229}\index{UIFont.h@{UIFont.h}!DrawUiInputBox@{DrawUiInputBox}}
+\index{DrawUiInputBox@{DrawUiInputBox}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiInputBox()}{DrawUiInputBox()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a72e7c2d035d18c72f0c29574171f1229} 
+void Draw\+Ui\+Input\+Box (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{const std::\+string \&}]{value}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{placeholder}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{is\+Focused}{, }\item[{\doxymbox{\hyperlink{struct_vector2}{Vector2}}}]{mouse}{, }\item[{\doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1}{bool}}}]{is\+Password}{ = {\ttfamily \doxymbox{\hyperlink{raylib_8h_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a37220909382ffdc0e289fa5d69fa60f0}\index{UIFont.h@{UIFont.h}!DrawUiText@{DrawUiText}}
+\index{DrawUiText@{DrawUiText}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiText()}{DrawUiText()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a37220909382ffdc0e289fa5d69fa60f0} 
+void Draw\+Ui\+Text (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{x}{, }\item[{float}]{y}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_ab496854f496c7ef5db34a6f7c3e696a1}\index{UIFont.h@{UIFont.h}!DrawUiTextCenter@{DrawUiTextCenter}}
+\index{DrawUiTextCenter@{DrawUiTextCenter}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiTextCenter()}{DrawUiTextCenter()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_ab496854f496c7ef5db34a6f7c3e696a1} 
+void Draw\+Ui\+Text\+Center (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{centerX}{, }\item[{float}]{y}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_addb5dcde6b62ded22e041754f90fdd93}\index{UIFont.h@{UIFont.h}!DrawUiTextCenterFitted@{DrawUiTextCenterFitted}}
+\index{DrawUiTextCenterFitted@{DrawUiTextCenterFitted}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiTextCenterFitted()}{DrawUiTextCenterFitted()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_addb5dcde6b62ded22e041754f90fdd93} 
+void Draw\+Ui\+Text\+Center\+Fitted (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{centerX}{, }\item[{float}]{y}{, }\item[{float}]{max\+Width}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a14821458e6ae4fa4d79620a62631be31}\index{UIFont.h@{UIFont.h}!DrawUiTextFitted@{DrawUiTextFitted}}
+\index{DrawUiTextFitted@{DrawUiTextFitted}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiTextFitted()}{DrawUiTextFitted()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a14821458e6ae4fa4d79620a62631be31} 
+void Draw\+Ui\+Text\+Fitted (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{x}{, }\item[{float}]{y}{, }\item[{float}]{max\+Width}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a8c1e4ac80098359a9016565812d4dee1}\index{UIFont.h@{UIFont.h}!DrawUiTextInRect@{DrawUiTextInRect}}
+\index{DrawUiTextInRect@{DrawUiTextInRect}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiTextInRect()}{DrawUiTextInRect()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a8c1e4ac80098359a9016565812d4dee1} 
+void Draw\+Ui\+Text\+In\+Rect (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{, }\item[{int}]{align}{ = {\ttfamily -\/1}, }\item[{float}]{paddingX}{ = {\ttfamily 10.0f}}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a8f004383fbb55b1adbb238ac0d0fc9bc}\index{UIFont.h@{UIFont.h}!DrawUiTextRight@{DrawUiTextRight}}
+\index{DrawUiTextRight@{DrawUiTextRight}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiTextRight()}{DrawUiTextRight()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a8f004383fbb55b1adbb238ac0d0fc9bc} 
+void Draw\+Ui\+Text\+Right (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{rightX}{, }\item[{float}]{y}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a6897336f04190b31416744da67f2d191}\index{UIFont.h@{UIFont.h}!DrawUiTextWrapped@{DrawUiTextWrapped}}
+\index{DrawUiTextWrapped@{DrawUiTextWrapped}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawUiTextWrapped()}{DrawUiTextWrapped()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a6897336f04190b31416744da67f2d191} 
+void Draw\+Ui\+Text\+Wrapped (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{bounds}{, }\item[{float}]{size}{, }\item[{\doxymbox{\hyperlink{struct_color}{Color}}}]{color}{, }\item[{float}]{line\+Spacing}{ = {\ttfamily 4.0f}}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a1891b16d5c40447124f095bbdc565b57}\index{UIFont.h@{UIFont.h}!DrawVerticalScrollbar@{DrawVerticalScrollbar}}
+\index{DrawVerticalScrollbar@{DrawVerticalScrollbar}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{DrawVerticalScrollbar()}{DrawVerticalScrollbar()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a1891b16d5c40447124f095bbdc565b57} 
+void Draw\+Vertical\+Scrollbar (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_rectangle}{Rectangle}}}]{track\+Bounds}{, }\item[{int}]{total\+Items}{, }\item[{int}]{visible\+Items}{, }\item[{int}]{scroll\+Offset}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a33645a4b49f30693328847b41e1017f7}\index{UIFont.h@{UIFont.h}!FitTextToWidth@{FitTextToWidth}}
+\index{FitTextToWidth@{FitTextToWidth}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{FitTextToWidth()}{FitTextToWidth()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a33645a4b49f30693328847b41e1017f7} 
+std::\+string Fit\+Text\+To\+Width (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{max\+Width}{, }\item[{float}]{size}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a546b082f49f8c99b64080bf149bd025b}\index{UIFont.h@{UIFont.h}!GetUiFont@{GetUiFont}}
+\index{GetUiFont@{GetUiFont}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{GetUiFont()}{GetUiFont()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a546b082f49f8c99b64080bf149bd025b} 
+\doxymbox{\hyperlink{struct_font}{Font}} Get\+Ui\+Font (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_aab03c3f7905d52636ab269534139d454}\index{UIFont.h@{UIFont.h}!InitUiFont@{InitUiFont}}
+\index{InitUiFont@{InitUiFont}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{InitUiFont()}{InitUiFont()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_aab03c3f7905d52636ab269534139d454} 
+void Init\+Ui\+Font (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a20ef541794b46ababbfbed1a16b2d94e}\index{UIFont.h@{UIFont.h}!MeasureUiText@{MeasureUiText}}
+\index{MeasureUiText@{MeasureUiText}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{MeasureUiText()}{MeasureUiText()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a20ef541794b46ababbfbed1a16b2d94e} 
+float Measure\+Ui\+Text (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{text}{, }\item[{float}]{size}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a3ea45f928b546cd5103c059f9d677472}\index{UIFont.h@{UIFont.h}!PopUtf8Char@{PopUtf8Char}}
+\index{PopUtf8Char@{PopUtf8Char}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{PopUtf8Char()}{PopUtf8Char()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a3ea45f928b546cd5103c059f9d677472} 
+void Pop\+Utf8\+Char (\begin{DoxyParamCaption}\item[{std::\+string \&}]{text}{}\end{DoxyParamCaption})}
+
+\Hypertarget{_u_i_font_8h_a07380c0469fd1a5ba52a13d1fc248e02}\index{UIFont.h@{UIFont.h}!UnloadUiFont@{UnloadUiFont}}
+\index{UnloadUiFont@{UnloadUiFont}!UIFont.h@{UIFont.h}}
+\doxysubsubsection{\texorpdfstring{UnloadUiFont()}{UnloadUiFont()}}
+{\footnotesize\ttfamily \label{_u_i_font_8h_a07380c0469fd1a5ba52a13d1fc248e02} 
+void Unload\+Ui\+Font (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
