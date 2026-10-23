@@ -57,11 +57,21 @@ public:
 		if (!isInside(x, y)) return DutCellType::Building;
 		return cells[id(x, y)];
 	}
-	int nodeAt(int x, int y) const { return id(x, y); }
-	int getNodeX(int node) const { return node % COLS; }
-	int getNodeY(int node) const { return node / COLS; }
+	int nodeAt(int x, int y) const {
+		x = std::clamp(x, 0, COLS - 1);
+		y = std::clamp(y, 0, ROWS - 1);
+		return id(x, y);
+	}
+	int getNodeX(int node) const {
+		if (node < 0 || node >= COLS * ROWS) return 0;
+		return node % COLS;
+	}
+	int getNodeY(int node) const {
+		if (node < 0 || node >= COLS * ROWS) return 0;
+		return node / COLS;
+	}
 
-	std::vector<int> neighbours(int node) const;
+	std::vector<int> neighbours(int node, int target = -1) const;
 	DutRoute findRoute(int start, int target, bool aStar) const;
 };
 
@@ -105,7 +115,7 @@ public:
 	DutMapUI();
 
 	void updateRoute();
-	void handleClick(Vector2 mouse, std::vector<Branch>& branches,
+	bool handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
 		User* currentUser, std::string& statusMessage, int& statusVersion);
 	void handleScroll(Vector2 mouse, float wheelMove);

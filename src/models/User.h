@@ -18,6 +18,7 @@ public:
 	virtual ~User() = default;
 	virtual Role getRole() const = 0;
 	virtual void showMenuOptions() const = 0;
+	std::string getId() const;
 	std::string getName() const;
 	virtual std::string getBranchId() const;
 	void setUsername(const std::string& value);

@@ -3,6 +3,8 @@
 
 User::User(std::string userId,std::string userName,Role userRole) : id(userId),name(userName),username(userName),role(userRole) {}
 
+std::string User::getId() const { return id; }
+
 std::string User::getName() const { return name; }
 
 std::string User::getBranchId() const { return {}; }

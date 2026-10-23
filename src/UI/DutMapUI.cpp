@@ -108,7 +108,8 @@ DutMap::DutMap() : cells(COLS * ROWS, DutCellType::Building), blocked(COLS * ROW
 	setRect(14, 7, 17, 8, DutCellType::Park, false);
 }
 
-std::vector<int> DutMap::neighbours(int node) const {
+std::vector<int> DutMap::neighbours(int node, int target) const {
+	if (node < 0 || node >= COLS * ROWS) return {};
 	int x = node % COLS;
 	int y = node / COLS;
 	std::vector<int> result;
@@ -116,8 +117,11 @@ std::vector<int> DutMap::neighbours(int node) const {
 	for (const auto& d : dirs) {
 		int nx = x + d.x;
 		int ny = y + d.y;
-		if (isInside(nx, ny) && !blocked[id(nx, ny)]) {
-			result.push_back(id(nx, ny));
+		if (isInside(nx, ny)) {
+			int nid = id(nx, ny);
+			if (!blocked[nid] || nid == target) {
+				result.push_back(nid);
+			}
 		}
 	}
 	return result;
@@ -125,21 +129,25 @@ std::vector<int> DutMap::neighbours(int node) const {
 
 DutRoute DutMap::findRoute(int start, int target, bool aStar) const {
 	DutRoute route;
-	if (!isInside(getNodeX(start), getNodeY(start)) || !isInside(getNodeX(target), getNodeY(target))) {
+	const int nodeCount = COLS * ROWS;
+	if (start < 0 || start >= nodeCount || target < 0 || target >= nodeCount) {
 		return route;
 	}
-
-	const int nodeCount = COLS * ROWS;
-	std::vector<float> gCost(nodeCount, 1e9f);
-	std::vector<int> parent(nodeCount, -1);
-	std::vector<bool> visited(nodeCount, false);
-	using P = std::pair<float, int>;
-	std::priority_queue<P, std::vector<P>, std::greater<P>> pq;
 
 	int startX = getNodeX(start);
 	int startY = getNodeY(start);
 	int targetX = getNodeX(target);
 	int targetY = getNodeY(target);
+
+	if (!isInside(startX, startY) || !isInside(targetX, targetY)) {
+		return route;
+	}
+
+	std::vector<float> gCost(nodeCount, 1e9f);
+	std::vector<int> parent(nodeCount, -1);
+	std::vector<bool> visited(nodeCount, false);
+	using P = std::pair<float, int>;
+	std::priority_queue<P, std::vector<P>, std::greater<P>> pq;
 
 	gCost[start] = 0.0f;
 	float initialH = aStar ? static_cast<float>(std::abs(startX - targetX) + std::abs(startY - targetY)) : 0.0f;
@@ -155,7 +163,7 @@ DutRoute DutMap::findRoute(int start, int target, bool aStar) const {
 
 		if (u == target) break;
 
-		for (int v : neighbours(u)) {
+		for (int v : neighbours(u, target)) {
 			if (visited[v]) continue;
 			int vx = v % COLS;
 			int vy = v / COLS;
@@ -173,8 +181,12 @@ DutRoute DutMap::findRoute(int start, int target, bool aStar) const {
 
 	if (gCost[target] >= 1e8f) return route;
 	route.distance = gCost[target];
-	for (int cur = target; cur != -1; cur = parent[cur]) {
+	int cur = target;
+	int steps = 0;
+	while (cur != -1 && steps++ < nodeCount) {
 		route.nodes.push_back(cur);
+		if (cur == start) break;
+		cur = parent[cur];
 	}
 	std::reverse(route.nodes.begin(), route.nodes.end());
 	return route;
@@ -186,7 +198,8 @@ DutMapUI::DutMapUI() {
 
 void DutMapUI::updateRoute() {
 	int startX = 12, startY = 3;
-	// Will be updated from branches in handleClick / main
+	targetPoint.x = std::clamp(targetPoint.x, 0, DutMap::COLS - 1);
+	targetPoint.y = std::clamp(targetPoint.y, 0, DutMap::ROWS - 1);
 	int startNode = map.nodeAt(startX, startY);
 	int targetNode = map.nodeAt(targetPoint.x, targetPoint.y);
 	currentRoute = map.findRoute(startNode, targetNode, useAStar);
@@ -338,6 +351,23 @@ void DutMapUI::deleteBranch(int branchIdx, std::vector<Branch>& branches,
 	startBranchIdx = std::clamp(startBranchIdx, 0, static_cast<int>(branches.size()) - 1);
 	targetBranchIdx = std::clamp(targetBranchIdx, 0, static_cast<int>(branches.size()) - 1);
 
+	if (startBranchIdx == targetBranchIdx && branches.size() > 1) {
+		targetBranchIdx = (startBranchIdx + 1) % branches.size();
+		targetPoint = {std::clamp(static_cast<int>(branches[targetBranchIdx].getX()), 0, DutMap::COLS - 1),
+		               std::clamp(static_cast<int>(branches[targetBranchIdx].getY()), 0, DutMap::ROWS - 1)};
+		isTargetCustom = false;
+	}
+
+	if (!branches.empty()) {
+		int sx = std::clamp(static_cast<int>(branches[startBranchIdx].getX()), 0, DutMap::COLS - 1);
+		int sy = std::clamp(static_cast<int>(branches[startBranchIdx].getY()), 0, DutMap::ROWS - 1);
+		int tx = std::clamp(targetPoint.x, 0, DutMap::COLS - 1);
+		int ty = std::clamp(targetPoint.y, 0, DutMap::ROWS - 1);
+		currentRoute = map.findRoute(map.nodeAt(sx, sy), map.nodeAt(tx, ty), useAStar);
+		pathProgress = 0.0f;
+		shipperProgress = 0.0f;
+	}
+
 	statusVersion++;
 	statusMessage = "Đã xoá chi nhánh: " + delName + " (" + delId + ") và thu hồi các tài khoản liên quan.";
 }
@@ -360,7 +390,18 @@ bool DutMapUI::handleInput(int key, int charPressed, std::vector<Branch>& branch
 		return true;
 	}
 	if (key == KEY_ENTER) {
-		return submitBranchModal(branches, accounts, userPool, statusMessage, statusVersion);
+		bool ok = submitBranchModal(branches, accounts, userPool, statusMessage, statusVersion);
+		if (ok && !branches.empty()) {
+			startBranchIdx = std::clamp(startBranchIdx, 0, static_cast<int>(branches.size()) - 1);
+			int sx = std::clamp(static_cast<int>(branches[startBranchIdx].getX()), 0, DutMap::COLS - 1);
+			int sy = std::clamp(static_cast<int>(branches[startBranchIdx].getY()), 0, DutMap::ROWS - 1);
+			int tx = std::clamp(targetPoint.x, 0, DutMap::COLS - 1);
+			int ty = std::clamp(targetPoint.y, 0, DutMap::ROWS - 1);
+			currentRoute = map.findRoute(map.nodeAt(sx, sy), map.nodeAt(tx, ty), useAStar);
+			pathProgress = 0.0f;
+			shipperProgress = 0.0f;
+		}
+		return ok;
 	}
 	if (key == KEY_TAB) {
 		branchModalField = (branchModalField + 1) % 4;
@@ -401,7 +442,7 @@ bool DutMapUI::handleInput(int key, int charPressed, std::vector<Branch>& branch
 	return false;
 }
 
-void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
+bool DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 	std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
 	User* currentUser, std::string& statusMessage, int& statusVersion) {
 	bool isBranchMgr = currentUser && currentUser->canManageAllBranches();
@@ -411,7 +452,7 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		Rectangle modal = {400, 150, 480, 420};
 		if (!CheckCollisionPointRec(mouse, modal)) {
 			isBranchModalOpen = false;
-			return;
+			return false;
 		}
 		if (CheckCollisionPointRec(mouse, {modal.x + 30, modal.y + 90, 420, 36}) && branchModalMode == 0) branchModalField = 0;
 		if (CheckCollisionPointRec(mouse, {modal.x + 30, modal.y + 160, 420, 36})) branchModalField = 1;
@@ -419,14 +460,24 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		if (CheckCollisionPointRec(mouse, {modal.x + 250, modal.y + 230, 200, 36})) branchModalField = 3;
 
 		if (CheckCollisionPointRec(mouse, {modal.x + 30, modal.y + 350, 200, 40})) {
-			submitBranchModal(branches, accounts, userPool, statusMessage, statusVersion);
-			return;
+			bool ok = submitBranchModal(branches, accounts, userPool, statusMessage, statusVersion);
+			if (ok && !branches.empty()) {
+				startBranchIdx = std::clamp(startBranchIdx, 0, static_cast<int>(branches.size()) - 1);
+				int sx = std::clamp(static_cast<int>(branches[startBranchIdx].getX()), 0, DutMap::COLS - 1);
+				int sy = std::clamp(static_cast<int>(branches[startBranchIdx].getY()), 0, DutMap::ROWS - 1);
+				int tx = std::clamp(targetPoint.x, 0, DutMap::COLS - 1);
+				int ty = std::clamp(targetPoint.y, 0, DutMap::ROWS - 1);
+				currentRoute = map.findRoute(map.nodeAt(sx, sy), map.nodeAt(tx, ty), useAStar);
+				pathProgress = 0.0f;
+				shipperProgress = 0.0f;
+			}
+			return ok;
 		}
 		if (CheckCollisionPointRec(mouse, {modal.x + 250, modal.y + 350, 200, 40})) {
 			isBranchModalOpen = false;
-			return;
+			return false;
 		}
-		return;
+		return false;
 	}
 
 	// 1. Check clicks on Map Area
@@ -434,12 +485,14 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 	if (CheckCollisionPointRec(mouse, mapRec)) {
 		int cellX = static_cast<int>((mouse.x - mapOriginX) / mapCellSize);
 		int cellY = static_cast<int>((mouse.y - mapOriginY) / mapCellSize);
+		cellX = std::clamp(cellX, 0, DutMap::COLS - 1);
+		cellY = std::clamp(cellY, 0, DutMap::ROWS - 1);
 
 		// Check if click was on a branch
 		int clickedBranch = -1;
 		for (int i = 0; i < static_cast<int>(branches.size()); ++i) {
-			int bx = static_cast<int>(branches[i].getX());
-			int by = static_cast<int>(branches[i].getY());
+			int bx = std::clamp(static_cast<int>(branches[i].getX()), 0, DutMap::COLS - 1);
+			int by = std::clamp(static_cast<int>(branches[i].getY()), 0, DutMap::ROWS - 1);
 			float px = mapOriginX + bx * mapCellSize + mapCellSize * 0.5f;
 			float py = mapOriginY + by * mapCellSize + mapCellSize * 0.5f;
 			float dx = mouse.x - px;
@@ -460,6 +513,7 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 			} else {
 				statusVersion++;
 				statusMessage = "Vui lòng chọn 1 chi nhánh làm điểm xuất phát!";
+				return false;
 			}
 		} else {
 			// Click 2: Select destination
@@ -467,11 +521,13 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 				if (clickedBranch == startBranchIdx) {
 					statusVersion++;
 					statusMessage = "Điểm đến trùng với điểm xuất phát. Vui lòng chọn điểm khác!";
-					return;
+					return false;
 				}
 				targetBranchIdx = clickedBranch;
 				isTargetCustom = false;
-				targetPoint = {static_cast<int>(branches[targetBranchIdx].getX()), static_cast<int>(branches[targetBranchIdx].getY())};
+				int tbx = std::clamp(static_cast<int>(branches[targetBranchIdx].getX()), 0, DutMap::COLS - 1);
+				int tby = std::clamp(static_cast<int>(branches[targetBranchIdx].getY()), 0, DutMap::ROWS - 1);
+				targetPoint = {tbx, tby};
 				statusVersion++;
 				statusMessage = "Đã chọn điểm đến: " + branches[targetBranchIdx].getName();
 			} else {
@@ -487,13 +543,15 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		// Recompute route
 		if (!branches.empty()) {
 			startBranchIdx = std::clamp(startBranchIdx, 0, static_cast<int>(branches.size()) - 1);
-			int startNode = map.nodeAt(static_cast<int>(branches[startBranchIdx].getX()), static_cast<int>(branches[startBranchIdx].getY()));
+			int sx = std::clamp(static_cast<int>(branches[startBranchIdx].getX()), 0, DutMap::COLS - 1);
+			int sy = std::clamp(static_cast<int>(branches[startBranchIdx].getY()), 0, DutMap::ROWS - 1);
+			int startNode = map.nodeAt(sx, sy);
 			int targetNode = map.nodeAt(targetPoint.x, targetPoint.y);
 			currentRoute = map.findRoute(startNode, targetNode, useAStar);
 			pathProgress = 0.0f;
 			shipperProgress = 0.0f;
 		}
-		return;
+		return false;
 	}
 
 	// 2. Control buttons in Right Panel
@@ -506,7 +564,7 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		selectionStep = 0;
 		statusVersion++;
 		statusMessage = "Hãy nhấp vào 1 chi nhánh trên bản đồ để chọn làm điểm xuất phát mới!";
-		return;
+		return false;
 	}
 
 	// Toggle Algorithm
@@ -517,13 +575,15 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		shipperProgress = 0.0f;
 		if (!branches.empty()) {
 			startBranchIdx = std::clamp(startBranchIdx, 0, static_cast<int>(branches.size()) - 1);
-			int startNode = map.nodeAt(static_cast<int>(branches[startBranchIdx].getX()), static_cast<int>(branches[startBranchIdx].getY()));
+			int sx = std::clamp(static_cast<int>(branches[startBranchIdx].getX()), 0, DutMap::COLS - 1);
+			int sy = std::clamp(static_cast<int>(branches[startBranchIdx].getY()), 0, DutMap::ROWS - 1);
+			int startNode = map.nodeAt(sx, sy);
 			int targetNode = map.nodeAt(targetPoint.x, targetPoint.y);
 			currentRoute = map.findRoute(startNode, targetNode, useAStar);
 		}
 		statusVersion++;
 		statusMessage = useAStar ? "Đã chuyển sang thuật toán A* (Tối ưu)" : "Đã chuyển sang thuật toán Dijkstra";
-		return;
+		return false;
 	}
 
 	// 3. Branch Management Section (BranchManager only)
@@ -531,7 +591,7 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 		Rectangle addBrBtn = {px, 478, pw, 28};
 		if (CheckCollisionPointRec(mouse, addBrBtn)) {
 			openAddBranchModal(branches);
-			return;
+			return false;
 		}
 
 		// Branch rows in small list
@@ -544,14 +604,15 @@ void DutMapUI::handleClick(Vector2 mouse, std::vector<Branch>& branches,
 			Rectangle delBtn = {px + pw - 36, rowY, 34, 20};
 			if (CheckCollisionPointRec(mouse, editBtn)) {
 				openEditBranchModal(i, branches);
-				return;
+				return false;
 			}
 			if (CheckCollisionPointRec(mouse, delBtn)) {
 				deleteBranch(i, branches, accounts, userPool, statusMessage, statusVersion);
-				return;
+				return true;
 			}
 		}
 	}
+	return false;
 }
 
 void DutMapUI::draw(Vector2 mouse, const std::vector<Branch>& branches,
@@ -754,12 +815,16 @@ void DutMapUI::draw(Vector2 mouse, const std::vector<Branch>& branches,
 	DrawUiTextFitted(("1. Xuất phát: " + startName).c_str(), rpx, 208, rpw, 13, Color{35, 135, 85, 255});
 	DrawUiTextFitted(("2. Điểm đến: " + targetName).c_str(), rpx, 230, rpw, 13, Color{215, 85, 45, 255});
 
-	float distanceKm = currentRoute.distance * 0.12f; // scale each cell to approx 120m
-	int estMinutes = std::max(2, static_cast<int>(distanceKm * 3.5f + 2.0f));
-	char statBuf[100];
-	std::snprintf(statBuf, sizeof(statBuf), "Quãng đường: %.1f km (%d ô)  |  Dự kiến: %d phút",
-		distanceKm, static_cast<int>(currentRoute.nodes.size()), estMinutes);
-	DrawUiTextFitted(statBuf, rpx, 256, rpw, 12, Color{54, 66, 58, 255});
+	if (currentRoute.nodes.size() > 1) {
+		float distanceKm = currentRoute.distance * 0.12f; // scale each cell to approx 120m
+		int estMinutes = std::max(2, static_cast<int>(distanceKm * 3.5f + 2.0f));
+		char statBuf[100];
+		std::snprintf(statBuf, sizeof(statBuf), "Quãng đường: %.1f km (%d ô)  |  Dự kiến: %d phút",
+			distanceKm, static_cast<int>(currentRoute.nodes.size()), estMinutes);
+		DrawUiTextFitted(statBuf, rpx, 256, rpw, 12, Color{54, 66, 58, 255});
+	} else {
+		DrawUiTextFitted("Quãng đường: -- km  |  Dự kiến: --", rpx, 256, rpw, 12, Color{120, 130, 125, 255});
+	}
 
 	// Status badge
 	Rectangle badgeRec = {rpx, 280, rpw, 22};
@@ -768,6 +833,9 @@ void DutMapUI::draw(Vector2 mouse, const std::vector<Branch>& branches,
 		char sBuf[64];
 		std::snprintf(sBuf, sizeof(sBuf), "⚡ Đang duyệt tìm đường... (%d/%d ô)", expCount, totalExplored);
 		DrawUiTextInRect(sBuf, badgeRec, 11, Color{190, 110, 30, 255}, 0, 4.0f);
+	} else if (currentRoute.nodes.size() <= 1) {
+		DrawRectangleRounded(badgeRec, 0.3f, 4, Color{255, 230, 230, 255});
+		DrawUiTextInRect("✗ Không tìm thấy đường đi tới vị trí này", badgeRec, 11, Color{200, 50, 40, 255}, 0, 4.0f);
 	} else {
 		DrawRectangleRounded(badgeRec, 0.3f, 4, Color{232, 246, 236, 255});
 		char sBuf[64];

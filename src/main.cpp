@@ -649,12 +649,16 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	User* currentUser = nullptr;
 	std::vector<std::unique_ptr<User>> userPool;
 	std::vector<Employee*> employees;
 
 	auto refreshUsers = [&]() {
+		std::string currentUserId = currentUser ? currentUser->getId() : "";
+		std::string currentUsername = currentUser ? currentUser->username : "";
 		userPool.clear();
 		employees.clear();
+		currentUser = nullptr;
 		for (AccountRecord& acc : accounts) {
 			if (acc.role == "BranchManager") {
 				userPool.push_back(std::make_unique<BranchManager>(acc.id, acc.name));
@@ -665,6 +669,11 @@ int main(int argc, char** argv) {
 			}
 			userPool.back()->setUsername(acc.username);
 			acc.user = userPool.back().get();
+			if (!currentUserId.empty() && acc.id == currentUserId) {
+				currentUser = acc.user;
+			} else if (!currentUsername.empty() && acc.username == currentUsername) {
+				currentUser = acc.user;
+			}
 			if (auto* emp = dynamic_cast<Employee*>(acc.user)) {
 				employees.push_back(emp);
 			}
@@ -675,8 +684,6 @@ int main(int argc, char** argv) {
 	std::vector<Timekeeping> timekeepingRecords;
 	for (Employee* user : employees) timekeepingRecords.emplace_back(user->getId());
 	loadAttendance(timekeepingRecords);
-
-	User* currentUser = nullptr;
 
 	RestaurantChain chain("Bếp Nhỏ");
 	std::vector<Branch> branchValues;
@@ -858,10 +865,11 @@ int main(int argc, char** argv) {
 					refreshUsers();
 				}
 			} else if (dutMapUi.isModalOpen()) {
-				dutMapUi.handleClick(mouse, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion);
-				saveBranches(branchValues);
-				saveInventory(branchValues, ingredientTypes);
-				refreshUsers();
+				if (dutMapUi.handleClick(mouse, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion)) {
+					saveBranches(branchValues);
+					saveInventory(branchValues, ingredientTypes);
+					refreshUsers();
+				}
 			} else if (managementUi.isDialogOpen()) {
 				if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
 					saveMenu(products);
@@ -1064,10 +1072,11 @@ int main(int argc, char** argv) {
 					}
 				} else if (activeTab == 2) {
 					// TAB 2: DUT MAP & PATHFINDING & BRANCH MANAGEMENT
-					dutMapUi.handleClick(mouse, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion);
-					saveBranches(branchValues);
-					saveInventory(branchValues, ingredientTypes);
-					refreshUsers();
+					if (dutMapUi.handleClick(mouse, branchValues, accounts, userPool, currentUser, statusMessage, statusVersion)) {
+						saveBranches(branchValues);
+						saveInventory(branchValues, ingredientTypes);
+						refreshUsers();
+					}
 				} else if (activeTab >= 3 && activeTab <= 5) {
 					// TABS 3, 4, 5: MANAGEMENT UI
 					if (managementUi.handleClick(mouse, activeTab, *currentUser)) {
