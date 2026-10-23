@@ -1,3 +1,8 @@
+UI/DutMapUI.cpp
+UI/ManagementUI.cpp
+UI/StaffManagementUI.cpp
+UI/UIAnim.cpp
+UI/UIFont.cpp
 datastructures/BranchList.cpp
 datastructures/MenuLookup.cpp
 datastructures/OrderQueue.cpp
@@ -11,8 +16,3 @@ models/User.cpp
 models/Warehouse.cpp
 services/ScheduleService.cpp
 services/ShiftManager.cpp
-UI/DutMapUI.cpp
-UI/ManagementUI.cpp
-UI/StaffManagementUI.cpp
-UI/UIAnim.cpp
-UI/UIFont.cpp
