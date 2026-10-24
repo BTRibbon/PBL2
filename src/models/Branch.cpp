@@ -1,29 +1,30 @@
 #include "Branch.h"
 
-Branch::Branch(std::string id,std::string branchName,float branchX,float branchY) : branchId(id),name(branchName),x(branchX),y(branchY) {}
+Branch::Branch(const String& id, const String& branchName, float branchX, float branchY)
+	: branchId(id), name(branchName), x(branchX), y(branchY) {}
 
-std::string Branch::getId() const { return branchId; }
+String Branch::getId() const { return branchId; }
 
-std::string Branch::getName() const { return name; }
+String Branch::getName() const { return name; }
 
 float Branch::getX() const { return x; }
 
 float Branch::getY() const { return y; }
 
-void Branch::addMenuItem(MenuItem item) { menu.addItem(item); }
+void Branch::addMenuItem(const MenuItem& item) { menu.addItem(item); }
 
-MenuItem* Branch::findMenuItem(std::string itemId) { return menu.find(itemId); }
+MenuItem* Branch::findMenuItem(const String& itemId) { return menu.find(itemId); }
 
-void Branch::addStock(std::string itemId,int quantity) { warehouse.addStock(itemId,quantity); }
+void Branch::addStock(const String& itemId, int quantity) { warehouse.addStock(itemId, quantity); }
 
-bool Branch::removeStock(std::string itemId,int quantity) { return warehouse.removeStock(itemId,quantity); }
+bool Branch::removeStock(const String& itemId, int quantity) { return warehouse.removeStock(itemId, quantity); }
 
-int Branch::getStock(std::string itemId) const { return warehouse.getStock(itemId); }
+int Branch::getStock(const String& itemId) const { return warehouse.getStock(itemId); }
 
-void Branch::setOpeningHours(std::string open,std::string close) { openingHours.setHours(open,close); }
+void Branch::setOpeningHours(const String& open, const String& close) { openingHours.setHours(open, close); }
 
 OpeningHours Branch::getOpeningHours() const { return openingHours; }
 
-void Branch::addRevenue(int amount) { revenue+=amount; }
+void Branch::addRevenue(int amount) { revenue += amount; }
 
 int Branch::getRevenue() const { return revenue; }

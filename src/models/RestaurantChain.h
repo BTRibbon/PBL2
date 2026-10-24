@@ -1,17 +1,22 @@
 #pragma once
 
 #include "../datastructures/BranchList.h"
-#include <string>
-#include <vector>
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
 
 class RestaurantChain {
-	std::string name;
+private:
+	String name;
 	BranchList branches;
+
 public:
-	RestaurantChain(std::string chainName);
-	void addBranch(std::string id,std::string branchName,float x,float y);
-	Branch* findNearestBranch(float x,float y);
-	std::vector<Branch> getBranches() const;
-	std::string getName() const;
+	explicit RestaurantChain(const String& chainName);
+	void addBranch(const String& id, const String& branchName, float x, float y);
+	bool removeBranch(const String& id);
+	Branch* findBranch(const String& id);
+	Branch* findNearestBranch(float x, float y);
+	Vector<Branch> getBranches() const;
+	String getName() const;
+	int getBranchCount() const { return branches.size(); }
 	void clear() { branches.clear(); }
 };

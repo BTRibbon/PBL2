@@ -1,25 +1,33 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
 
 struct AttendanceRecord {
-	std::string scheduleId;
-	std::string employeeId;
-	std::string checkIn;
-	std::string checkOut;
+	String scheduleId;
+	String employeeId;
+	String checkIn;
+	String checkOut;
 	bool isPresent = false;
+
+	AttendanceRecord() = default;
+	AttendanceRecord(const String& schedId, const String& empId,
+		const String& inTime, const String& outTime, bool present)
+		: scheduleId(schedId), employeeId(empId),
+		  checkIn(inTime), checkOut(outTime), isPresent(present) {}
 };
 
 class Timekeeping {
-	std::string employeeId;
-	std::vector<AttendanceRecord> records;
+private:
+	String employeeId;
+	Vector<AttendanceRecord> records;
 
 public:
-	Timekeeping(std::string employee);
-	std::string getEmployeeId() const;
+	Timekeeping() = default;
+	explicit Timekeeping(const String& employee);
+	String getEmployeeId() const;
 	void addRecord(const AttendanceRecord& record);
-	bool checkIn(const std::string& scheduleId, const std::string& timestamp);
-	bool checkOut(const std::string& scheduleId, const std::string& timestamp);
-	const std::vector<AttendanceRecord>& getRecords() const;
+	bool checkIn(const String& scheduleId, const String& timestamp);
+	bool checkOut(const String& scheduleId, const String& timestamp);
+	const Vector<AttendanceRecord>& getRecords() const;
 };

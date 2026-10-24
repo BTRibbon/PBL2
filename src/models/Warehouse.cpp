@@ -1,20 +1,37 @@
 #include "Warehouse.h"
 
-void Warehouse::addStock(std::string itemId,int quantity) {
-	if (quantity > 0) stock[itemId] += quantity;
+void Warehouse::addStock(const String& itemId, int quantity) {
+	if (quantity <= 0) return;
+	for (int i = 0; i < stock.size(); ++i) {
+		if (stock[i].itemId == itemId) {
+			stock[i].quantity += quantity;
+			return;
+		}
+	}
+	stock.push_back(StockEntry(itemId, quantity));
 }
 
-bool Warehouse::takeStock(std::string itemId,int quantity) {
-	if (getStock(itemId)<quantity) return false;
-	stock[itemId]-=quantity;
-	return true;
+bool Warehouse::takeStock(const String& itemId, int quantity) {
+	if (quantity <= 0) return false;
+	for (int i = 0; i < stock.size(); ++i) {
+		if (stock[i].itemId == itemId) {
+			if (stock[i].quantity < quantity) return false;
+			stock[i].quantity -= quantity;
+			return true;
+		}
+	}
+	return false;
 }
 
-bool Warehouse::removeStock(std::string itemId,int quantity) {
+bool Warehouse::removeStock(const String& itemId, int quantity) {
 	return takeStock(itemId, quantity);
 }
 
-int Warehouse::getStock(std::string itemId) const {
-	auto it=stock.find(itemId);
-	return it!=stock.end() ? it->second : 0;
+int Warehouse::getStock(const String& itemId) const {
+	for (int i = 0; i < stock.size(); ++i) {
+		if (stock[i].itemId == itemId) {
+			return stock[i].quantity;
+		}
+	}
+	return 0;
 }

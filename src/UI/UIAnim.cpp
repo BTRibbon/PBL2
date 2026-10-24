@@ -1,16 +1,15 @@
 #include "UIAnim.h"
 #include "UIFont.h"
+#include "../datastructures/Vector.h"
 
-#include <algorithm>
 #include <cmath>
 #include <cstdint>
-#include <unordered_map>
-#include <vector>
 
 namespace Anim {
 namespace {
 
 struct ButtonState {
+	std::uint64_t key = 0;
 	float hover = 0.0f;
 	float press = 0.0f;
 	double clickTime = -10.0;
@@ -21,24 +20,25 @@ struct ButtonState {
 };
 
 struct ScalarState {
+	std::uint64_t key = 0;
 	float value = 0.0f;
 	bool init = false;
 	unsigned lastFrame = 0;
 };
 
 struct Toast {
-	std::string text;
-	ToastType type;
-	double start;
+	String text;
+	ToastType type = ToastType::Info;
+	double start = 0.0;
 	float y = -1.0f;
 };
 
 unsigned g_frame = 0;
 float g_dt = 1.0f / 60.0f;
 double g_now = 0.0;
-std::unordered_map<std::uint64_t, ButtonState> g_buttons;
-std::unordered_map<std::uint64_t, ScalarState> g_scalars;
-std::vector<Toast> g_toasts;
+Vector<ButtonState> g_buttons;
+Vector<ScalarState> g_scalars;
+Vector<Toast> g_toasts;
 
 constexpr double kToastLife = 3.2;
 constexpr double kToastIn = 0.35;
@@ -50,15 +50,33 @@ std::uint64_t keyOf(Rectangle r, std::uint64_t salt = 0) {
 }
 
 ButtonState& buttonState(Rectangle r) {
-	ButtonState& s = g_buttons[keyOf(r)];
-	s.lastFrame = g_frame;
-	return s;
+	std::uint64_t k = keyOf(r);
+	for (int i = 0; i < g_buttons.size(); ++i) {
+		if (g_buttons[i].key == k) {
+			g_buttons[i].lastFrame = g_frame;
+			return g_buttons[i];
+		}
+	}
+	ButtonState fresh{};
+	fresh.key = k;
+	fresh.lastFrame = g_frame;
+	g_buttons.push_back(fresh);
+	return g_buttons.back();
 }
 
 ScalarState& scalarState(Rectangle r, std::uint64_t salt) {
-	ScalarState& s = g_scalars[keyOf(r, salt)];
-	s.lastFrame = g_frame;
-	return s;
+	std::uint64_t k = keyOf(r, salt);
+	for (int i = 0; i < g_scalars.size(); ++i) {
+		if (g_scalars[i].key == k) {
+			g_scalars[i].lastFrame = g_frame;
+			return g_scalars[i];
+		}
+	}
+	ScalarState fresh{};
+	fresh.key = k;
+	fresh.lastFrame = g_frame;
+	g_scalars.push_back(fresh);
+	return g_scalars.back();
 }
 
 float luminance(Color c) {
@@ -73,16 +91,18 @@ Rectangle inflate(Rectangle r, float d) {
 
 void BeginFrame() {
 	++g_frame;
-	g_dt = std::clamp(GetFrameTime(), 0.0f, 0.05f);
+	g_dt = clampVal(GetFrameTime(), 0.0f, 0.05f);
 	g_now = GetTime();
 	if (g_frame % 240 == 0) {
-		for (auto it = g_buttons.begin(); it != g_buttons.end();) {
-			if (g_frame - it->second.lastFrame > 240) it = g_buttons.erase(it);
-			else ++it;
+		for (int i = g_buttons.size() - 1; i >= 0; --i) {
+			if (g_frame - g_buttons[i].lastFrame > 240) {
+				g_buttons.eraseAt(i);
+			}
 		}
-		for (auto it = g_scalars.begin(); it != g_scalars.end();) {
-			if (g_frame - it->second.lastFrame > 240) it = g_scalars.erase(it);
-			else ++it;
+		for (int i = g_scalars.size() - 1; i >= 0; --i) {
+			if (g_frame - g_scalars[i].lastFrame > 240) {
+				g_scalars.eraseAt(i);
+			}
 		}
 	}
 }
@@ -90,13 +110,13 @@ void BeginFrame() {
 float Dt() { return g_dt; }
 
 float EaseOutCubic(float t) {
-	t = std::clamp(t, 0.0f, 1.0f);
+	t = clampVal(t, 0.0f, 1.0f);
 	float f = 1.0f - t;
 	return 1.0f - f * f * f;
 }
 
 float EaseOutBack(float t) {
-	t = std::clamp(t, 0.0f, 1.0f);
+	t = clampVal(t, 0.0f, 1.0f);
 	const float c1 = 1.70158f;
 	const float c3 = c1 + 1.0f;
 	float f = t - 1.0f;
@@ -109,7 +129,7 @@ float Smooth(float current, float target, float speed) {
 }
 
 Color LerpColor(Color a, Color b, float t) {
-	t = std::clamp(t, 0.0f, 1.0f);
+	t = clampVal(t, 0.0f, 1.0f);
 	auto l = [t](unsigned char x, unsigned char y) {
 		return static_cast<unsigned char>(std::lround(x + (static_cast<float>(y) - x) * t));
 	};
@@ -117,7 +137,7 @@ Color LerpColor(Color a, Color b, float t) {
 }
 
 Color WithAlpha(Color c, float alpha01) {
-	c.a = static_cast<unsigned char>(std::clamp(alpha01, 0.0f, 1.0f) * c.a);
+	c.a = static_cast<unsigned char>(clampVal(alpha01, 0.0f, 1.0f) * c.a);
 	return c;
 }
 
@@ -182,8 +202,11 @@ Rectangle Button(Rectangle bounds, Color base, Vector2 mouse, bool enabled, floa
 }
 
 float HoverAmount(Rectangle bounds) {
-	auto it = g_buttons.find(keyOf(bounds));
-	return it == g_buttons.end() ? 0.0f : it->second.hover;
+	std::uint64_t k = keyOf(bounds);
+	for (int i = 0; i < g_buttons.size(); ++i) {
+		if (g_buttons[i].key == k) return g_buttons[i].hover;
+	}
+	return 0.0f;
 }
 
 void DrawArrow(Rectangle b, ArrowDir dir, Color color, float size) {
@@ -209,7 +232,7 @@ void DrawArrow(Rectangle b, ArrowDir dir, Color color, float size) {
 
 Rectangle ArrowButton(Rectangle bounds, ArrowDir dir, Vector2 mouse, bool enabled, Color base) {
 	Rectangle v = Button(bounds, base, mouse, enabled, 0.3f);
-	float size = std::clamp(std::min(v.width, v.height) * 0.22f, 3.5f, 6.5f);
+	float size = clampVal(minVal(v.width, v.height) * 0.22f, 3.5f, 6.5f);
 	DrawArrow(v, dir, enabled ? RAYWHITE : Color{240, 243, 240, 255}, size);
 	return v;
 }
@@ -233,15 +256,15 @@ float SmoothScroll(Rectangle track, float target) {
 	return s.value;
 }
 
-ToastType Classify(const std::string& m) {
+ToastType Classify(const String& m) {
 	static const char* errorWords[] = {
 		"Sai ", "Không", "không thể", "không hợp lệ", "Vui lòng", "đã tồn tại", "rỗng", "trống!",
 		"phải lớn", "Lỗi", "không tìm thấy", "trước đó", "Chưa"
 	};
 	for (const char* w : errorWords) {
-		if (m.find(w) != std::string::npos) return ToastType::Error;
+		if (m.find(w) != String::npos) return ToastType::Error;
 	}
-	if (m.rfind("Đã", 0) == 0 || m.find("thành công") != std::string::npos) return ToastType::Success;
+	if (m.startsWith("Đã") || m.find("thành công") != String::npos) return ToastType::Success;
 	return ToastType::Info;
 }
 
@@ -253,30 +276,31 @@ Color ToastColor(ToastType type) {
 	}
 }
 
-void PushToast(const std::string& message, ToastType type) {
+void PushToast(const String& message, ToastType type) {
 	if (message.empty()) return;
-	// Restart an identical toast instead of stacking duplicates
-	for (Toast& t : g_toasts) {
+	for (int i = 0; i < g_toasts.size(); ++i) {
+		Toast& t = g_toasts[i];
 		if (t.text == message && g_now - t.start < kToastLife - kToastOut) {
 			t.start = g_now - kToastIn;
 			return;
 		}
 	}
-	g_toasts.push_back({message, type, g_now});
-	if (g_toasts.size() > 4) g_toasts.erase(g_toasts.begin());
+	Toast fresh{message, type, g_now, -1.0f};
+	g_toasts.push_back(fresh);
+	if (g_toasts.size() > 4) g_toasts.eraseAt(0);
 }
 
 void DrawStatusIcon(Vector2 c, float r, ToastType type, float progress) {
 	Color col = ToastColor(type);
 	float pop = EaseOutBack(progress);
 	DrawCircleV(c, r * pop, col);
-	float p = std::clamp(progress * 1.4f, 0.0f, 1.0f);
+	float p = clampVal(progress * 1.4f, 0.0f, 1.0f);
 	if (type == ToastType::Success) {
 		Vector2 a{c.x - r * 0.45f, c.y + r * 0.02f};
 		Vector2 b{c.x - r * 0.12f, c.y + r * 0.35f};
 		Vector2 d{c.x + r * 0.5f, c.y - r * 0.35f};
-		float p1 = std::clamp(p / 0.4f, 0.0f, 1.0f);
-		float p2 = std::clamp((p - 0.4f) / 0.6f, 0.0f, 1.0f);
+		float p1 = clampVal(p / 0.4f, 0.0f, 1.0f);
+		float p2 = clampVal((p - 0.4f) / 0.6f, 0.0f, 1.0f);
 		DrawLineEx(a, {a.x + (b.x - a.x) * p1, a.y + (b.y - a.y) * p1}, 2.4f, RAYWHITE);
 		if (p2 > 0.0f) DrawLineEx(b, {b.x + (d.x - b.x) * p2, b.y + (d.y - b.y) * p2}, 2.4f, RAYWHITE);
 	} else if (type == ToastType::Error) {
@@ -290,44 +314,45 @@ void DrawStatusIcon(Vector2 c, float r, ToastType type, float progress) {
 }
 
 void DrawToasts() {
-	g_toasts.erase(std::remove_if(g_toasts.begin(), g_toasts.end(),
-		[](const Toast& t) { return g_now - t.start > kToastLife; }), g_toasts.end());
+	for (int i = g_toasts.size() - 1; i >= 0; --i) {
+		if (g_now - g_toasts[i].start > kToastLife) {
+			g_toasts.eraseAt(i);
+		}
+	}
 
 	const float rightEdge = 1262.0f;
 	const float baseY = 100.0f;
 	const float height = 46.0f;
-	for (std::size_t i = 0; i < g_toasts.size(); ++i) {
-		Toast& t = g_toasts[g_toasts.size() - 1 - i]; // newest on top
-		float targetY = baseY + static_cast<float>(i) * (height + 8.0f);
-		t.y = t.y < 0.0f ? targetY : Smooth(t.y, targetY, 14.0f);
-
+	for (int i = 0; i < g_toasts.size(); ++i) {
+		Toast& t = g_toasts[g_toasts.size() - 1 - i];
 		double age = g_now - t.start;
 		float inT = EaseOutBack(static_cast<float>(age / kToastIn));
 		float outT = age > kToastLife - kToastOut
-			? EaseOutCubic(static_cast<float>((age - (kToastLife - kToastOut)) / kToastOut)) : 0.0f;
-		float alpha = std::clamp(static_cast<float>(age / 0.15), 0.0f, 1.0f) * (1.0f - outT);
+			? EaseOutCubic(static_cast<float>((kToastLife - age) / kToastOut))
+			: 1.0f;
+		float vis = clampVal(minVal(inT, outT), 0.0f, 1.0f);
 
-		float textW = std::min(MeasureUiText(t.text.c_str(), 13), 360.0f);
-		float width = textW + 72.0f;
-		float x = rightEdge - width + (1.0f - inT) * (width + 30.0f) + outT * 60.0f;
-		Rectangle box = {x, t.y, width, height};
+		float textW = MeasureUiText(t.text.c_str(), 13);
+		float width = clampVal(textW + 64.0f, 240.0f, 520.0f);
+		float targetY = baseY + static_cast<float>(i) * (height + 10.0f);
+		t.y = t.y < 0.0f ? targetY : Smooth(t.y, targetY, 16.0f);
+		float slideX = (1.0f - inT) * (width + 30.0f) + (1.0f - outT) * 60.0f;
+		Rectangle box = {rightEdge - width + slideX, t.y, width, height};
+
 		Color accent = ToastColor(t.type);
+		DrawRectangleRounded({box.x + 2, box.y + 5, box.width, box.height}, 0.22f, 6, WithAlpha(BLACK, 0.18f * vis));
+		DrawRectangleRounded(box, 0.22f, 6, WithAlpha(Color{252, 251, 247, 255}, 0.98f * vis));
+		DrawRectangleRoundedLinesEx(box, 0.22f, 6, 1.5f, WithAlpha(accent, 0.7f * vis));
+		DrawRectangleRounded({box.x + 5, box.y + 7, 5, box.height - 14}, 0.5f, 4, WithAlpha(accent, vis));
 
-		DrawRectangleRounded({box.x + 1, box.y + 4, box.width, box.height}, 0.3f, 6, Color{0, 0, 0, static_cast<unsigned char>(40 * alpha)});
-		DrawRectangleRounded(box, 0.3f, 6, WithAlpha(Color{255, 255, 255, 255}, alpha));
-		DrawRectangleRoundedLinesEx(box, 0.3f, 6, 1.2f, WithAlpha(accent, 0.55f * alpha));
+		DrawStatusIcon({box.x + 26, box.y + box.height * 0.5f}, 10.0f, t.type, vis);
+		Rectangle textRec = {box.x + 44, box.y, box.width - 52, box.height};
+		DrawUiTextInRect(t.text.c_str(), textRec, 13, WithAlpha(Color{35, 50, 44, 255}, vis), -1, 4.0f);
 
-		float iconProgress = std::clamp(static_cast<float>((age - 0.08) / 0.4), 0.0f, 1.0f);
-		DrawStatusIcon({box.x + 24, box.y + height * 0.5f}, 11.0f, t.type, iconProgress);
-		DrawUiTextFitted(t.text.c_str(), box.x + 44, box.y + 15, textW + 4.0f, 13,
-			WithAlpha(Color{38, 52, 45, 255}, alpha));
-
-		// Remaining-life progress bar
-		float life = std::clamp(static_cast<float>(1.0 - age / kToastLife), 0.0f, 1.0f);
-		DrawRectangleRounded({box.x + 14, box.y + height - 5, (box.width - 28) * life, 2.5f}, 1.0f, 4,
-			WithAlpha(accent, 0.7f * alpha));
+		float lifeFrac = clampVal(static_cast<float>(1.0 - age / kToastLife), 0.0f, 1.0f);
+		DrawRectangleRounded({box.x + 12, box.y + box.height - 4, (box.width - 24) * lifeFrac, 2.5f},
+			0.5f, 4, WithAlpha(accent, 0.55f * vis));
 	}
 }
 
 }
-

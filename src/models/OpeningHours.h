@@ -1,13 +1,22 @@
 #pragma once
 
-#include <string>
+#include "../datastructures/String.h"
 
 class OpeningHours {
-	std::string openTime;
-	std::string closeTime;
+private:
+	String openTime;
+	String closeTime;
+
 public:
-	OpeningHours(std::string open="08:00",std::string close="22:00");
-	void setHours(std::string open,std::string close);
-	std::string getOpenTime() const;
-	std::string getCloseTime() const;
+	OpeningHours(const String& open = "08:00", const String& close = "22:00");
+	void setHours(const String& open, const String& close);
+	String getOpenTime() const;
+	String getCloseTime() const;
+
+	bool operator==(const OpeningHours& other) const {
+		return openTime == other.openTime && closeTime == other.closeTime;
+	}
+	bool operator!=(const OpeningHours& other) const {
+		return !(*this == other);
+	}
 };

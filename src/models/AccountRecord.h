@@ -1,66 +1,49 @@
 #pragma once
 
-#include <string>
 #include <cstdint>
-#include <sstream>
-#include <fstream>
-#include <vector>
-#include <memory>
+#include <cstdio>
 #include <cstdlib>
-#include "User.h"
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
+#include "Employee.h"
 
 struct AccountRecord {
-	std::string id;
-	std::string username;
-	std::string name;
-	std::string role;
-	std::string branchId;
-	std::string salt;
-	std::string passwordHash;
-	User* user = nullptr;
+	String id;
+	String username;
+	String name;
+	String role;
+	String branchId;
+	String salt;
+	String passwordHash;
+	Employee* user = nullptr;
+
+	AccountRecord() = default;
+	AccountRecord(const String& accId, const String& accUser, const String& accName,
+		const String& accRole, const String& accBranch, const String& accSalt,
+		const String& accHash, Employee* empPtr = nullptr)
+		: id(accId), username(accUser), name(accName), role(accRole),
+		  branchId(accBranch), salt(accSalt), passwordHash(accHash), user(empPtr) {}
 };
 
-inline std::string HashPassword(const std::string& password, const std::string& salt) {
-	const std::string input = salt + ":" + password;
+// Hàm băm mật khẩu FNV-1a 64-bit kết hợp chuỗi muối (Salt)
+inline String HashPassword(const String& password, const String& salt) {
+	const String input = salt + ":" + password;
 	std::uint64_t hash = 14695981039346656037ULL;
-	for (unsigned char character : input) {
-		hash ^= character;
+	for (std::size_t i = 0; i < input.size(); ++i) {
+		hash ^= static_cast<unsigned char>(input[i]);
 		hash *= 1099511628211ULL;
 	}
-	std::ostringstream result;
-	result << std::hex;
-	result.width(16);
-	result.fill('0');
-	result << hash;
-	return result.str();
+	char hexBuf[24];
+	std::snprintf(hexBuf, sizeof(hexBuf), "%016llx", static_cast<unsigned long long>(hash));
+	return String(hexBuf);
 }
 
-inline std::string GenerateSalt() {
+inline String GenerateSalt() {
 	static const char hexChars[] = "0123456789abcdef";
-	std::string salt;
+	String salt;
 	salt.reserve(32);
 	for (int i = 0; i < 32; ++i) {
-		salt += hexChars[std::rand() % 16];
+		salt.push_back(hexChars[std::rand() % 16]);
 	}
 	return salt;
 }
-
-inline bool SaveAccountsToFile(const std::vector<AccountRecord>& accounts) {
-	std::ostringstream plain;
-	for (const auto& acc : accounts) {
-		plain << acc.id << "|" << acc.username << "|" << acc.name << "|"
-		      << acc.role << "|" << acc.branchId << "|" << acc.salt << "|"
-		      << acc.passwordHash << "\n";
-	}
-	std::string plainStr = plain.str();
-	std::string encrypted;
-	encrypted.reserve(plainStr.size());
-	for (char c : plainStr) {
-		encrypted.push_back(static_cast<char>(static_cast<unsigned char>(c) ^ 0x5A));
-	}
-	std::ofstream binFile("data/accounts.dat", std::ios::binary);
-	if (!binFile) return false;
-	binFile.write(encrypted.data(), encrypted.size());
-	return true;
-}
-

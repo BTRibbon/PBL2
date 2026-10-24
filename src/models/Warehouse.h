@@ -1,13 +1,23 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
+
+struct StockEntry {
+	String itemId;
+	int quantity = 0;
+
+	StockEntry() = default;
+	StockEntry(const String& id, int qty) : itemId(id), quantity(qty) {}
+};
 
 class Warehouse {
-	std::unordered_map<std::string,int> stock;
+private:
+	Vector<StockEntry> stock;
+
 public:
-	void addStock(std::string itemId,int quantity);
-	bool takeStock(std::string itemId,int quantity);
-	bool removeStock(std::string itemId,int quantity);
-	int getStock(std::string itemId) const;
+	void addStock(const String& itemId, int quantity);
+	bool takeStock(const String& itemId, int quantity);
+	bool removeStock(const String& itemId, int quantity);
+	int getStock(const String& itemId) const;
 };

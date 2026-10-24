@@ -1,36 +1,42 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
 
+// Lớp trừu tượng (Abstract Class) biểu diễn Ca làm việc
 class Schedule {
 protected:
-	std::string id;
-	std::string date;
-	std::string startTime;
-	std::string endTime;
+	String id;
+	String date;
+	String startTime;
+	String endTime;
 	int breakMinutes;
-	std::string branchId;
+	String branchId;
 	int requiredEmployees;
-	std::vector<std::string> employeeIds;
+	Vector<String> employeeIds;
 
 public:
-	Schedule(std::string scheduleId, std::string scheduleDate, std::string start,
-		std::string end, int breakTime, std::string branch, int required = 1);
+	Schedule(const String& scheduleId, const String& scheduleDate, const String& start,
+		const String& end, int breakTime, const String& branch, int required = 1);
 	virtual ~Schedule() = default;
 
-	std::string getId() const;
-	std::string getDate() const;
-	std::string getStartTime() const;
-	std::string getEndTime() const;
+	String getId() const;
+	String getDate() const;
+	String getStartTime() const;
+	String getEndTime() const;
 	int getBreakMinutes() const;
-	std::string getBranchId() const;
+	String getBranchId() const;
 	int getRequiredEmployees() const;
-	const std::vector<std::string>& getEmployeeIds() const;
+	const Vector<String>& getEmployeeIds() const;
 	int getAssignedEmployeeCount() const;
 	bool hasCoverage() const;
-	bool assignEmployee(const std::string& employeeId);
+	bool assignEmployee(const String& employeeId);
+
+	// Phương thức thuần ảo (Pure Virtual)
 	virtual bool isOpenShift() const = 0;
+
+	bool operator==(const Schedule& other) const { return id == other.id; }
+	bool operator!=(const Schedule& other) const { return id != other.id; }
 };
 
 class WorkSchedule : public Schedule {
@@ -40,31 +46,33 @@ public:
 
 class FullTimeSchedule : public WorkSchedule {
 public:
-	FullTimeSchedule(std::string scheduleId, std::string scheduleDate, std::string start,
-		std::string end, int breakTime, std::string branch, int required = 1);
+	FullTimeSchedule(const String& scheduleId, const String& scheduleDate, const String& start,
+		const String& end, int breakTime, const String& branch, int required = 1);
 	bool isOpenShift() const override;
 };
 
 class SelfRegisteredSchedule : public WorkSchedule {
+private:
 	bool openShift;
 
 public:
-	SelfRegisteredSchedule(std::string scheduleId, std::string scheduleDate, std::string start,
-		std::string end, int breakTime, std::string branch, int required = 1,
+	SelfRegisteredSchedule(const String& scheduleId, const String& scheduleDate, const String& start,
+		const String& end, int breakTime, const String& branch, int required = 1,
 		bool isOpen = true);
 	bool isOpenShift() const override;
 	bool canRegister() const;
 };
 
 class OperatingSchedule {
-	std::string date;
+private:
+	String date;
 	bool holiday;
 	double holidayMultiplier;
 
 public:
-	OperatingSchedule(std::string operatingDate, bool isHoliday = false,
+	OperatingSchedule(const String& operatingDate, bool isHoliday = false,
 		double multiplier = 1.0);
-	std::string getDate() const;
+	String getDate() const;
 	bool isHoliday() const;
 	double salaryModifier() const;
 };

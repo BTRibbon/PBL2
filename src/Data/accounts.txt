@@ -15,4 +15,4 @@ MGR001|manager1|Phạm Hoàng Nam|Manager|BR001|mgr1pass
 MGR002|manager2|Võ Ngọc Mai|Manager|BR002|mgr2pass
 MGR003|manager3|Nguyễn Văn Hưng|Manager|BR003|mgr3pass
 MGR004|manager4|Trần Thị Lan|Manager|BR004|mgr4pass
-BM001|branchmanager|Đỗ Gia Huy|BranchManager|ALL|branchpass
+CM001|chainmanager|Đỗ Gia Huy|ChainManager|ALL|chainpass

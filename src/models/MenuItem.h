@@ -1,9 +1,20 @@
 #pragma once
 
-#include <string>
+#include "../datastructures/String.h"
 
 struct MenuItem {
-	std::string id;
-	std::string name;
-	float price;
+	String id;
+	String name;
+	float price = 0.0f;
+
+	MenuItem() = default;
+	MenuItem(const String& itemId, const String& itemName, float itemPrice)
+		: id(itemId), name(itemName), price(itemPrice) {}
+
+	bool operator==(const MenuItem& other) const {
+		return id == other.id;
+	}
+	bool operator!=(const MenuItem& other) const {
+		return id != other.id;
+	}
 };

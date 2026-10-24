@@ -2,29 +2,35 @@
 
 #include "ShiftManager.h"
 #include "../models/Schedule.h"
-#include <memory>
-#include <string>
-#include <vector>
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
 
 class Employee;
 
+// Dịch vụ quản lý Lịch làm việc & Phân ca (sử dụng mảng con trỏ đa hình Schedule*)
 class ScheduleService {
-	std::vector<std::shared_ptr<Schedule>> schedules;
+private:
+	Vector<Schedule*> schedules;
 	ShiftManager* shiftManager;
 
-	std::shared_ptr<Schedule> findSchedule(const std::string& scheduleId) const;
+	Schedule* findSchedule(const String& scheduleId) const;
 
 public:
 	explicit ScheduleService(ShiftManager* manager = nullptr);
-	void addSchedule(const std::shared_ptr<Schedule>& schedule);
-	bool deleteSchedule(const std::string& scheduleId);
-	std::shared_ptr<SelfRegisteredSchedule> openOpenShift(
-		std::string scheduleId, std::string date, std::string start, std::string end,
-		int breakTime, std::string branch, int required = 1);
-	bool registerForEmptyShift(Employee& employee, const std::string& scheduleId);
-	bool validateMinimumShifts(const Employee& employee, const std::string& fromDate,
-		const std::string& toDate) const;
-	std::vector<std::shared_ptr<Schedule>> checkShiftCoverage(const std::string& branchId = "") const;
-	void notifyShiftManager(const std::string& branchId = "");
-	const std::vector<std::shared_ptr<Schedule>>& getSchedules() const;
+	ScheduleService(const ScheduleService&) = delete;
+	ScheduleService& operator=(const ScheduleService&) = delete;
+	~ScheduleService();
+
+	void clear();
+	void addSchedule(Schedule* schedule);
+	bool deleteSchedule(const String& scheduleId);
+	SelfRegisteredSchedule* openOpenShift(
+		const String& scheduleId, const String& date, const String& start, const String& end,
+		int breakTime, const String& branch, int required = 1);
+	bool registerForEmptyShift(Employee& employee, const String& scheduleId);
+	bool validateMinimumShifts(const Employee& employee, const String& fromDate,
+		const String& toDate) const;
+	Vector<Schedule*> checkShiftCoverage(const String& branchId = "") const;
+	void notifyShiftManager(const String& branchId = "");
+	const Vector<Schedule*>& getSchedules() const;
 };

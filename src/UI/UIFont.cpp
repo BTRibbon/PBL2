@@ -1,16 +1,14 @@
 #include "UIFont.h"
 #include "UIAnim.h"
-#include <array>
-#include <filesystem>
-#include <cstdio>
+
 #include <cmath>
-#include <sstream>
-#include <algorithm>
+#include <cstdio>
 
 static Font g_uiFont{};
 
-static std::vector<int> generateVietnameseCodepoints() {
-	std::vector<int> codepoints;
+static Vector<int> generateVietnameseCodepoints() {
+	Vector<int> codepoints;
+	codepoints.reserve(1024);
 	for (int cp = 32; cp <= 126; ++cp) codepoints.push_back(cp);
 	for (int cp = 160; cp <= 255; ++cp) codepoints.push_back(cp);
 	for (int cp = 256; cp <= 383; ++cp) codepoints.push_back(cp);
@@ -25,16 +23,17 @@ static std::vector<int> generateVietnameseCodepoints() {
 	return codepoints;
 }
 
-static std::string findCandidateFont() {
+static String findCandidateFont() {
 #ifdef _WIN32
-	const std::array<std::string, 4> candidates{{
+	const char* candidates[] = {
 		"C:/Windows/Fonts/segoeui.ttf",
 		"C:/Windows/Fonts/arial.ttf",
 		"C:/Windows/Fonts/segoeuib.ttf",
 		"C:/Windows/Fonts/tahoma.ttf"
-	}};
+	};
+	const int count = 4;
 #else
-	const std::array<std::string, 7> candidates{{
+	const char* candidates[] = {
 		"/System/Library/Fonts/Supplemental/Arial.ttf",
 		"/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
 		"/System/Library/Fonts/SFNS.ttf",
@@ -42,20 +41,20 @@ static std::string findCandidateFont() {
 		"/System/Library/Fonts/Supplemental/Tahoma.ttf",
 		"/System/Library/Fonts/Supplemental/Times New Roman.ttf",
 		"/Library/Fonts/Arial.ttf"
-	}};
+	};
+	const int count = 7;
 #endif
-	for (const auto& path : candidates) {
-		if (std::filesystem::exists(path)) return path;
+	for (int i = 0; i < count; ++i) {
+		if (FileExists(candidates[i])) return String(candidates[i]);
 	}
-	return {};
+	return String();
 }
 
 void InitUiFont() {
-	std::string fontPath = findCandidateFont();
-	const std::vector<int> codepoints = generateVietnameseCodepoints();
+	String fontPath = findCandidateFont();
+	const Vector<int> codepoints = generateVietnameseCodepoints();
 	if (!fontPath.empty()) {
-		g_uiFont = LoadFontEx(fontPath.c_str(), 48, const_cast<int*>(codepoints.data()),
-			static_cast<int>(codepoints.size()));
+		g_uiFont = LoadFontEx(fontPath.c_str(), 48, const_cast<int*>(codepoints.data()), codepoints.size());
 		if (g_uiFont.texture.id != 0) {
 			SetTextureFilter(g_uiFont.texture, TEXTURE_FILTER_BILINEAR);
 			return;
@@ -103,7 +102,7 @@ void DrawUiTextCenter(const char* text, float centerX, float y, float size, Colo
 	DrawUiText(text, centerX - width / 2.0f, y, size, color);
 }
 
-void PopUtf8Char(std::string& text) {
+void PopUtf8Char(String& text) {
 	while (!text.empty()) {
 		unsigned char c = static_cast<unsigned char>(text.back());
 		text.pop_back();
@@ -111,15 +110,16 @@ void PopUtf8Char(std::string& text) {
 	}
 }
 
-static std::size_t countUtf8Codepoints(const std::string& text) {
+static std::size_t countUtf8Codepoints(const String& text) {
 	std::size_t count = 0;
-	for (unsigned char c : text) {
+	for (std::size_t i = 0; i < text.size(); ++i) {
+		unsigned char c = static_cast<unsigned char>(text[i]);
 		if ((c & 0xC0) != 0x80) ++count;
 	}
 	return count;
 }
 
-void AppendUtf8Codepoint(std::string& text, int codepoint, std::size_t maxChars) {
+void AppendUtf8Codepoint(String& text, int codepoint, std::size_t maxChars) {
 	if (codepoint < 32) return;
 	if (countUtf8Codepoints(text) >= maxChars) return;
 	int byteSize = 0;
@@ -129,12 +129,12 @@ void AppendUtf8Codepoint(std::string& text, int codepoint, std::size_t maxChars)
 	}
 }
 
-std::string FitTextToWidth(const char* text, float maxWidth, float size) {
+String FitTextToWidth(const char* text, float maxWidth, float size) {
 	if (!text || text[0] == '\0' || maxWidth <= 4.0f) return "";
-	std::string result(text);
+	String result(text);
 	if (MeasureUiText(result.c_str(), size) <= maxWidth) return result;
 
-	const std::string ellipsis = "...";
+	const String ellipsis = "...";
 	float ellipsisWidth = MeasureUiText(ellipsis.c_str(), size);
 	if (ellipsisWidth >= maxWidth) return "";
 
@@ -147,14 +147,14 @@ std::string FitTextToWidth(const char* text, float maxWidth, float size) {
 void DrawUiTextFitted(const char* text, float x, float y, float maxWidth, float size, Color color) {
 	if (!text || text[0] == '\0' || maxWidth <= 0.0f) return;
 	float currentSize = size;
-	while (currentSize > std::max(10.0f, size - 2.0f) && MeasureUiText(text, currentSize) > maxWidth) {
+	while (currentSize > maxVal(10.0f, size - 2.0f) && MeasureUiText(text, currentSize) > maxWidth) {
 		currentSize -= 0.5f;
 	}
 	float yOffset = (size - currentSize) * 0.5f;
 	if (MeasureUiText(text, currentSize) <= maxWidth) {
 		DrawUiText(text, x, y + yOffset, currentSize, color);
 	} else {
-		std::string fitted = FitTextToWidth(text, maxWidth, currentSize);
+		String fitted = FitTextToWidth(text, maxWidth, currentSize);
 		DrawUiText(fitted.c_str(), x, y + yOffset, currentSize, color);
 	}
 }
@@ -162,12 +162,12 @@ void DrawUiTextFitted(const char* text, float x, float y, float maxWidth, float 
 void DrawUiTextCenterFitted(const char* text, float centerX, float y, float maxWidth, float size, Color color) {
 	if (!text || text[0] == '\0' || maxWidth <= 0.0f) return;
 	float currentSize = size;
-	while (currentSize > std::max(10.0f, size - 2.5f) && MeasureUiText(text, currentSize) > maxWidth) {
+	while (currentSize > maxVal(10.0f, size - 2.5f) && MeasureUiText(text, currentSize) > maxWidth) {
 		currentSize -= 0.5f;
 	}
 	float yOffset = (size - currentSize) * 0.5f;
-	std::string fitted = MeasureUiText(text, currentSize) <= maxWidth
-		? std::string(text)
+	String fitted = MeasureUiText(text, currentSize) <= maxWidth
+		? String(text)
 		: FitTextToWidth(text, maxWidth, currentSize);
 	float width = MeasureUiText(fitted.c_str(), currentSize);
 	DrawUiText(fitted.c_str(), centerX - width / 2.0f, y + yOffset, currentSize, color);
@@ -179,11 +179,11 @@ void DrawUiTextInRect(const char* text, Rectangle bounds, float size, Color colo
 	if (availWidth <= 2.0f) return;
 
 	float currentSize = size;
-	while (currentSize > std::max(10.0f, size - 2.5f) && MeasureUiText(text, currentSize) > availWidth) {
+	while (currentSize > maxVal(10.0f, size - 2.5f) && MeasureUiText(text, currentSize) > availWidth) {
 		currentSize -= 0.5f;
 	}
-	std::string fitted = MeasureUiText(text, currentSize) <= availWidth
-		? std::string(text)
+	String fitted = MeasureUiText(text, currentSize) <= availWidth
+		? String(text)
 		: FitTextToWidth(text, availWidth, currentSize);
 
 	float textW = MeasureUiText(fitted.c_str(), currentSize);
@@ -200,14 +200,25 @@ void DrawUiTextInRect(const char* text, Rectangle bounds, float size, Color colo
 
 void DrawUiTextWrapped(const char* text, Rectangle bounds, float size, Color color, float lineSpacing) {
 	if (!text || text[0] == '\0' || bounds.width <= 4.0f) return;
-	std::istringstream wordsStream(text);
-	std::string word;
-	std::string currentLine;
+
+	String currentLine;
 	float curY = bounds.y;
 	float lineHeight = effectiveFontSize(size) + lineSpacing;
 
-	while (wordsStream >> word) {
-		std::string testLine = currentLine.empty() ? word : currentLine + " " + word;
+	std::size_t i = 0;
+	while (text[i] != '\0') {
+		while (text[i] == ' ' || text[i] == '\t' || text[i] == '\n' || text[i] == '\r') {
+			++i;
+		}
+		if (text[i] == '\0') break;
+
+		String word;
+		while (text[i] != '\0' && text[i] != ' ' && text[i] != '\t' && text[i] != '\n' && text[i] != '\r') {
+			word.push_back(text[i]);
+			++i;
+		}
+
+		String testLine = currentLine.empty() ? word : (currentLine + " " + word);
 		if (MeasureUiText(testLine.c_str(), size) <= bounds.width) {
 			currentLine = testLine;
 		} else {
@@ -233,9 +244,9 @@ void DrawUiTextWrapped(const char* text, Rectangle bounds, float size, Color col
 
 Color BrightenColor(Color c, int delta) {
 	return Color{
-		static_cast<unsigned char>(std::clamp(static_cast<int>(c.r) + delta, 0, 255)),
-		static_cast<unsigned char>(std::clamp(static_cast<int>(c.g) + delta, 0, 255)),
-		static_cast<unsigned char>(std::clamp(static_cast<int>(c.b) + delta, 0, 255)),
+		static_cast<unsigned char>(clampVal(static_cast<int>(c.r) + delta, 0, 255)),
+		static_cast<unsigned char>(clampVal(static_cast<int>(c.g) + delta, 0, 255)),
+		static_cast<unsigned char>(clampVal(static_cast<int>(c.b) + delta, 0, 255)),
 		c.a
 	};
 }
@@ -244,11 +255,11 @@ void DrawVerticalScrollbar(Rectangle trackBounds, int totalItems, int visibleIte
 	if (totalItems <= visibleItems || visibleItems <= 0) return;
 	DrawRectangleRounded(trackBounds, 0.5f, 4, Color{226, 232, 226, 255});
 
-	int maxScroll = std::max(1, totalItems - visibleItems);
+	int maxScroll = maxVal(1, totalItems - visibleItems);
 	float ratio = static_cast<float>(visibleItems) / static_cast<float>(totalItems);
-	float thumbH = std::max(28.0f, trackBounds.height * ratio);
+	float thumbH = maxVal(28.0f, trackBounds.height * ratio);
 	float availH = trackBounds.height - thumbH;
-	float targetFrac = static_cast<float>(std::clamp(scrollOffset, 0, maxScroll)) / static_cast<float>(maxScroll);
+	float targetFrac = static_cast<float>(clampVal(scrollOffset, 0, maxScroll)) / static_cast<float>(maxScroll);
 	float frac = Anim::SmoothScroll(trackBounds, targetFrac);
 	float thumbY = trackBounds.y + availH * frac;
 
@@ -257,14 +268,14 @@ void DrawVerticalScrollbar(Rectangle trackBounds, int totalItems, int visibleIte
 	DrawRectangleRounded(thumb, 0.5f, 4, moving ? Color{35, 125, 88, 235} : Color{35, 105, 78, 200});
 }
 
-void DrawUiInputBox(Rectangle bounds, const std::string& value, const char* placeholder, bool isFocused, Vector2 mouse, bool isPassword) {
+void DrawUiInputBox(Rectangle bounds, const String& value, const char* placeholder, bool isFocused, Vector2 mouse, bool isPassword) {
 	bool hovered = CheckCollisionPointRec(mouse, bounds);
 	Anim::InputFocusGlow(bounds, isFocused);
 	DrawRectangleRounded(bounds, 0.15f, 4, isFocused ? RAYWHITE : (hovered ? Color{252, 254, 252, 255} : Color{248, 250, 248, 255}));
 	Color borderCol = isFocused ? Color{35, 105, 78, 255} : (hovered ? Color{140, 165, 150, 255} : Color{205, 214, 206, 255});
 	DrawRectangleRoundedLines(bounds, 0.15f, 4, borderCol);
 
-	std::string displayStr = isPassword ? std::string(value.size(), '*') : value;
+	String displayStr = isPassword ? String(value.size(), '*') : value;
 	if (isFocused) {
 		bool blink = std::fmod(GetTime(), 1.0) < 0.55;
 		if (blink) displayStr += "|";

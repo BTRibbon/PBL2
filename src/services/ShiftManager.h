@@ -1,13 +1,14 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
 
 class ShiftManager {
-	std::vector<std::string> alerts;
+private:
+	Vector<String> alerts;
 
 public:
 	void clearAlerts();
-	void notifyMissingCoverage(const std::string& scheduleId, int missingEmployees, const std::string& branchId = "");
-	const std::vector<std::string>& getAlerts() const;
+	void notifyMissingCoverage(const String& scheduleId, int missingEmployees, const String& branchId = "");
+	const Vector<String>& getAlerts() const;
 };

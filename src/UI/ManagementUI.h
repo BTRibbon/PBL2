@@ -1,79 +1,63 @@
 #pragma once
 
+#include "raylib.h"
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
+#include "../datastructures/MenuLookup.h"
 #include "../models/Branch.h"
 #include "../models/RestaurantChain.h"
 #include "../models/Timekeeping.h"
-#include "../models/User.h"
-#include "../datastructures/MenuLookup.h"
+#include "../models/Employee.h"
+#include "../services/DataManager.h"
 #include "../services/ScheduleService.h"
 #include "../services/ShiftManager.h"
-#include "raylib.h"
-
-#include <string>
-#include <vector>
-
-struct Product {
-	std::string code;
-	std::string name;
-	std::string category;
-	int price;
-	Color color;
-};
-
-struct IngredientType {
-	std::string id;
-	std::string name;
-	std::string unit;
-};
 
 class ManagementUI {
+private:
 	RestaurantChain& chain;
-	std::vector<Branch>& branches;
+	Vector<Branch>& branches;
 	ScheduleService& scheduleService;
 	ShiftManager& shiftManager;
-	std::vector<Timekeeping>& timekeepingRecords;
-	std::vector<Employee*>& employees;
-	std::vector<Product>& products;
+	Vector<Timekeeping>& timekeepingRecords;
+	Vector<Employee*>& employees;
+	Vector<Product>& products;
 	MenuLookup& menuLookup;
-	std::vector<IngredientType>& ingredientTypes;
+	Vector<IngredientType>& ingredientTypes;
 
-	std::string message;
-	std::string dateInput = "2026-10-21";
-	std::string startInput = "08:00";
-	std::string endInput = "16:00";
+	String message;
+	String dateInput = "2026-10-21";
+	String startInput = "08:00";
+	String endInput = "16:00";
 	int focusedField = -1;
 	int scheduleBranchIndex = 0;
 
-	// Sub-tab in Tab 3: 0 = Thực đơn, 1 = Kho & Nguyên liệu
 	int managementSubTab = 0;
 	int selectedInventoryBranch = 0;
 
-	// Scroll offsets
 	int menuScrollOffset = 0;
 	int ingredientScrollOffset = 0;
 	int invBranchScrollOffset = 0;
 	int scheduleScrollOffset = 0;
 	int attendanceScrollOffset = 0;
 
-	// Menu dialog (Add / Edit product - BranchManager only)
+	// Hộp thoại Thực đơn (Thêm / Sửa món ăn - chỉ Giám đốc chuỗi ChainManager)
 	bool isMenuDialogOpen = false;
-	int menuDialogMode = 0; // 0: Add, 1: Edit
+	int menuDialogMode = 0; // 0: Thêm, 1: Sửa
 	int editingProductIndex = -1;
-	std::string menuCodeInput;
-	std::string menuNameInput;
-	std::string menuCategoryInput = "Món chính";
-	std::string menuPriceInput;
+	String menuCodeInput;
+	String menuNameInput;
+	String menuCategoryInput = "Món chính";
+	String menuPriceInput;
 	int menuDialogField = 0;
 
-	// Ingredient Type dialog (Add ingredient type - BranchManager only)
+	// Hộp thoại Nguyên liệu (Thêm loại nguyên liệu - chỉ Giám đốc chuỗi ChainManager)
 	bool isIngredientDialogOpen = false;
-	std::string ingIdInput;
-	std::string ingNameInput;
-	std::string ingUnitInput = "kg";
-	std::string ingInitialStockInput = "50";
+	String ingIdInput;
+	String ingNameInput;
+	String ingUnitInput = "kg";
+	String ingInitialStockInput = "50";
 	int ingDialogField = 0;
 
-	// Animation state
 	double dialogOpenTime = 0.0;
 	bool wasDialogOpen = false;
 	double subTabChangeTime = -10.0;
@@ -84,30 +68,28 @@ class ManagementUI {
 	float beginDialogTransition(Rectangle dialog) const;
 	void endDialogTransition() const;
 	void drawManagementHeader(const char* title, const char* subtitle) const;
-	void drawInventoryTab(Vector2 mouse, User& currentUser);
-	void drawMenuTab(Vector2 mouse, User& currentUser);
+	void drawInventoryTab(Vector2 mouse, Employee& currentUser);
+	void drawMenuTab(Vector2 mouse, Employee& currentUser);
 	void drawMenuDialog(Vector2 mouse);
 	void drawIngredientDialog(Vector2 mouse);
-	void drawScheduleTab(Vector2 mouse, User& currentUser);
-	void drawAttendanceTab(Vector2 mouse, User& currentUser);
-	Timekeeping* getTimekeeping(User& currentUser) const;
+	void drawScheduleTab(Vector2 mouse, Employee& currentUser);
+	void drawAttendanceTab(Vector2 mouse, Employee& currentUser);
+	Timekeeping* getTimekeeping(Employee& currentUser) const;
 	bool submitMenuDialog();
 	bool submitIngredientDialog();
 
 public:
-	ManagementUI(RestaurantChain& restaurantChain, std::vector<Branch>& branchValues,
+	ManagementUI(RestaurantChain& restaurantChain, Vector<Branch>& branchValues,
 		ScheduleService& service, ShiftManager& manager,
-		std::vector<Timekeeping>& records, std::vector<Employee*>& employeeUsers,
-		std::vector<Product>& productList, MenuLookup& lookup,
-		std::vector<IngredientType>& ingredients);
+		Vector<Timekeeping>& records, Vector<Employee*>& employeeUsers,
+		Vector<Product>& productList, MenuLookup& lookup,
+		Vector<IngredientType>& ingredients);
 
-	bool handleClick(Vector2 mouse, int activeTab, User& currentUser);
-	void updateScroll(Vector2 mouse, float wheelMove, int activeTab, User& currentUser);
 	bool updateInput(int key, int charPressed);
-	void draw(Vector2 mouse, int activeTab, User& currentUser);
-	const std::string& getMessage() const;
-	void setMessage(const std::string& msg);
+	void updateScroll(Vector2 mouse, float wheelMove, int activeTab, Employee& currentUser);
+	bool handleClick(Vector2 mouse, int activeTab, Employee& currentUser);
+	void draw(Vector2 mouse, int activeTab, Employee& currentUser);
+	const String& getMessage() const;
+	void setMessage(const String& msg);
 	bool isDialogOpen() const { return isMenuDialogOpen || isIngredientDialogOpen; }
-	int getSubTab() const { return managementSubTab; }
-	void setSubTab(int sub) { managementSubTab = sub; }
 };

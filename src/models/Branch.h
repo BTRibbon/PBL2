@@ -4,30 +4,42 @@
 #include "Warehouse.h"
 #include "MenuItem.h"
 #include "../datastructures/MenuLookup.h"
-#include <string>
+#include "../datastructures/String.h"
 
 class Branch {
-	std::string branchId;
-	std::string name;
-	float x;
-	float y;
+private:
+	String branchId;
+	String name;
+	float x = 0.0f;
+	float y = 0.0f;
 	MenuLookup menu;
 	Warehouse warehouse;
 	OpeningHours openingHours;
-	int revenue=0;
+	int revenue = 0;
+
 public:
-	Branch(std::string id,std::string branchName,float branchX,float branchY);
-	std::string getId() const;
-	std::string getName() const;
+	Branch() = default;
+	Branch(const String& id, const String& branchName, float branchX, float branchY);
+
+	String getId() const;
+	String getName() const;
 	float getX() const;
 	float getY() const;
-	void addMenuItem(MenuItem item);
-	MenuItem* findMenuItem(std::string itemId);
-	void addStock(std::string itemId,int quantity);
-	bool removeStock(std::string itemId,int quantity);
-	int getStock(std::string itemId) const;
-	void setOpeningHours(std::string open,std::string close);
+
+	void addMenuItem(const MenuItem& item);
+	MenuItem* findMenuItem(const String& itemId);
+	void addStock(const String& itemId, int quantity);
+	bool removeStock(const String& itemId, int quantity);
+	int getStock(const String& itemId) const;
+	void setOpeningHours(const String& open, const String& close);
 	OpeningHours getOpeningHours() const;
 	void addRevenue(int amount);
 	int getRevenue() const;
+
+	bool operator==(const Branch& other) const {
+		return branchId == other.branchId;
+	}
+	bool operator!=(const Branch& other) const {
+		return branchId != other.branchId;
+	}
 };

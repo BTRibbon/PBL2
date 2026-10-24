@@ -1,75 +1,94 @@
 #include "ScheduleService.h"
-
-#include "../models/User.h"
+#include "../models/Employee.h"
 
 ScheduleService::ScheduleService(ShiftManager* manager) : shiftManager(manager) {}
 
-void ScheduleService::addSchedule(const std::shared_ptr<Schedule>& schedule) {
+ScheduleService::~ScheduleService() {
+	clear();
+}
+
+void ScheduleService::clear() {
+	for (int i = 0; i < schedules.size(); ++i) {
+		delete schedules[i];
+	}
+	schedules.clear();
+}
+
+void ScheduleService::addSchedule(Schedule* schedule) {
 	if (schedule) schedules.push_back(schedule);
 }
 
-bool ScheduleService::deleteSchedule(const std::string& scheduleId) {
-	for (auto it = schedules.begin(); it != schedules.end(); ++it) {
-		if ((*it)->getId() == scheduleId) {
-			schedules.erase(it);
+bool ScheduleService::deleteSchedule(const String& scheduleId) {
+	for (int i = 0; i < schedules.size(); ++i) {
+		if (schedules[i]->getId() == scheduleId) {
+			delete schedules[i];
+			schedules.eraseAt(i);
 			return true;
 		}
 	}
 	return false;
 }
 
-std::shared_ptr<SelfRegisteredSchedule> ScheduleService::openOpenShift(
-	std::string scheduleId, std::string date, std::string start, std::string end,
-	int breakTime, std::string branch, int required) {
-	auto schedule = std::make_shared<SelfRegisteredSchedule>(scheduleId, date, start, end,
+SelfRegisteredSchedule* ScheduleService::openOpenShift(
+	const String& scheduleId, const String& date, const String& start, const String& end,
+	int breakTime, const String& branch, int required) {
+	SelfRegisteredSchedule* schedule = new SelfRegisteredSchedule(scheduleId, date, start, end,
 		breakTime, branch, required, true);
 	addSchedule(schedule);
 	return schedule;
 }
 
-std::shared_ptr<Schedule> ScheduleService::findSchedule(const std::string& scheduleId) const {
-	for (const auto& schedule : schedules) if (schedule->getId() == scheduleId) return schedule;
+Schedule* ScheduleService::findSchedule(const String& scheduleId) const {
+	for (int i = 0; i < schedules.size(); ++i) {
+		if (schedules[i]->getId() == scheduleId) return schedules[i];
+	}
 	return nullptr;
 }
 
-bool ScheduleService::registerForEmptyShift(Employee& employee, const std::string& scheduleId) {
-	auto schedule = findSchedule(scheduleId);
+bool ScheduleService::registerForEmptyShift(Employee& employee, const String& scheduleId) {
+	Schedule* schedule = findSchedule(scheduleId);
 	if (!schedule || !schedule->isOpenShift()) return false;
-	bool branchMatches = (employee.branchId == "ALL") ||
+	bool branchMatches = (employee.getBranchId() == "ALL") ||
 		(schedule->getBranchId() == "ALL") ||
-		(schedule->getBranchId() == employee.branchId);
+		(schedule->getBranchId() == employee.getBranchId());
 	return branchMatches && schedule->assignEmployee(employee.getId());
 }
 
-bool ScheduleService::validateMinimumShifts(const Employee& employee, const std::string& fromDate,
-	const std::string& toDate) const {
+bool ScheduleService::validateMinimumShifts(const Employee& employee, const String& fromDate,
+	const String& toDate) const {
 	int registered = 0;
-	for (const auto& schedule : schedules) {
+	for (int i = 0; i < schedules.size(); ++i) {
+		const Schedule* schedule = schedules[i];
 		if (schedule->getDate() < fromDate || schedule->getDate() > toDate) continue;
-		for (const std::string& employeeId : schedule->getEmployeeIds())
-			if (employeeId == employee.getId()) ++registered;
+		const Vector<String>& empIds = schedule->getEmployeeIds();
+		for (int j = 0; j < empIds.size(); ++j) {
+			if (empIds[j] == employee.getId()) ++registered;
+		}
 	}
 	return registered >= employee.getMinimumShifts();
 }
 
-std::vector<std::shared_ptr<Schedule>> ScheduleService::checkShiftCoverage(const std::string& branchId) const {
-	std::vector<std::shared_ptr<Schedule>> uncovered;
+Vector<Schedule*> ScheduleService::checkShiftCoverage(const String& branchId) const {
+	Vector<Schedule*> uncovered;
 	const bool checkAll = branchId.empty() || branchId == "ALL";
-	for (const auto& schedule : schedules) {
+	for (int i = 0; i < schedules.size(); ++i) {
+		Schedule* schedule = schedules[i];
 		if (!checkAll && schedule->getBranchId() != branchId && schedule->getBranchId() != "ALL") continue;
 		if (!schedule->hasCoverage()) uncovered.push_back(schedule);
 	}
 	return uncovered;
 }
 
-void ScheduleService::notifyShiftManager(const std::string& branchId) {
+void ScheduleService::notifyShiftManager(const String& branchId) {
 	if (!shiftManager) return;
 	shiftManager->clearAlerts();
-	for (const auto& schedule : checkShiftCoverage(branchId)) {
+	Vector<Schedule*> uncovered = checkShiftCoverage(branchId);
+	for (int i = 0; i < uncovered.size(); ++i) {
+		Schedule* schedule = uncovered[i];
 		shiftManager->notifyMissingCoverage(schedule->getId(),
 			schedule->getRequiredEmployees() - schedule->getAssignedEmployeeCount(),
 			schedule->getBranchId());
 	}
 }
 
-const std::vector<std::shared_ptr<Schedule>>& ScheduleService::getSchedules() const { return schedules; }
+const Vector<Schedule*>& ScheduleService::getSchedules() const { return schedules; }

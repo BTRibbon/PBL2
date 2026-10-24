@@ -1,66 +1,62 @@
 #pragma once
 
 #include "raylib.h"
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
 #include "../models/AccountRecord.h"
 #include "../models/Branch.h"
-#include "../models/User.h"
-#include <string>
-#include <vector>
-#include <memory>
+#include "../models/Employee.h"
 
 class StaffManagementUI {
 public:
-	// Filter state
-	int selectedBranchFilter = -1; // -1 = All branches
-	int selectedRoleFilter = -1;   // -1 = All, 0 = Manager, 1 = Employee
+	int selectedBranchFilter = -1; // -1 = Tất cả chi nhánh
+	int selectedRoleFilter = -1;
 	int tableScrollOffset = 0;
 
-	// Add / Edit Staff Modal
+	// Hộp thoại Thêm / Sửa nhân sự
 	bool isStaffModalOpen = false;
-	int staffModalMode = 0; // 0 = Add, 1 = Edit
+	int staffModalMode = 0; // 0 = Thêm, 1 = Sửa
 	int editingAccountIdx = -1;
-	std::string inputStaffId;
-	std::string inputStaffName;
-	std::string inputStaffUsername;
-	std::string inputStaffPassword;
-	std::string inputStaffBranchId;
-	std::string inputStaffRole; // "Employee" or "Manager"
+	String inputStaffId;
+	String inputStaffName;
+	String inputStaffUsername;
+	String inputStaffPassword;
+	String inputStaffBranchId;
+	String inputStaffRole; // "Employee" hoặc "Manager"
 	int staffModalField = 0;
 
-	// Change Password Modal (available for all users)
+	// Hộp thoại Đổi mật khẩu (dành cho mọi cấp bậc)
 	bool isChangePassModalOpen = false;
-	std::string inputOldPassword;
-	std::string inputNewPassword;
-	std::string inputConfirmPassword;
+	String inputOldPassword;
+	String inputNewPassword;
+	String inputConfirmPassword;
 	int changePassField = 0;
 
 	StaffManagementUI();
 
-	void openAddStaffModal(const User& currentUser, const std::vector<Branch>& branches, const std::vector<AccountRecord>& accounts);
-	void openEditStaffModal(int accountIdx, const std::vector<AccountRecord>& accounts);
+	void openAddStaffModal(const Employee& currentUser, const Vector<Branch>& branches, const Vector<AccountRecord>& accounts);
+	void openEditStaffModal(int accountIdx, const Vector<AccountRecord>& accounts);
 	void openChangePassModal();
 
-	bool submitStaffModal(std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
-		const User& currentUser, std::string& statusMessage, int& statusVersion);
-	bool submitChangePassModal(std::vector<AccountRecord>& accounts, User& currentUser,
-		std::string& statusMessage, int& statusVersion);
+	bool submitStaffModal(Vector<AccountRecord>& accounts, const Employee& currentUser,
+		String& statusMessage, int& statusVersion);
+	bool submitChangePassModal(Vector<AccountRecord>& accounts, Employee& currentUser,
+		String& statusMessage, int& statusVersion);
 
-	void deleteStaff(int accountIdx, std::vector<AccountRecord>& accounts,
-		const User& currentUser, std::string& statusMessage, int& statusVersion);
+	void deleteStaff(int accountIdx, Vector<AccountRecord>& accounts,
+		const Employee& currentUser, String& statusMessage, int& statusVersion);
 
-	bool handleClick(Vector2 mouse, std::vector<AccountRecord>& accounts,
-		std::vector<std::unique_ptr<User>>& userPool, const std::vector<Branch>& branches,
-		User& currentUser, std::string& statusMessage, int& statusVersion);
+	bool handleClick(Vector2 mouse, Vector<AccountRecord>& accounts,
+		const Vector<Branch>& branches, Employee& currentUser,
+		String& statusMessage, int& statusVersion);
 
 	void handleScroll(Vector2 mouse, float wheelMove);
-	bool handleInput(int key, int charPressed, std::vector<AccountRecord>& accounts,
-		std::vector<std::unique_ptr<User>>& userPool, User& currentUser,
-		std::string& statusMessage, int& statusVersion);
+	bool handleInput(int key, int charPressed, Vector<AccountRecord>& accounts,
+		Employee& currentUser, String& statusMessage, int& statusVersion);
 
-	void draw(Vector2 mouse, const std::vector<AccountRecord>& accounts,
-		const std::vector<Branch>& branches, User& currentUser);
-	void drawChangePassModal(Vector2 mouse, const User& currentUser);
+	void draw(Vector2 mouse, const Vector<AccountRecord>& accounts,
+		const Vector<Branch>& branches, Employee& currentUser);
+	void drawChangePassModal(Vector2 mouse, const Employee& currentUser);
 
 	bool isModalOpen() const { return isStaffModalOpen || isChangePassModalOpen; }
 };
-

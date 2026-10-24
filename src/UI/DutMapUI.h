@@ -1,38 +1,35 @@
 #pragma once
 
 #include "raylib.h"
+#include "../datastructures/String.h"
+#include "../datastructures/Vector.h"
+#include "../datastructures/MinHeap.h"
 #include "../models/Branch.h"
 #include "../models/RestaurantChain.h"
-#include "../models/User.h"
-#include "../datastructures/OrderQueue.h"
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <memory>
-#include <queue>
+#include "../models/Employee.h"
 
 struct AccountRecord;
 
 struct MapGridPoint {
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
 };
 
 struct DutRoute {
-	std::vector<int> nodes;
-	std::vector<int> explored;
+	Vector<int> nodes;
+	Vector<int> explored;
 	float distance = 1e9f;
 };
 
 enum class DutCellType {
-	Road,          // Đường nhựa nhánh
-	MainHighway,    // Trục chính Nguyễn Lương Bằng (QL1A)
-	Campus,        // Khuôn viên ĐHBK Đà Nẵng
-	CampusBuilding,// Toà nhà ĐHBK (Khu A, Khu B, Thư viện, Sân bóng)
-	Market,        // Chợ Hoà Khánh
-	Water,         // Hồ Bàu Tràm
-	Building,      // Nhà dân, quán xá
-	Park           // Cây xanh, công viên
+	Road,
+	MainHighway,
+	Campus,
+	CampusBuilding,
+	Market,
+	Water,
+	Building,
+	Park
 };
 
 class DutMap {
@@ -41,8 +38,8 @@ public:
 	static constexpr int ROWS = 20;
 
 private:
-	std::vector<DutCellType> cells;
-	std::vector<bool> blocked;
+	Vector<DutCellType> cells;
+	Vector<bool> blocked;
 
 	int id(int x, int y) const { return y * COLS + x; }
 
@@ -59,8 +56,8 @@ public:
 		return cells[id(x, y)];
 	}
 	int nodeAt(int x, int y) const {
-		x = std::clamp(x, 0, COLS - 1);
-		y = std::clamp(y, 0, ROWS - 1);
+		x = clampVal(x, 0, COLS - 1);
+		y = clampVal(y, 0, ROWS - 1);
 		return id(x, y);
 	}
 	int getNodeX(int node) const {
@@ -72,7 +69,7 @@ public:
 		return node / COLS;
 	}
 
-	std::vector<int> neighbours(int node, int target = -1) const;
+	Vector<int> neighbours(int node, int target = -1) const;
 	DutRoute findRoute(int start, int target, bool aStar) const;
 };
 
@@ -83,58 +80,50 @@ public:
 	float mapOriginY = 168.0f;
 	float mapCellSize = 24.0f;
 
-	// Selection state: 2-click mechanism
-	// Step 0: waiting for Start branch
-	// Step 1: Start chosen, waiting for Destination (branch or custom address)
 	int selectionStep = 1;
 	int startBranchIdx = 0;
 	int targetBranchIdx = 1;
 	MapGridPoint targetPoint{12, 13};
 	bool isTargetCustom = false;
 
-	// Path calculation & animation
 	DutRoute currentRoute;
 	bool useAStar = true;
 	float pathProgress = 0.0f;
-	float shipperProgress = 0.0f; // 0.0 -> route length for vehicle animation
+	float shipperProgress = 0.0f;
 
-	// Branch Management Modal (BranchManager only)
+	// Hộp thoại Quản lý chi nhánh (dành cho Giám đốc chuỗi - ChainManager)
 	bool isBranchModalOpen = false;
-	int branchModalMode = 0; // 0: Add, 1: Edit
+	int branchModalMode = 0; // 0: Thêm, 1: Sửa
 	int editingBranchIdx = -1;
-	std::string inputBranchId;
-	std::string inputBranchName;
+	String inputBranchId;
+	String inputBranchName;
 	int inputBranchGridX = 12;
 	int inputBranchGridY = 3;
 	int branchModalField = 0;
 	int branchListScroll = 0;
 
-	// Hover info
 	int hoveredCellX = -1;
 	int hoveredCellY = -1;
 
 	DutMapUI();
 
 	void updateRoute();
-	bool handleClick(Vector2 mouse, std::vector<Branch>& branches,
-		std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
-		User* currentUser, std::string& statusMessage, int& statusVersion);
+	bool handleClick(Vector2 mouse, Vector<Branch>& branches, RestaurantChain& chain,
+		Vector<AccountRecord>& accounts, Employee* currentUser,
+		String& statusMessage, int& statusVersion);
 	void handleScroll(Vector2 mouse, float wheelMove);
-	bool handleInput(int key, int charPressed, std::vector<Branch>& branches,
-		std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
-		User* currentUser, std::string& statusMessage, int& statusVersion);
+	bool handleInput(int key, int charPressed, Vector<Branch>& branches, RestaurantChain& chain,
+		Vector<AccountRecord>& accounts, Employee* currentUser,
+		String& statusMessage, int& statusVersion);
 
-	void draw(Vector2 mouse, const std::vector<Branch>& branches,
-		OrderQueue& orderQueue, User* currentUser);
+	void draw(Vector2 mouse, const Vector<Branch>& branches, Employee* currentUser);
 
 	bool isModalOpen() const { return isBranchModalOpen; }
-	void openAddBranchModal(const std::vector<Branch>& branches);
-	void openEditBranchModal(int branchIdx, const std::vector<Branch>& branches);
-	bool submitBranchModal(std::vector<Branch>& branches,
-		std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
-		std::string& statusMessage, int& statusVersion);
+	void openAddBranchModal(const Vector<Branch>& branches);
+	void openEditBranchModal(int branchIdx, const Vector<Branch>& branches);
+	bool submitBranchModal(Vector<Branch>& branches, RestaurantChain& chain,
+		Vector<AccountRecord>& accounts, String& statusMessage, int& statusVersion);
 
-	void deleteBranch(int branchIdx, std::vector<Branch>& branches,
-		std::vector<AccountRecord>& accounts, std::vector<std::unique_ptr<User>>& userPool,
-		std::string& statusMessage, int& statusVersion);
+	void deleteBranch(int branchIdx, Vector<Branch>& branches, RestaurantChain& chain,
+		Vector<AccountRecord>& accounts, String& statusMessage, int& statusVersion);
 };
