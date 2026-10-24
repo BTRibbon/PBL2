@@ -1,0 +1,9 @@
+<map id="ChainManager" name="ChainManager">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,1131,174,1285"/>
+<area shape="rect" id="Node000002" href="$class_manager.html" title=" " alt="" coords="13,905,167,1081"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,1094,92,1131,87,1130,89,1099"/>
+<area shape="rect" id="Node000003" href="$class_employee.html" title=" " alt="" coords="21,552,158,856"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,868,92,906,87,905,90,874"/>
+<area shape="rect" id="Node000004" href="$class_string.html" title=" " alt="" coords="24,5,155,416"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="90,413,92,535,87,535,90,418"/>
+</map>

@@ -1,0 +1,28 @@
+var class_branch =
+[
+    [ "Branch", "class_branch.html#a99cefc9911741428c0e33d9dedc64865", null ],
+    [ "Branch", "class_branch.html#a5793fcd901df529a80f676cf995499cd", null ],
+    [ "addMenuItem", "class_branch.html#aac308e0d631e65e96e850341fc7d4c4d", null ],
+    [ "addRevenue", "class_branch.html#a767d40b8534ffa103345e7a86d7bcdaa", null ],
+    [ "addStock", "class_branch.html#a7d4fe87a4c8a42b52ef174a815e2aae4", null ],
+    [ "findMenuItem", "class_branch.html#ab0adadc40bc89332593ce96966f97116", null ],
+    [ "getId", "class_branch.html#af1fe56db2078e0670710bd4ae1c83780", null ],
+    [ "getName", "class_branch.html#a9aad74951306c1dfae4a5a7e8b107c8a", null ],
+    [ "getOpeningHours", "class_branch.html#ab6b5f0cb02bb9207a453c5e6c6cf1108", null ],
+    [ "getRevenue", "class_branch.html#ae96a81206b832d674b62a47066126e80", null ],
+    [ "getStock", "class_branch.html#ac517c1360bd382be2e919c36ec575c9f", null ],
+    [ "getX", "class_branch.html#afdf29381cb1dc03166b0cbf0f8c94bd4", null ],
+    [ "getY", "class_branch.html#aace9fbb24ae1442f0025ccb5e381836e", null ],
+    [ "operator!=", "class_branch.html#a6b9843bfda685d57b23eb634250aa18e", null ],
+    [ "operator==", "class_branch.html#a33d42f1ecd4e345266c224fd4c2f23eb", null ],
+    [ "removeStock", "class_branch.html#a787d2ce9882be2d5ac0b3a57107b7dac", null ],
+    [ "setOpeningHours", "class_branch.html#a4ea50fa600cbf52291848c02048a82dd", null ],
+    [ "branchId", "class_branch.html#a61e3e8b5d935ce7c55e270e15e8f4beb", null ],
+    [ "menu", "class_branch.html#a99b96c4c5da900f4f766f2f2df5e7e6b", null ],
+    [ "name", "class_branch.html#a2ce1eb32fe06eed9a9584d4250707e8f", null ],
+    [ "openingHours", "class_branch.html#ab354b815a53998fc7408086ed187e785", null ],
+    [ "revenue", "class_branch.html#a4801c217b2c8ad6ca36283f6f5b256c7", null ],
+    [ "warehouse", "class_branch.html#af1cdd5758c28526bf07751430ae7d15e", null ],
+    [ "x", "class_branch.html#ace94f73ba9f4e12de137fe9e811d9030", null ],
+    [ "y", "class_branch.html#a59859f81447bdcfec55baf2dc74b510c", null ]
+];

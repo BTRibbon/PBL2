@@ -1,0 +1,12 @@
+<map id="SelfRegisteredSchedule" name="SelfRegisteredSchedule">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,1336,177,1448"/>
+<area shape="rect" id="Node000002" href="$class_work_schedule.html" title=" " alt="" coords="44,1217,139,1287"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,1299,94,1337,89,1336,90,1304"/>
+<area shape="rect" id="Node000003" href="$class_schedule.html" title=" " alt="" coords="8,864,175,1168"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="92,1180,94,1218,89,1217,91,1186"/>
+<area shape="rect" id="Node000004" href="$class_string.html" title=" " alt="" coords="26,5,157,416"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="84,413,85,488,85,792,87,847,81,847,80,792,80,488,84,419"/>
+<area shape="rect" id="Node000005" href="$class_vector.html" title=" " alt="" coords="164,488,272,792"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="152,413,171,472,166,472,152,419"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="166,794,151,849,145,847,168,789"/>
+</map>

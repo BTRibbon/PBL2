@@ -1,0 +1,10 @@
+<map id="Timekeeping" name="Timekeeping">
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,1091,130,1288"/>
+<area shape="rect" id="Node000002" href="$class_string.html" title=" " alt="" coords="5,5,136,416"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,415,73,1074,68,1074,68,416"/>
+<area shape="rect" id="Node000004" href="$struct_attendance_record.html" title=" " alt="" coords="88,552,228,643"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="117,413,146,535,141,535,117,418"/>
+<area shape="rect" id="Node000003" href="$class_vector.html" title=" " alt="" coords="87,715,266,1019"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,1016,111,1076,106,1074,126,1021"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="161,639,167,699,162,698,160,645"/>
+</map>

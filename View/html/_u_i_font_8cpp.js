@@ -1,0 +1,25 @@
+var _u_i_font_8cpp =
+[
+    [ "AppendUtf8Codepoint", "_u_i_font_8cpp.html#a1747e78e1e9bb291cbb49a28165f30ba", null ],
+    [ "BrightenColor", "_u_i_font_8cpp.html#a0c1abbae2b7a52c437090afb7f3bda82", null ],
+    [ "countUtf8Codepoints", "_u_i_font_8cpp.html#af4552d6d74fff7addb4fad563aeb8055", null ],
+    [ "DrawUiInputBox", "_u_i_font_8cpp.html#adf383b400fcf4e7c3731ec7e7fa47d3a", null ],
+    [ "DrawUiText", "_u_i_font_8cpp.html#a37220909382ffdc0e289fa5d69fa60f0", null ],
+    [ "DrawUiTextCenter", "_u_i_font_8cpp.html#ab496854f496c7ef5db34a6f7c3e696a1", null ],
+    [ "DrawUiTextCenterFitted", "_u_i_font_8cpp.html#addb5dcde6b62ded22e041754f90fdd93", null ],
+    [ "DrawUiTextFitted", "_u_i_font_8cpp.html#a14821458e6ae4fa4d79620a62631be31", null ],
+    [ "DrawUiTextInRect", "_u_i_font_8cpp.html#ab95b44c66854642eeabcd42ce923eed8", null ],
+    [ "DrawUiTextRight", "_u_i_font_8cpp.html#a8f004383fbb55b1adbb238ac0d0fc9bc", null ],
+    [ "DrawUiTextWrapped", "_u_i_font_8cpp.html#a73dec7a2c1a0f818ab534b3f0763e860", null ],
+    [ "DrawVerticalScrollbar", "_u_i_font_8cpp.html#a1891b16d5c40447124f095bbdc565b57", null ],
+    [ "effectiveFontSize", "_u_i_font_8cpp.html#a724ab8b92a9ee87cb976d7074ccc1df7", null ],
+    [ "findCandidateFont", "_u_i_font_8cpp.html#a678a1a8a067754ae6c451e312d31f7d7", null ],
+    [ "FitTextToWidth", "_u_i_font_8cpp.html#a045ad36c61846caf2e8c1b298fe44c27", null ],
+    [ "generateVietnameseCodepoints", "_u_i_font_8cpp.html#a5a24d9824c052e9eec3aa49c6ea9526f", null ],
+    [ "GetUiFont", "_u_i_font_8cpp.html#a546b082f49f8c99b64080bf149bd025b", null ],
+    [ "InitUiFont", "_u_i_font_8cpp.html#aab03c3f7905d52636ab269534139d454", null ],
+    [ "MeasureUiText", "_u_i_font_8cpp.html#a20ef541794b46ababbfbed1a16b2d94e", null ],
+    [ "PopUtf8Char", "_u_i_font_8cpp.html#a7f9116d5c3afddfbc033229361f6f72c", null ],
+    [ "UnloadUiFont", "_u_i_font_8cpp.html#a07380c0469fd1a5ba52a13d1fc248e02", null ],
+    [ "g_uiFont", "_u_i_font_8cpp.html#af10429f0a39984d25875250e50855cb6", null ]
+];

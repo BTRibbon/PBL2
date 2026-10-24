@@ -1,0 +1,12 @@
+<map id="FullTimeSchedule" name="FullTimeSchedule">
+<area shape="rect" id="Node000001" title=" " alt="" coords="21,1336,157,1427"/>
+<area shape="rect" id="Node000002" href="$class_work_schedule.html" title=" " alt="" coords="42,1217,136,1287"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,1299,91,1337,86,1336,88,1304"/>
+<area shape="rect" id="Node000003" href="$class_schedule.html" title=" " alt="" coords="5,864,172,1168"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,1180,91,1218,86,1217,88,1186"/>
+<area shape="rect" id="Node000004" href="$class_string.html" title=" " alt="" coords="23,5,154,416"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="82,413,83,488,83,792,84,847,79,847,78,792,78,488,82,419"/>
+<area shape="rect" id="Node000005" href="$class_vector.html" title=" " alt="" coords="162,488,269,792"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="149,413,169,472,163,472,150,419"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="164,794,148,849,143,847,165,789"/>
+</map>

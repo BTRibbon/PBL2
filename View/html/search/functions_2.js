@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['c_5fstr_0',['c_str',['../class_string.html#a8d485340c77fd86c2bd8f1ad2b121100',1,'String']]],
+  ['canaccesstab_1',['canAccessTab',['../class_employee.html#ac9095d669d95e2d1955d4fa36763f15f',1,'Employee::canAccessTab()'],['../class_manager.html#ac8f01f301fb622228c46a56fac273752',1,'Manager::canAccessTab()'],['../class_chain_manager.html#a5d18e7896d99078926e982f1bc2f2a4f',1,'ChainManager::canAccessTab()']]],
+  ['canmanageallbranches_2',['canManageAllBranches',['../class_employee.html#afdac37a30b96ce607803d055f753b93c',1,'Employee::canManageAllBranches()'],['../class_chain_manager.html#add2534f18d5b40d4271a7c75686b3e3a',1,'ChainManager::canManageAllBranches()']]],
+  ['canmanagebranches_3',['canManageBranches',['../class_employee.html#ab7bee972ae1a7c0b313583471bbe5bdc',1,'Employee::canManageBranches()'],['../class_manager.html#a1bf9c83ceaaef28134851440cef01c76',1,'Manager::canManageBranches()']]],
+  ['canregister_4',['canRegister',['../class_self_registered_schedule.html#a5a3e76abcc3b4e792e42eedb15c8b427',1,'SelfRegisteredSchedule']]],
+  ['canviewreports_5',['canViewReports',['../class_employee.html#a7e90f046f0df2f40870f518ccb48a0f3',1,'Employee::canViewReports()'],['../class_manager.html#a9f3bb4e1e891339eb51a7b4330e5eaa6',1,'Manager::canViewReports()']]],
+  ['capacity_6',['capacity',['../class_string.html#a3e3675d00987ec255dcd841c83d9de48',1,'String::capacity()'],['../class_vector.html#ae38fd0419916a4aca4a2ccbd27bba213',1,'Vector::capacity()']]],
+  ['cartitem_7',['CartItem',['../struct_cart_item.html#a15234a897825389749e15a60503bb0ef',1,'CartItem::CartItem()=default'],['../struct_cart_item.html#a4a12498cd8426d2ba0a463ae20e03e82',1,'CartItem::CartItem(const String &amp;code, int qty)']]],
+  ['carttotal_8',['cartTotal',['../class_pos_u_i.html#ae4d6a1ec99981ec36214078025f5c38b',1,'PosUI']]],
+  ['chainmanager_9',['ChainManager',['../class_chain_manager.html#ab10dac64dc95b953db73324b08df4c1c',1,'ChainManager']]],
+  ['checkin_10',['checkIn',['../class_timekeeping.html#ada7be3ac7683b4c2a52556cfe053033b',1,'Timekeeping']]],
+  ['checkout_11',['checkOut',['../class_timekeeping.html#a5f240571e1bbb1ee3b59077fc6d2fa85',1,'Timekeeping']]],
+  ['checkshiftcoverage_12',['checkShiftCoverage',['../class_schedule_service.html#aa609f8c31787c379d19769f182b1932d',1,'ScheduleService']]],
+  ['clampval_13',['clampVal',['../_vector_8h.html#a3a8f5405161968aed8cf74fba169fe1f',1,'Vector.h']]],
+  ['classify_14',['Classify',['../namespace_anim.html#a548ec909011014bc3825f3381e342b98',1,'Anim']]],
+  ['clear_15',['clear',['../class_branch_list.html#a4cd524a777db94f0b6e3630c15b34f40',1,'BranchList::clear()'],['../class_menu_lookup.html#a3eb7d902da92c86c3e7217a4a4ecb975',1,'MenuLookup::clear()'],['../class_min_heap.html#ac1404f38c25321c43f26d706c89ac91a',1,'MinHeap::clear()'],['../class_order_queue.html#a1a2e2df6e8639e8069d85d2a44c7fb52',1,'OrderQueue::clear()'],['../class_string.html#ab5b0c43ae84247df8e5f9488a911587c',1,'String::clear()'],['../class_vector.html#a32ad98b135472b0ebc5d6cb3ae5d0085',1,'Vector::clear()'],['../class_restaurant_chain.html#aec17278d744c0fb6ac11d816b2374708',1,'RestaurantChain::clear()'],['../class_schedule_service.html#abf5b216aca93949930022d0201ac588e',1,'ScheduleService::clear()']]],
+  ['clearalerts_16',['clearAlerts',['../class_shift_manager.html#aa68c1de13baa121437a82c46a5086099',1,'ShiftManager']]],
+  ['clearemployeepool_17',['clearEmployeePool',['../class_data_manager.html#a2fa191f8fa51ac0cd5c11c12fd6fb22d',1,'DataManager']]],
+  ['computediscount_18',['computeDiscount',['../class_pos_u_i.html#a1fe137c643b95ca3ad2d307de75836b8',1,'PosUI']]],
+  ['contains_19',['contains',['../class_vector.html#a71d404d6d4b2337aab028e9f065bb5a6',1,'Vector']]],
+  ['copyfrom_20',['copyFrom',['../class_branch_list.html#a21cebc2c0d08322c0f1edf1f7ca6afb8',1,'BranchList::copyFrom()'],['../class_menu_lookup.html#a6bab419261c8d1f77c9f9b9775e9b989',1,'MenuLookup::copyFrom()'],['../class_order_queue.html#a92c229b0b6a1c24b314b502bb1e8e317',1,'OrderQueue::copyFrom()']]],
+  ['countutf8codepoints_21',['countUtf8Codepoints',['../_u_i_font_8cpp.html#af4552d6d74fff7addb4fad563aeb8055',1,'UIFont.cpp']]],
+  ['currentdatelabel_22',['currentDateLabel',['../class_data_manager.html#a41fec91c164a3affbad09320ca96d24b',1,'DataManager']]],
+  ['currenttimestamp_23',['currentTimestamp',['../class_data_manager.html#aaf64c40cf84cc60189c6c11fa1810f84',1,'DataManager']]]
+];

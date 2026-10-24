@@ -1,0 +1,9 @@
+<map id="Schedule" name="Schedule">
+<area shape="rect" id="Node000001" title=" " alt="" coords="79,5,246,437"/>
+<area shape="rect" id="Node000002" href="$class_work_schedule.html" title=" " alt="" coords="115,485,210,555"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,450,165,486,160,485,162,455"/>
+<area shape="rect" id="Node000003" href="$class_full_time_schedule.html" title=" " alt="" coords="5,613,141,704"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="134,565,104,615,100,612,131,569"/>
+<area shape="rect" id="Node000004" href="$class_self_registered_schedule.html" title=" " alt="" coords="166,603,338,715"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="194,565,219,603,213,602,192,570"/>
+</map>

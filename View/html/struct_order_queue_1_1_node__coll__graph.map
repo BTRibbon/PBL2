@@ -1,0 +1,13 @@
+<map id="OrderQueue::Node" name="OrderQueue::Node">
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,1296,131,1365"/>
+<area shape="poly" id="edge6_Node000001_Node000001" title=" " alt="" coords="130,1315,149,1319,157,1331,148,1342,145,1338,152,1331,146,1324,130,1320"/>
+<area shape="rect" id="Node000002" href="$struct_order.html" title=" " alt="" coords="23,1112,118,1224"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,1222,73,1280,68,1279,69,1226"/>
+<area shape="rect" id="Node000003" href="$class_string.html" title=" " alt="" coords="5,5,136,416"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="66,413,66,624,67,884,71,1095,66,1095,62,884,61,624,66,418"/>
+<area shape="rect" id="Node000005" href="$struct_order_item.html" title=" " alt="" coords="101,488,196,600"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="118,413,134,471,129,472,119,418"/>
+<area shape="rect" id="Node000004" href="$class_vector.html" title=" " alt="" coords="91,736,221,1040"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="111,1037,95,1097,90,1095,109,1042"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="150,597,155,719,150,719,149,602"/>
+</map>

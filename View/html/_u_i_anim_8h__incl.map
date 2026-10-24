@@ -1,0 +1,9 @@
+<map id="src/UI/UIAnim.h" name="src/UI/UIAnim.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="48,5,164,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,69,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,35,62,70,57,67,96,30"/>
+<area shape="rect" id="Node000003" href="$_string_8h.html" title=" " alt="" coords="93,80,258,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,30,156,68,150,69,118,35"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="144,155,208,181"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="177,105,178,140,173,138,174,109"/>
+</map>

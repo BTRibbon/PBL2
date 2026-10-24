@@ -1,0 +1,32 @@
+<map id="RestaurantChain" name="RestaurantChain">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,2619,145,2859"/>
+<area shape="rect" id="Node000002" href="$class_string.html" title=" " alt="" coords="188,5,320,416"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,283,145,341,102,412,84,451,69,491,60,533,57,575,57,2375,60,2491,66,2602,61,2602,54,2491,51,2375,51,575,55,532,64,490,79,449,97,410,141,338,189,278"/>
+<area shape="rect" id="Node000005" href="$class_branch.html" title=" " alt="" coords="210,1640,322,1965"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="188,326,165,381,143,443,127,508,121,575,121,1407,128,1484,148,1560,175,1631,205,1695,200,1696,170,1633,143,1561,123,1485,115,1407,115,575,121,508,138,441,160,379,189,321"/>
+<area shape="rect" id="Node000007" href="$struct_menu_lookup_1_1_node.html" title=" " alt="" coords="204,984,328,1053"/>
+<area shape="poly" id="edge8_Node000007_Node000002" title=" " alt="" coords="221,419,214,509,213,639,224,767,241,881,257,967,252,968,236,882,219,768,208,639,209,509,221,413"/>
+<area shape="rect" id="Node000008" href="$struct_menu_item.html" title=" " alt="" coords="261,509,356,643"/>
+<area shape="poly" id="edge10_Node000008_Node000002" title=" " alt="" coords="285,413,299,492,294,493,285,418"/>
+<area shape="rect" id="Node000011" href="$struct_stock_entry.html" title=" " alt="" coords="407,531,504,621"/>
+<area shape="poly" id="edge15_Node000011_Node000002" title=" " alt="" coords="319,327,426,516,420,517,320,332"/>
+<area shape="rect" id="Node000012" href="$class_opening_hours.html" title=" " alt="" coords="526,667,641,843"/>
+<area shape="poly" id="edge17_Node000012_Node000002" title=" " alt="" coords="319,266,370,314,423,372,475,438,518,508,547,579,567,650,562,650,542,580,513,511,470,441,419,376,366,318,320,271"/>
+<area shape="rect" id="Node000003" href="$class_branch_list.html" title=" " alt="" coords="123,2200,225,2547"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,2544,115,2603,110,2602,126,2549"/>
+<area shape="rect" id="Node000004" href="$struct_branch_list_1_1_node.html" title=" " alt="" coords="150,2037,262,2107"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="203,2104,197,2184,192,2183,202,2109"/>
+<area shape="poly" id="edge18_Node000004_Node000004" title=" " alt="" coords="260,2057,280,2061,288,2072,281,2083,276,2080,283,2072,277,2065,263,2061"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="230,1963,220,2022,215,2020,229,1968"/>
+<area shape="rect" id="Node000006" href="$class_menu_lookup.html" title=" " alt="" coords="199,1243,333,1568"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="266,1565,269,1623,263,1623,266,1570"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="266,1050,269,1226,263,1225,266,1056"/>
+<area shape="poly" id="edge11_Node000007_Node000007" title=" " alt="" coords="311,982,328,982,342,988,351,1000,354,1019,348,1043,332,1054,327,1051,343,1040,349,1019,346,1003,338,992,327,987,314,986"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="303,640,274,968,268,967,302,645"/>
+<area shape="rect" id="Node000009" href="$class_warehouse.html" title=" " alt="" coords="376,1339,484,1472"/>
+<area shape="poly" id="edge12_Node000005_Node000009" title=" " alt="" coords="402,1474,330,1653,325,1652,404,1469"/>
+<area shape="rect" id="Node000010" href="$class_vector.html" title=" " alt="" coords="416,867,553,1171"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="464,1168,444,1323,439,1322,463,1173"/>
+<area shape="poly" id="edge14_Node000010_Node000011" title=" " alt="" coords="458,618,473,842,473,850,468,850,467,843,457,624"/>
+<area shape="poly" id="edge16_Node000005_Node000012" title=" " alt="" coords="594,840,604,987,604,1077,599,1174,588,1274,568,1376,539,1475,499,1569,465,1624,423,1673,379,1717,337,1753,333,1750,375,1713,419,1670,461,1621,494,1567,534,1473,563,1375,583,1274,594,1173,599,1077,599,987,593,845"/>
+</map>

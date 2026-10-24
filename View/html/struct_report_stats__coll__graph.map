@@ -1,0 +1,14 @@
+<map id="ReportStats" name="ReportStats">
+<area shape="rect" id="Node000001" title=" " alt="" coords="133,1069,237,1203"/>
+<area shape="rect" id="Node000002" href="$class_vector.html" title=" " alt="" coords="5,693,183,997"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,995,123,1044,127,1056,122,1055,118,1046,105,1000"/>
+<area shape="rect" id="Node000003" href="$struct_product_sale_count.html" title=" " alt="" coords="69,531,186,600"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,597,117,677,112,676,123,602"/>
+<area shape="rect" id="Node000004" href="$class_string.html" title=" " alt="" coords="130,5,261,416"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="156,418,140,515,134,514,157,413"/>
+<area shape="rect" id="Node000006" href="$struct_branch_stat.html" title=" " alt="" coords="215,509,323,621"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="238,413,257,493,251,493,238,418"/>
+<area shape="rect" id="Node000005" href="$class_vector.html" title=" " alt="" coords="207,693,344,997"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="255,995,241,1046,237,1056,233,1052,236,1044,251,999"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="271,618,274,677,269,676,269,623"/>
+</map>

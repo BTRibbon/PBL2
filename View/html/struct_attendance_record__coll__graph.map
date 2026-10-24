@@ -1,0 +1,5 @@
+<map id="AttendanceRecord" name="AttendanceRecord">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,552,145,643"/>
+<area shape="rect" id="Node000002" href="$class_string.html" title=" " alt="" coords="10,5,141,416"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,414,78,535,73,535,73,418"/>
+</map>

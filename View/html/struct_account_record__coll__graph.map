@@ -1,0 +1,8 @@
+<map id="AccountRecord" name="AccountRecord">
+<area shape="rect" id="Node000001" title=" " alt="" coords="10,928,132,1019"/>
+<area shape="rect" id="Node000002" href="$class_string.html" title=" " alt="" coords="5,5,136,416"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,413,62,628,65,856,68,912,63,911,60,856,57,628,63,418"/>
+<area shape="rect" id="Node000003" href="$class_employee.html" title=" " alt="" coords="177,552,314,856"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="137,393,189,536,184,537,136,398"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="179,823,160,857,118,916,114,913,155,855,175,827"/>
+</map>

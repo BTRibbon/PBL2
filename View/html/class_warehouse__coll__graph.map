@@ -1,0 +1,9 @@
+<map id="Warehouse" name="Warehouse">
+<area shape="rect" id="Node000001" title=" " alt="" coords="19,1027,128,1160"/>
+<area shape="rect" id="Node000002" href="$class_vector.html" title=" " alt="" coords="5,651,142,955"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,952,76,1010,71,1010,73,957"/>
+<area shape="rect" id="Node000003" href="$struct_stock_entry.html" title=" " alt="" coords="25,488,122,579"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,575,76,634,71,634,73,581"/>
+<area shape="rect" id="Node000004" href="$class_string.html" title=" " alt="" coords="8,5,139,416"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="74,413,76,471,71,471,74,418"/>
+</map>
