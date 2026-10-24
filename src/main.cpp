@@ -154,10 +154,10 @@ int main() {
 	bool wasLoginDialog = true;
 	float navIndicatorY = -1.0f;
 
-	const Rectangle loginBoxRec = {380, 155, 520, 435};
-	const Rectangle loginUserBoxRec = {415, 275, 450, 42};
-	const Rectangle loginPassBoxRec = {415, 355, 450, 42};
-	const Rectangle loginBtnRec = {415, 442, 450, 44};
+	const Rectangle loginBoxRec = {380, 195, 520, 330};
+	const Rectangle loginUserBoxRec = {415, 308, 450, 42};
+	const Rectangle loginPassBoxRec = {415, 384, 450, 42};
+	const Rectangle loginBtnRec = {415, 450, 450, 46};
 
 	auto attemptLogin = [&]() {
 		for (int i = 0; i < accounts.size(); ++i) {
@@ -510,24 +510,17 @@ int main() {
 			DrawRectangleRounded(loginBoxRec, 0.05f, 8, {250, 247, 238, 255});
 			DrawRectangleRoundedLines(loginBoxRec, 0.05f, 8, green);
 
-			DrawUiTextFitted("HỆ THỐNG QUẢN LÝ BẾP NHỎ", 415, 182, 450, 21, darkGreen);
-			DrawUiTextFitted("Đăng nhập tài khoản theo phân cấp quyền hạn (Employee / Manager / ChainManager)", 415, 214, 450, 12, muted);
+			DrawUiTextFitted("HỆ THỐNG QUẢN LÝ BẾP NHỎ", 415, 222, 450, 21, darkGreen);
+			DrawUiTextFitted("Đăng nhập tài khoản theo phân cấp quyền hạn (Employee / Manager / ChainManager)", 415, 254, 450, 12, muted);
 
-			DrawUiText("Tên đăng nhập:", 415, 252, 13, {54, 66, 58, 255});
-			DrawUiInputBox(loginUserBoxRec, usernameInput, "Nhập tài khoản (employee0101, manager1, chainmanager)...", loginField == 0, mouse);
+			DrawUiText("Tên đăng nhập:", 415, 286, 13, {54, 66, 58, 255});
+			DrawUiInputBox(loginUserBoxRec, usernameInput, "Nhập tên tài khoản...", loginField == 0, mouse);
 
-			DrawUiText("Mật khẩu:", 415, 332, 13, {54, 66, 58, 255});
+			DrawUiText("Mật khẩu:", 415, 362, 13, {54, 66, 58, 255});
 			DrawUiInputBox(loginPassBoxRec, passwordInput, "Nhập mật khẩu...", loginField == 1, mouse, true);
-
-			DrawUiTextFitted("Phím Tab để chuyển ô  •  Phím Enter để đăng nhập", 415, 412, 450, 12, muted);
 
 			Rectangle loginBtnV = Anim::Button(loginBtnRec, green, BrightenColor(green, 24), mouse, true, 0.2f);
 			DrawUiTextInRect("ĐĂNG NHẬP HỆ THỐNG", loginBtnV, 14, RAYWHITE, 0, 12.0f);
-
-			Rectangle hintBox = {415, 502, 450, 68};
-			DrawRectangleRounded(hintBox, 0.12f, 4, Color{238, 242, 236, 255});
-			DrawUiTextFitted("Tài khoản mẫu:  NV: employee0101 / emp0101pass", 427, 512, 426, 12, {65, 84, 75, 255});
-			DrawUiTextFitted("QL: manager1 / mgr1pass  |  GĐ Chuỗi: chainmanager / chainpass", 427, 536, 426, 12, {65, 84, 75, 255});
 
 			rlPopMatrix();
 		}

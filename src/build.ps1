@@ -26,10 +26,14 @@ if (Test-Path $appPath) {
     try {
         $probe = [System.IO.File]::Open($appPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Write, [System.IO.FileShare]::Read)
         $probe.Dispose()
+        $latest = Join-Path $appFolder "app-latest.exe"
+        if (Test-Path $latest) {
+            Remove-Item $latest -Force -ErrorAction SilentlyContinue
+        }
     } catch {
         $appName = "app-latest.exe"
         $appPath = Join-Path $appFolder $appName
-        Write-Host "app.exe is currently running; building $appName in app/ instead."
+        Write-Host "app.exe đang được mở; tiến hành biên dịch bản mới thành $appName trong thư mục app/."
     }
 }
 
