@@ -11,4 +11,5 @@
 1011|48000|Chi nhánh Trung Tâm|ORD1011|KIOSK|completed|M103:1
 1012|35000|Chi nhánh Trung Tâm|ORD1012|KIOSK|completed|M101:1
 1013|35000|Chi nhánh Trung Tâm|ORD1013|KIOSK|completed|M101:1
-1014|35000|Chi nhánh Bách Khoa|ORD1014|KIOSK|pending|M101:1
+1014|35000|Chi nhánh Bách Khoa|ORD1014|KIOSK|completed|M101:1
+1015|35000|Chi nhánh Bách Khoa|ORD1015|KIOSK|completed|M101:1

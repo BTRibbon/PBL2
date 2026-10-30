@@ -1,0 +1,18 @@
+EMP0101|employee0101|Nguyễn Minh Anh|Employee|BR001|314e6f5a7849d64d519d274b55f96f24|e764a199f8cfaf80
+EMP0102|employee0102|Trần Quốc Bảo|Employee|BR001|cd530afdc7f789ca3eac8572ff1b6657|398e64d93b5e9178
+EMP0103|employee0103|Lê Thị Cẩm Tú|Employee|BR001|143a60b77a52eaac0db9bf44aa066537|8ad7a48bf8d81421
+EMP0201|employee0201|Hoàng Văn Nam|Employee|BR002|5949b571179df457a875dc48ebcf8c51|b33ed94a2a6fd177
+EMP0202|employee0202|Đỗ Thuỳ Dung|Employee|BR002|7a5a257b712f28ed880f7bd0bef0da79|1c8a31c45a89e652
+EMP0203|employee0203|Vũ Minh Quân|Employee|BR002|5096c42227ef9fced30dbc2aa4b7dbd2|4f2137a7e9437bb0
+EMP0301|employee0301|Phan Thanh Hải|Employee|BR003|b3522ec927de4cb959c1c9d6bc6d1280|2c60d9ce61803d0d
+EMP0302|employee0302|Đặng Mỹ Linh|Employee|BR003|18d6b62a1f03488b646986cd9cc9d404|0fc37ac73588cb73
+EMP0303|employee0303|Bùi Quang Huy|Employee|BR003|34be86eef1a912a869f7efc3b310c74f|608ab59036790f9e
+EMP0401|employee0401|Trịnh Quốc Tuấn|Employee|BR004|0a35b74ee5efb8446606590416dac761|ef48ca984d7fdc3c
+EMP0402|employee0402|Ngô Phương Thảo|Employee|BR004|f1fd656be05998c4f77e56413471f2b5|1dab94423cd06174
+EMP0403|employee0403|Lâm Gia Phúc|Employee|BR004|1ea92d31fde971faf379d41cac8c79f5|8d7d548c1ab24b79
+EMP001|employee1|Nguyễn Minh Anh (Cũ)|Employee|BR001|182818875c1f4df7d4d13db9c1453e63|fca7418a1e644c2f
+MGR001|manager1|Phạm Hoàng Nam|Manager|BR001|b98b3f76b6f816a1a9a46a0a9f18b3fe|84e8df99afd6de66
+MGR002|manager2|Võ Ngọc Mai|Manager|BR002|397f51b8a61c72572bb6541ce399f8d2|17dbb6b335313248
+MGR003|manager3|Nguyễn Văn Hưng|Manager|BR003|eca9fb152d5dc08d1ca96275819ae63c|a63df01a9e5cd16d
+MGR004|manager4|Trần Thị Lan|Manager|BR004|f6f9d25134d4343ad3865779f207710a|ea135355446968ee
+CM001|chainmanager|Đỗ Gia Huy|ChainManager|ALL|42d82ee2e59b383c5041e4e83a1e8a2f|c4524a2077c69100

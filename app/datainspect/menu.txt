@@ -1,0 +1,14 @@
+M101|Bánh Mì Đặc Biệt|Món chính|35000
+M102|Cơm Gà Nướng Mật Ong|Món chính|55000
+M103|Mì Xào Bò Rau Cải|Món chính|48000
+M104|Phở Bò Tái Nạm|Món chính|60000
+M105|Trà Đào Cam Sả|Đồ uống|28000
+M106|Cà Phê Sữa Đá|Đồ uống|25000
+M107|Nước Cam Ép Tươi|Đồ uống|30000
+M108|Bánh Flan Caramel|Tráng miệng|22000
+M109|Bún Bò Huế Đặc Biệt|Món chính|65000
+M110|Trà Sen Vàng Kem Cheese|Đồ uống|32000
+M111|Chè Khúc Bạch Hạnh Nhân|Tráng miệng|28000
+M112|Cơm Sườn Bì Chả|Món chính|52000
+M113|Test1|Món chính|45400
+M114|Test Món 2|Món chính|500000

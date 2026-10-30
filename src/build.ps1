@@ -90,7 +90,7 @@ $shouldBuildAccounts = $ResetData -or (-not (Test-Path $accountDatabase)) -or
 
 if ($shouldBuildAccounts) {
     $encodedAccounts = New-Object System.Collections.Generic.List[byte]
-    foreach ($line in [System.IO.File]::ReadAllLines($accountSource)) {
+    foreach ($line in [System.IO.File]::ReadAllLines($accountSource, [System.Text.Encoding]::UTF8)) {
         if ([string]::IsNullOrWhiteSpace($line)) { continue }
         $fields = $line.Split("|")
         if ($fields.Count -ne 6) {

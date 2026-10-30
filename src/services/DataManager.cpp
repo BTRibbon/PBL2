@@ -372,6 +372,13 @@ bool DataManager::loadOrders(Vector<Order>& orders) {
 		Order order{};
 		if (!fields[0].tryParseInt(order.id) || !fields[1].tryParseInt(order.total)) continue;
 		order.branch = fields[2];
+		if (order.branch.find("\xB5\xE5\xE7") != String::npos) {
+			if (order.branch.find("Trung") != String::npos) order.branch = "Chi nhánh Trung Tâm";
+			else if (order.branch.find("Khoa") != String::npos) order.branch = "Chi nhánh Bách Khoa";
+			else if (order.branch.find("Nam") != String::npos) order.branch = "Chi nhánh Phía Nam";
+			else if (order.branch.find("ng") != String::npos) order.branch = "Chi nhánh Phía Đông";
+			else order.branch = "Chi nhánh Phía Tây";
+		}
 		order.orderId = fields[3];
 		order.customerId = fields[4];
 		order.status = fields[5];
